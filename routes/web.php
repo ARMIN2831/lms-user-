@@ -27,11 +27,11 @@ Route::get('/start', function () {
         ->header('Content-Type', 'text/plain; charset=utf-8');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::get('/login', function () {
     return view('pages.login');
+});
+Route::get('/dashboard', function () {
+    return view('pages.dashboard');
 });
 
 Route::view('/menu-main', 'menus.menu-main');

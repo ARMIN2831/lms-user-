@@ -33,6 +33,13 @@ Route::get('/login', function () {
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 });
+Route::get('/course', function () {
+    return view('pages.course');
+});
+
+Route::get('/courseDetail', function () {
+    return view('pages.courseDetail');
+});
 
 Route::view('/menu-main', 'menus.menu-main');
 Route::view('/menu-share', 'menus.menu-share');

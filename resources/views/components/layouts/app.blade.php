@@ -22,6 +22,12 @@
 
         <div class="page-content">
             <x-shared.header/>
+
+
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+
             {{ $slot }}
         </div>
         <!-- Page content ends here-->

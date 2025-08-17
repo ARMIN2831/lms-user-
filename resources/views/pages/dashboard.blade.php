@@ -1,6 +1,4 @@
 <x-layouts.app title="داشبرد">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <style>
         .accordion-content {
             transition: max-height 0.3s ease-out, opacity 0.2s ease;

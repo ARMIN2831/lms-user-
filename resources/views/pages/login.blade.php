@@ -755,7 +755,7 @@
             // For demo purposes, we'll randomly decide if user exists
             // In real app, you would make an API call here
             currentUserPhone = phone;
-            isExistingUser = 0; // 50% chance user exists
+            isExistingUser = 1; // 50% chance user exists
 
             if (isExistingUser) {
                 // Show password step

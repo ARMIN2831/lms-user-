@@ -41,6 +41,10 @@ Route::get('/courseDetail', function () {
     return view('pages.courseDetail');
 });
 
+Route::get('/payments', function () {
+    return view('pages.payments');
+});
+
 Route::view('/menu-main', 'menus.menu-main');
 Route::view('/menu-share', 'menus.menu-share');
 Route::view('/menu-colors', 'menus.menu-colors');

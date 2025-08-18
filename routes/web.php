@@ -45,6 +45,10 @@ Route::get('/payments', function () {
     return view('pages.payments');
 });
 
+Route::get('/profile', function () {
+    return view('pages.profile');
+});
+
 Route::view('/menu-main', 'menus.menu-main');
 Route::view('/menu-share', 'menus.menu-share');
 Route::view('/menu-colors', 'menus.menu-colors');

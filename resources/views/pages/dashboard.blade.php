@@ -15,6 +15,34 @@
                 flex: 0 0 50%;
             }
         }
+        .dashboard-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .animate-progress {
+            animation: progress 1.5s ease-out forwards;
+        }
+
+        @keyframes progress {
+            from { width: 0% }
+            to { width: 70% }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1 }
+            50% { opacity: 0.5 }
+        }
     </style>
 
     <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-6">
@@ -22,7 +50,9 @@
         <div class="flex flex-col md:flex-row items-center justify-between bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
             <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
                 <div class="relative">
-                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-2xl font-bold">م</div>
+                    <div class="w-16 h-16 rounded-full bg-purple-100 border-4 border-white shadow-lg overflow-hidden">
+                        <img id="avatar-preview" src="https://randomuser.me/api/portraits/men/32.jpg" alt="پروفایل کاربر" class="w-full h-full object-cover">
+                    </div>
                     <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></span>
                 </div>
                 <div>
@@ -45,6 +75,135 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </button>
+            </div>
+        </div>
+
+
+
+        <!-- کارت‌های اصلی دشبورد -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+            <!-- کارت دوره‌ها -->
+            <div class="dashboard-card bg-gradient-to-br from-purple-50 via-white to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-purple-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div class="absolute inset-0 bg-purple-500 opacity-5"></div>
+                <div class="relative p-5 flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">دوره‌های من</h3>
+                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-purple-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-600 mb-3">۳ دوره فعال دارید</p>
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
+                            <span>پیشرفت کلی</span>
+                            <span>۷۰%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="h-2.5 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-progress" style="width: 70%"></div>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                </div>
+            </div>
+
+            <!-- کارت آزمون‌ها (غیرفعال) -->
+            <div class="dashboard-card bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100 transform transition-all duration-300 opacity-90 hover:opacity-100">
+                <div class="absolute inset-0 bg-blue-500 opacity-5"></div>
+                <div class="relative p-5 flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">آزمون‌ها</h3>
+                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-blue-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-600 mb-3">آزمون‌های آینده</p>
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
+                            <span>آماده‌سازی</span>
+                            <span>۰%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="h-2.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-4 right-4 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">به زودی</div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-blue-600 opacity-50"></div>
+                </div>
+            </div>
+
+            <!-- کارت گواهینامه‌ها (غیرفعال) -->
+            <div class="dashboard-card bg-gradient-to-br from-green-50 via-white to-green-50 rounded-2xl shadow-lg overflow-hidden border border-green-100 transform transition-all duration-300 opacity-90 hover:opacity-100">
+                <div class="absolute inset-0 bg-green-500 opacity-5"></div>
+                <div class="relative p-5 flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">گواهینامه‌ها</h3>
+                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-green-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-600 mb-3">گواهینامه‌های شما</p>
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
+                            <span>آماده‌سازی</span>
+                            <span>۰%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="h-2.5 bg-gradient-to-r from-green-400 to-green-600 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-4 right-4 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">به زودی</div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-green-600 opacity-50"></div>
+                </div>
+            </div>
+
+            <!-- کارت شهریه -->
+            <div class="dashboard-card bg-gradient-to-br from-red-50 via-white to-red-50 rounded-2xl shadow-lg overflow-hidden border border-red-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div class="absolute inset-0 bg-red-500 opacity-5"></div>
+                <div class="relative p-5 flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">وضعیت پرداخت</h3>
+                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-600 mb-3">۲ پرداخت معوق دارید</p>
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
+                            <span>تاریخ سررسید</span>
+                            <span class="font-bold text-red-600">۱۵ مرداد</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="h-2.5 bg-gradient-to-r from-red-400 to-red-600 rounded-full animate-pulse" style="width: 40%"></div>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        ۲ اخطار
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 to-red-600 animate-pulse"></div>
+                </div>
             </div>
         </div>
 
@@ -89,80 +248,6 @@
                 <button class="w-2 h-2 rounded-full bg-purple-300"></button>
                 <button class="w-2 h-2 rounded-full bg-blue-300"></button>
             </div>
-        </div>
-
-        <!-- کارت‌های اصلی -->
-        <div class="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-2 md:grid-cols-4">
-            <!-- دوره‌ها -->
-            <a href="#" class="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-xs p-4 hover:shadow-md transition-all border border-purple-100 flex flex-col">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm sm:text-base font-semibold text-gray-800">دوره‌ها</h3>
-                    <div class="p-1 sm:p-2 bg-purple-100 rounded-lg text-purple-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-600 mb-2">۳ دوره فعال</p>
-                <div class="h-1.5 bg-gray-200 rounded-full mb-1 mt-auto">
-                    <div class="h-1.5 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full" style="width: 70%"></div>
-                </div>
-                <p class="text-xs text-gray-500">پیشرفت کلی</p>
-            </a>
-
-            <!-- آزمون‌ها -->
-            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-xs p-4 border border-blue-100 flex flex-col opacity-80 relative">
-                <div class="absolute top-6 left-6 bg-yellow-100 text-yellow-800 text-2xs px-1.5 py-0.5 rounded">به زودی</div>
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm sm:text-base font-semibold text-gray-800">آزمون‌ها</h3>
-                    <div class="p-1 sm:p-2 bg-blue-100 rounded-lg text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-600 mb-2">آزمون‌های آینده</p>
-                <div class="h-1.5 bg-gray-200 rounded-full mb-1 mt-auto">
-                    <div class="h-1.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style="width: 0%"></div>
-                </div>
-                <p class="text-xs text-gray-500">در حال آماده‌سازی</p>
-            </div>
-
-            <!-- گواهینامه‌ها -->
-            <div class="bg-gradient-to-br from-green-50 to-white rounded-xl shadow-xs p-4 border border-green-100 flex flex-col opacity-80 relative">
-                <div class="absolute top-6 left-6 bg-yellow-100 text-yellow-800 text-2xs px-1.5 py-0.5 rounded">به زودی</div>
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm sm:text-base font-semibold text-gray-800">گواهینامه‌ها</h3>
-                    <div class="p-1 sm:p-2 bg-green-100 rounded-lg text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-600 mb-2">گواهینامه‌های شما</p>
-                <div class="h-1.5 bg-gray-200 rounded-full mb-1 mt-auto">
-                    <div class="h-1.5 bg-gradient-to-r from-green-400 to-green-600 rounded-full" style="width: 0%"></div>
-                </div>
-                <p class="text-xs text-gray-500">در حال آماده‌سازی</p>
-            </div>
-
-            <!-- شهریه -->
-            <a href="#" class="bg-gradient-to-br from-red-50 to-white rounded-xl shadow-xs p-4 hover:shadow-md transition-all border border-red-100 flex flex-col relative">
-                <div class="absolute top-[0.2rem] right-[0.2rem] bg-red-500 text-white text-2xs font-bold rounded-full w-5 h-5 flex items-center justify-center">۲</div>
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm sm:text-base font-semibold text-gray-800">شهریه</h3>
-                    <div class="p-1 sm:p-2 bg-red-100 rounded-lg text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-600 mb-2">۲ پرداخت معوق</p>
-                <div class="h-1.5 bg-gray-200 rounded-full mb-1 mt-auto">
-                    <div class="h-1.5 bg-gradient-to-r from-red-400 to-red-600 rounded-full" style="width: 40%"></div>
-                </div>
-                <p class="text-xs text-gray-500">تاریخ سررسید: ۱۵ مرداد</p>
-            </a>
         </div>
 
         <!-- بخش اصلی -->

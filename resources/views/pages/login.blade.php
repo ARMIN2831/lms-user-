@@ -688,6 +688,7 @@
     </div>
 </div>
 
+{{ route('') }}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     // Global variables
@@ -749,7 +750,6 @@
             <i class="fas fa-spinner fa-spin ml-2"></i>
         `;
         btn.disabled = true;
-
         // Simulate API call to check if user exists
         setTimeout(() => {
             // For demo purposes, we'll randomly decide if user exists

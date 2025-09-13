@@ -21,14 +21,14 @@ class CompleteProfileRequest extends FormRequest
             'type' => 'required|in:students,teachers',
         ];
 
-        if ($this->type === 'providers') {
+        if ($this->type === 'students') {
             $rules['mobile'] = 'required|exists:users,mobile';
             $rules['firstName'] = 'required';
             $rules['lastName'] = 'required';
             $rules['fatherName'] = 'required';
             $rules['idNumber'] = 'required';
             $rules['issuePlace'] = 'required';
-            $rules['nationalCode'] = 'required|unique:'. $this->type .',nationalCode';
+            $rules['nationalCode'] = 'required|unique:'. $this->type .',Mid';
             $rules['maritalStatus'] = 'required';
             $rules['education'] = 'required';
             $rules['field'] = 'required';

@@ -46,7 +46,7 @@ class UserAuthController extends Controller
             'students' => '2',
             'teachers' => '1',
         };
-        $user = User::where('mobile', $request->mobile)->where('type',$type)->first();
+        $user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             if ($user->verified == 1){
                 return response()->json([
@@ -72,7 +72,11 @@ class UserAuthController extends Controller
     {
         $request->validated();
         $user = User::where('mobile',$request->mobile)->first();
-        if ($user and $request->type == 'students') {
+        if ($user and $user->verified == 0 and $request->type == 'students') {
+            User::where('mobile',$request->mobile)->update([
+                'verified'=> true,
+                'password' => bcrypt($request->nationalCode),
+            ]);
             Student::where('users_id',$user->id)->update([
                 'name' => $request->firstName,
                 'family' => $request->lastName,
@@ -86,16 +90,24 @@ class UserAuthController extends Controller
                 'job' => $request->job,
                 'image' => uploadFile($request->file('profilePhoto')),
             ]);
+        }else if ($request->type == 'teachers'){
+
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => trans('messages.invalid_credentials')
+            ], 401);
         }
 
-        if ($request->type == 'teachers'){
-
-        }
 
         return response()->json([
             'status' => 'success',
             'message' => trans('messages.profile_updated'),
-        ], 200);
+            'access_token' => $user->createToken('auth_token')->plainTextToken,
+            'user_type' => $request->type,
+            'token_type' => 'Bearer',
+            'user' => $user
+        ]);
     }
 
 

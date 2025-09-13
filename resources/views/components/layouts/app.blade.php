@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('fonts/css/all.min.css') }}">
     <link rel="manifest" href="{{ asset('_manifest.json') }}" data-pwa-version="3.4">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('app/icons/icon-192x192.png') }}">
+    <script src="{{ asset('js/api.js') }}"></script>
+    <script src="{{ asset('js/axios.min.js') }}"></script>
 </head>
 <body class="theme-light" data-highlight="highlight-red">
     <div id="preloader" class="preloader-hide"><div class="spinner-border color-highlight" role="status"></div></div>

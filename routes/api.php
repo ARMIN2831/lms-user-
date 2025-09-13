@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('SetLan')->group(function (){
@@ -20,6 +21,14 @@ Route::middleware('SetLan')->group(function (){
     });
 
     Route::middleware(['auth:sanctum', 'checkLogin'])->group(function() {
+        Route::get('/check-token', function (Request $request) {
+            try {
+                if ($request->user()) return response()->json(['valid' => true]);
+                return response()->json(['valid' => false], 401);
+            } catch (\Exception $e) {
+                return response()->json(['valid' => false], 401);
+            }
+        });
         Route::post('setPassword', [UserAuthController::class, 'setPassword']);
         Route::get('getUser', [UserAuthController::class, 'getUser']);
 

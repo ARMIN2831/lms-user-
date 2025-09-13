@@ -17,7 +17,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'type' => 'required|in:students,teachers',
-            'email_mobile' => 'required',
+            'mobile' => 'required',
             'password' => 'required|min:8',
         ];
     }

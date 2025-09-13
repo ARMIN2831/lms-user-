@@ -6,8 +6,8 @@
     <title>سامانه اساتید موسیقی</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('js/api.js') }}"></script>
+    <script src="{{ asset('js/axios.min.js') }}"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
 
@@ -690,7 +690,6 @@
     </div>
 </div>
 
-<script src="{{ asset('js/axios.min.js') }}"></script>
 <script>
     // Global variables
     let currentUserPhone = '';
@@ -760,7 +759,7 @@
             .then(data => {
                 console.log("موفق:", data);
                 currentUserPhone = mobile;
-                isExistingUser = data.verified; // تغییر از response.verified به data.verified
+                isExistingUser = data.user.verified; // تغییر از response.verified به data.verified
 
                 if (isExistingUser) {
                     // Show password step
@@ -805,10 +804,12 @@
     }
 
     // Login with password
-    function login() {
+    async function login() {
         clearErrors();
 
         const password = document.getElementById('password').value;
+        const mobile = currentUserPhone;
+        const type = 'students';
 
         if (!password) {
             showError('password', 'لطفاً رمز عبور را وارد کنید');
@@ -827,27 +828,45 @@
         `;
         btn.disabled = true;
 
-        // Simulate login API call
-        setTimeout(() => {
-            // For demo purposes, we'll just show a success message
-            const successMessage = document.createElement('div');
-            successMessage.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
-            successMessage.innerHTML = `
+
+        const response = await makeRequest('POST', 'fa', '{{ route('userLogin') }}', {password,mobile,type}, true)
+            .then(data => {
+                localStorage.setItem('access_token', data.access_token);
+                const successMessage = document.createElement('div');
+                successMessage.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+                successMessage.innerHTML = `
                 <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 text-center animate-fadeIn">
                     <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">ورود موفقیت‌آمیز بود!</h3>
                     <p class="text-gray-600 mb-4">خوش آمدید استاد گرامی</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="btn btn-primary w-full">
+                    <button onclick="this.parentElement.parentElement.remove(); location.reload();" class="btn btn-primary w-full">
                         باشه
                     </button>
                 </div>
             `;
-            document.body.appendChild(successMessage);
+                document.body.appendChild(successMessage);
+            })
+            .catch(err => {
+                let errorMessage = "خطایی رخ داده است";
 
-            // Reset button
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }, 1500);
+                if (err.response && err.response.data) {
+                    if (err.response.data.message) {
+                        errorMessage = err.response.data.message;
+                    }
+                    else if (err.response.data.errors) {
+                        errorMessage = Object.values(err.response.data.errors)[0][0];
+                    }
+                } else if (err.message) {
+                    errorMessage = err.message;
+                }
+
+                showError('password', errorMessage);
+            })
+            .finally(() => {
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
     }
 
     // Profile completion steps
@@ -1041,39 +1060,38 @@
             input.disabled = true;
         });
 
-        try {
-            // جمع‌آوری تمام اطلاعات فرم
-            const formData = new FormData();
+        // جمع‌آوری تمام اطلاعات فرم
+        const formData = new FormData();
 
-            // اطلاعات پایه
-            formData.append('mobile', currentUserPhone);
-            formData.append('type', 'students');
+        // اطلاعات پایه
+        formData.append('mobile', currentUserPhone);
+        formData.append('type', 'students');
 
-            // اطلاعات شخصی
-            formData.append('firstName', document.getElementById('firstName').value);
-            formData.append('lastName', document.getElementById('lastName').value);
-            formData.append('fatherName', document.getElementById('fatherName').value);
-            formData.append('idNumber', document.getElementById('idNumber').value);
-            formData.append('issuePlace', document.getElementById('issuePlace').value);
-            formData.append('nationalCode', document.getElementById('nationalCode').value);
-            formData.append('maritalStatus', document.getElementById('maritalStatus').value);
-            formData.append('education', document.getElementById('education').value);
-            formData.append('field', document.getElementById('field').value);
-            formData.append('job', document.getElementById('job').value);
+        // اطلاعات شخصی
+        formData.append('firstName', document.getElementById('firstName').value);
+        formData.append('lastName', document.getElementById('lastName').value);
+        formData.append('fatherName', document.getElementById('fatherName').value);
+        formData.append('idNumber', document.getElementById('idNumber').value);
+        formData.append('issuePlace', document.getElementById('issuePlace').value);
+        formData.append('nationalCode', document.getElementById('nationalCode').value);
+        formData.append('maritalStatus', document.getElementById('maritalStatus').value);
+        formData.append('education', document.getElementById('education').value);
+        formData.append('field', document.getElementById('field').value);
+        formData.append('job', document.getElementById('job').value);
 
-            // فایل تصویر
-            const photoFile = document.getElementById('profilePhoto').files[0];
-            if (photoFile) {
-                formData.append('profilePhoto', photoFile);
-            }
+        // فایل تصویر
+        const photoFile = document.getElementById('profilePhoto').files[0];
+        if (photoFile) {
+            formData.append('profilePhoto', photoFile);
+        }
 
-            // ارسال اطلاعات به سرور
-            const response = await makeRequest('POST', 'fa', '{{ route('completeProfile') }}', formData, true);
-
-            // در صورت موفقیت
-            const successMessage = document.createElement('div');
-            successMessage.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
-            successMessage.innerHTML = `
+        // ارسال اطلاعات به سرور
+        const response = await makeRequest('POST', 'fa', '{{ route('completeProfile') }}', formData, true)
+            .then(data => {
+                localStorage.setItem('access_token', data.access_token);
+                const successMessage = document.createElement('div');
+                successMessage.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+                successMessage.innerHTML = `
             <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 text-center animate-fadeIn">
                 <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">ثبت نام با موفقیت انجام شد!</h3>
@@ -1083,43 +1101,43 @@
                 </button>
             </div>
         `;
-            document.body.appendChild(successMessage);
+                document.body.appendChild(successMessage);
+            })
+            .catch(err => {
+                let errorMessage = "خطایی در ثبت اطلاعات رخ داده است";
 
-        } catch (err) {
-            let errorMessage = "خطایی در ثبت اطلاعات رخ داده است";
-
-            if (err.response && err.response.data) {
-                if (err.response.data.message) {
-                    errorMessage = err.response.data.message;
+                if (err.response && err.response.data) {
+                    if (err.response.data.message) {
+                        errorMessage = err.response.data.message;
+                    }
+                    else if (err.response.data.errors) {
+                        // نمایش اولین خطای اعتبارسنجی
+                        const firstError = Object.values(err.response.data.errors)[0][0];
+                        errorMessage = firstError;
+                    }
+                } else if (err.message) {
+                    errorMessage = err.message;
                 }
-                else if (err.response.data.errors) {
-                    // نمایش اولین خطای اعتبارسنجی
-                    const firstError = Object.values(err.response.data.errors)[0][0];
-                    errorMessage = firstError;
-                }
-            } else if (err.message) {
-                errorMessage = err.message;
-            }
 
-            // نمایش خطا در یک المان مناسب
-            const errorContainer = document.getElementById('confirmation-error');
-            errorContainer.textContent = errorMessage;
-            errorContainer.style.display = 'block';
+                // نمایش خطا در یک المان مناسب
+                const errorContainer = document.getElementById('confirmation-error');
+                errorContainer.textContent = errorMessage;
+                errorContainer.style.display = 'block';
 
-            // اسکرول به خطا
-            errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // اسکرول به خطا
+                errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            console.error("خطای ثبت نام:", err);
-        } finally {
-            // Reset button state
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
 
-            // Enable all fields
-            allInputs.forEach(input => {
-                input.disabled = false;
+                // Enable all fields
+                allInputs.forEach(input => {
+                    input.disabled = false;
+                });
             });
-        }
     }
 </script>
 </body>

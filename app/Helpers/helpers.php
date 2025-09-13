@@ -14,12 +14,12 @@ if (!function_exists('uploadFile')) {
     function uploadFile($file)
     {
         $filename = uniqid() . '_' . hash_file('md5', $file) . '.' . $file->getClientOriginalExtension();
-        $uploadPath = base_path('../public_html/api.arabi-ca.com/uploads');
+        $uploadPath = base_path('/public/api.localhost/uploads');
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
         $file->move($uploadPath, $filename);
-        return 'https://api.arabi-ca.com/uploads/' . $filename;
+        return 'localhost:8000/' . $filename;
     }
 }
 

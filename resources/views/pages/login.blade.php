@@ -6,6 +6,8 @@
     <title>سامانه اساتید موسیقی</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('js/api.js') }}"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
 
@@ -27,14 +29,14 @@
             border-radius: 1.5rem;
             overflow: hidden;
             background: white;
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /*transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;*/
         }
 
-        .form-container:hover {
+        /*.form-container:hover {
             transform: translateY(-5px);
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
-        }
+        }*/
 
         .progress-container {
             height: 10px;
@@ -555,8 +557,8 @@
                         <div class="input-field">
                             <select id="maritalStatus">
                                 <option value="">وضعیت تاهل</option>
-                                <option value="single">مجرد</option>
-                                <option value="married">متأهل</option>
+                                <option value="0">مجرد</option>
+                                <option value="1">متأهل</option>
                             </select>
                             <i class="input-icon fas fa-heart"></i>
                             <div class="error-message" id="maritalStatus-error"></div>
@@ -688,8 +690,7 @@
     </div>
 </div>
 
-{{ route('') }}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{{ asset('js/axios.min.js') }}"></script>
 <script>
     // Global variables
     let currentUserPhone = '';
@@ -700,12 +701,17 @@
         const field = document.getElementById(fieldId);
         const errorElement = document.getElementById(`${fieldId}-error`);
 
-        field.parentElement.classList.add('error');
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
+        if (field && errorElement) {
+            field.parentElement.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
 
-        // Scroll to the error field
-        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Scroll to the error field
+            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            // اگر المان خطا پیدا نشد، یک alert نمایش دهید
+            alert(message);
+        }
     }
 
     // Hide error for a specific field
@@ -729,18 +735,17 @@
     }
 
     // Check phone number
-    function checkPhone() {
+    async function checkPhone() {
         clearErrors();
 
-        const phone = document.getElementById('phone').value;
+        const mobile = document.getElementById('phone').value;
 
-        if (!phone) {
+        if (!mobile) {
             showError('phone', 'لطفاً شماره موبایل را وارد کنید');
             return;
-        } else if (!/^09\d{9}$/.test(phone)) {
-            showError('phone', 'شماره موبایل معتبر وارد کنید (مثال: 09123456789)');
-            return;
         }
+        const type = 'students';
+
 
         // Show loading
         const btn = document.querySelector('#step-phone button');
@@ -750,28 +755,44 @@
             <i class="fas fa-spinner fa-spin ml-2"></i>
         `;
         btn.disabled = true;
-        // Simulate API call to check if user exists
-        setTimeout(() => {
-            // For demo purposes, we'll randomly decide if user exists
-            // In real app, you would make an API call here
-            currentUserPhone = phone;
-            isExistingUser = 0; // 50% chance user exists
 
-            if (isExistingUser) {
-                // Show password step
-                document.getElementById('step-phone').classList.remove('active');
-                document.getElementById('step-password').classList.add('active');
-            } else {
-                // Show profile completion steps
-                document.getElementById('step-phone').classList.remove('active');
-                document.getElementById('step-profile').classList.add('active');
-                nextProfileStep(2, 3)
-            }
+        const response = await makeRequest('POST','fa', '{{ route('userCheck') }}', {mobile, type})
+            .then(data => {
+                console.log("موفق:", data);
+                currentUserPhone = mobile;
+                isExistingUser = data.verified; // تغییر از response.verified به data.verified
 
-            // Reset button
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }, 1500);
+                if (isExistingUser) {
+                    // Show password step
+                    document.getElementById('step-phone').classList.remove('active');
+                    document.getElementById('step-password').classList.add('active');
+                } else {
+                    // Show profile completion steps
+                    document.getElementById('step-phone').classList.remove('active');
+                    document.getElementById('step-profile').classList.add('active');
+                    nextProfileStep(1, 2)
+                }
+            })
+            .catch(err => {
+                let errorMessage = "خطایی رخ داده است";
+
+                if (err.response && err.response.data) {
+                    if (err.response.data.message) {
+                        errorMessage = err.response.data.message;
+                    }
+                    else if (err.response.data.errors) {
+                        errorMessage = Object.values(err.response.data.errors)[0][0];
+                    }
+                } else if (err.message) {
+                    errorMessage = err.message;
+                }
+
+                showError('phone', errorMessage);
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
     }
 
     // Back to phone input
@@ -997,7 +1018,7 @@
     }
 
     // Form Submission
-    function submitForm() {
+    async function submitForm() {
         if (!document.getElementById('confirmation').checked) {
             document.getElementById('confirmation-error').textContent = 'لطفاً تأیید کنید که از صحت اطلاعات اطمینان دارید';
             document.getElementById('confirmation-error').style.display = 'block';
@@ -1009,9 +1030,9 @@
 
         // Show loading state
         submitBtn.innerHTML = `
-            <span>در حال ثبت اطلاعات...</span>
-            <i class="fas fa-spinner fa-spin ml-2"></i>
-        `;
+        <span>در حال ثبت اطلاعات...</span>
+        <i class="fas fa-spinner fa-spin ml-2"></i>
+    `;
         submitBtn.disabled = true;
 
         // Disable all fields
@@ -1020,23 +1041,76 @@
             input.disabled = true;
         });
 
-        // Simulate API call (replace with actual axios call)
-        setTimeout(() => {
-            // For demo purposes, we'll just show a success message
+        try {
+            // جمع‌آوری تمام اطلاعات فرم
+            const formData = new FormData();
+
+            // اطلاعات پایه
+            formData.append('mobile', currentUserPhone);
+            formData.append('type', 'students');
+
+            // اطلاعات شخصی
+            formData.append('firstName', document.getElementById('firstName').value);
+            formData.append('lastName', document.getElementById('lastName').value);
+            formData.append('fatherName', document.getElementById('fatherName').value);
+            formData.append('idNumber', document.getElementById('idNumber').value);
+            formData.append('issuePlace', document.getElementById('issuePlace').value);
+            formData.append('nationalCode', document.getElementById('nationalCode').value);
+            formData.append('maritalStatus', document.getElementById('maritalStatus').value);
+            formData.append('education', document.getElementById('education').value);
+            formData.append('field', document.getElementById('field').value);
+            formData.append('job', document.getElementById('job').value);
+
+            // فایل تصویر
+            const photoFile = document.getElementById('profilePhoto').files[0];
+            if (photoFile) {
+                formData.append('profilePhoto', photoFile);
+            }
+
+            // ارسال اطلاعات به سرور
+            const response = await makeRequest('POST', 'fa', '{{ route('completeProfile') }}', formData, true);
+
+            // در صورت موفقیت
             const successMessage = document.createElement('div');
             successMessage.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
             successMessage.innerHTML = `
-                <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 text-center animate-fadeIn">
-                    <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">ثبت نام با موفقیت انجام شد!</h3>
-                    <p class="text-gray-600 mb-4">اطلاعات شما با موفقیت ثبت گردید</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="btn btn-primary w-full">
-                        باشه
-                    </button>
-                </div>
-            `;
+            <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 text-center animate-fadeIn">
+                <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">ثبت نام با موفقیت انجام شد!</h3>
+                <p class="text-gray-600 mb-4">اطلاعات شما با موفقیت ثبت گردید</p>
+                <button onclick="this.parentElement.parentElement.remove(); location.reload();" class="btn btn-primary w-full">
+                    باشه
+                </button>
+            </div>
+        `;
             document.body.appendChild(successMessage);
 
+        } catch (err) {
+            let errorMessage = "خطایی در ثبت اطلاعات رخ داده است";
+
+            if (err.response && err.response.data) {
+                if (err.response.data.message) {
+                    errorMessage = err.response.data.message;
+                }
+                else if (err.response.data.errors) {
+                    // نمایش اولین خطای اعتبارسنجی
+                    const firstError = Object.values(err.response.data.errors)[0][0];
+                    errorMessage = firstError;
+                }
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+
+            // نمایش خطا در یک المان مناسب
+            const errorContainer = document.getElementById('confirmation-error');
+            errorContainer.textContent = errorMessage;
+            errorContainer.style.display = 'block';
+
+            // اسکرول به خطا
+            errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            console.error("خطای ثبت نام:", err);
+        } finally {
             // Reset button state
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -1045,7 +1119,7 @@
             allInputs.forEach(input => {
                 input.disabled = false;
             });
-        }, 2000);
+        }
     }
 </script>
 </body>

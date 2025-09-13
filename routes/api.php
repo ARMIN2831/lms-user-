@@ -11,8 +11,9 @@ Route::middleware('SetLan')->group(function (){
         //Route::post('userRegister', [UserAuthController::class, 'userRegister'])->name('userRegister');
         Route::post('sendOTP', [UserAuthController::class, 'sendOTP']);
         Route::post('verifyOtp', [UserAuthController::class, 'verifyOtp']);
-        Route::post('userLogin', [UserAuthController::class, 'userLogin']);
-        Route::post('userCheck', [UserAuthController::class, 'userCheck']);
+        Route::post('userLogin', [UserAuthController::class, 'userLogin'])->name('userLogin');
+        Route::post('completeProfile', [UserAuthController::class, 'completeProfile'])->name('completeProfile');
+        Route::post('userCheck', [UserAuthController::class, 'userCheck'])->name('userCheck');
 
         Route::post('SendOTPForgetPassword', [UserAuthController::class, 'SendOTPForgetPassword']);
         Route::post('changePassword', [UserAuthController::class, 'changePassword']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserAuthRequests\ChangePasswordRequest;
+use App\Http\Requests\UserAuthRequests\CompleteProfileRequest;
 use App\Http\Requests\UserAuthRequests\LoginRequest;
 use App\Http\Requests\UserAuthRequests\SendOTPForgetPasswordRequest;
 use App\Models\Student;
@@ -22,7 +23,7 @@ class UserAuthController extends Controller
             'teachers' => '1',
         };
 
-        $user = User::where('mobile', $request->mobile)->where('type',$type)->first();
+        $user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
         if ($user) {
             return response()->json([
                 'status' => 'success',
@@ -45,7 +46,6 @@ class UserAuthController extends Controller
             'students' => '2',
             'teachers' => '1',
         };
-
         $user = User::where('mobile', $request->mobile)->where('type',$type)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             if ($user->verified == 1){
@@ -65,6 +65,37 @@ class UserAuthController extends Controller
             'status' => 'error',
             'message' => trans('messages.invalid_credentials')
         ], 401);
+    }
+
+
+    public function completeProfile(CompleteProfileRequest $request)
+    {
+        $request->validated();
+        $user = User::where('mobile',$request->mobile)->first();
+        if ($user and $request->type == 'students') {
+            Student::where('users_id',$user->id)->update([
+                'name' => $request->firstName,
+                'family' => $request->lastName,
+                'father' => $request->fatherName,
+                'Pno' => $request->idNumber,
+                'sodor' => $request->issuePlace,
+                'Mid' => $request->nationalCode,
+                'married' => $request->maritalStatus,
+                'madrak' => $request->education,
+                'field' => $request->field,
+                'job' => $request->job,
+                'image' => uploadFile($request->file('profilePhoto')),
+            ]);
+        }
+
+        if ($request->type == 'teachers'){
+
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.profile_updated'),
+        ], 200);
     }
 
 

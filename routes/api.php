@@ -30,7 +30,7 @@ Route::middleware('SetLan')->group(function (){
             }
         });
         Route::post('setPassword', [UserAuthController::class, 'setPassword']);
-        Route::get('getUser', [UserAuthController::class, 'getUser']);
+        Route::get('getUser', [UserAuthController::class, 'getUser'])->name('getUser');
 
 
         //students

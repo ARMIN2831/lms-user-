@@ -14,12 +14,12 @@ if (!function_exists('uploadFile')) {
     function uploadFile($file)
     {
         $filename = uniqid() . '_' . hash_file('md5', $file) . '.' . $file->getClientOriginalExtension();
-        $uploadPath = base_path('/public/api.localhost/uploads');
+        $uploadPath = base_path('/public/storage/uploads');
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
         $file->move($uploadPath, $filename);
-        return 'localhost:8000/' . $filename;
+        return 'http://127.0.0.1:8000/' . $filename;
     }
 }
 

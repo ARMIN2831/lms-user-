@@ -15,6 +15,52 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('app/icons/icon-192x192.png') }}">
     <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
+    <style>
+        /* استایل‌های toast notification */
+        .toast-alert-container {
+            pointer-events: none;
+        }
+
+        .toast-alert {
+            pointer-events: auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+        }
+
+        .toast-close-btn {
+            transition: all 0.2s ease;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .toast-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: rotate(90deg);
+        }
+
+        /* انیمیشن‌های toast */
+        @keyframes toastSlideIn {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastSlideOut {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body class="theme-light" data-highlight="highlight-red">
     <div id="preloader" class="preloader-hide"><div class="spinner-border color-highlight" role="status"></div></div>

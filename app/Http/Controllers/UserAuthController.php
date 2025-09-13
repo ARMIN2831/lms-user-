@@ -123,22 +123,11 @@ class UserAuthController extends Controller
 
     public function getUser(Request $request)
     {
-        if ($request->current_user_type == "patient"){
-            $user = $request->user()->load(['country']);
-            $user->dest_currency_value = null;
-            if (isset($user->dest_currency_id) and $user->dest_currency_id) {
-                $user->dest_currency_value = changeUserCurrency($user->currency_id,$user->dest_currency_id,$user->wallet);
-            }
-        }else{
-            $user = $request->user();
-        }
-
-        $userType = $request->current_user_type;
-
+        $user = $request->user();
+        if ($user->user_type_id == 2) $user = $user->load('student');
         return response()->json([
             'message' => 'success',
             'user' => $user,
-            'user_type' => $userType
         ]);
     }
 

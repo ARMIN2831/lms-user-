@@ -182,6 +182,96 @@ function logout() {
     window.location.href = '/login';
 }
 
+
+function showToastAlert(message = 'یک خطای غیرمنتظره رخ داده است', type = 'error', duration = 3000) {
+    // ایجاد المان‌های toast
+    const toastContainer = document.createElement('div');
+    toastContainer.className = `toast-alert-container fixed top-4 left-4 right-4 z-50 flex justify-center`;
+
+    const toast = document.createElement('div');
+    toast.className = `toast-alert bg-white shadow-lg rounded-lg p-4 max-w-md w-full border-l-4 ${
+        type === 'error' ? 'border-red-500' :
+            type === 'success' ? 'border-green-500' :
+                'border-blue-500'
+    } transform -translate-y-full opacity-0 transition-all duration-500`;
+
+    toast.innerHTML = `
+        <div class="flex items-start justify-between">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 mr-2 ${
+        type === 'error' ? 'text-red-500' :
+            type === 'success' ? 'text-green-500' :
+                'text-blue-500'
+    }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    ${
+        type === 'error' ?
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>' :
+            type === 'success' ?
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>' :
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+    }
+                </svg>
+                <p class="text-gray-800 text-sm">${message}</p>
+            </div>
+            <button class="toast-close-btn text-gray-400 hover:text-gray-600 transition-colors duration-200 ml-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    `;
+
+    toastContainer.appendChild(toast);
+    document.body.appendChild(toastContainer);
+
+    // انیمیشن نمایش
+    setTimeout(() => {
+        toast.classList.remove('-translate-y-full', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+    }, 10);
+
+    // مدیریت کلیک روی دکمه بستن
+    const closeBtn = toast.querySelector('.toast-close-btn');
+    closeBtn.onclick = function() {
+        hideToast(toast, toastContainer);
+    };
+
+    // بسته شدن خودکار بعد از مدت مشخص
+    const timeoutId = setTimeout(() => {
+        hideToast(toast, toastContainer);
+    }, duration);
+
+    // توقف تایمر وقتی موس روی toast است
+    toast.addEventListener('mouseenter', () => {
+        clearTimeout(timeoutId);
+    });
+
+    // ادامه تایمر وقتی موس از toast خارج می‌شود
+    toast.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+            hideToast(toast, toastContainer);
+        }, 1000);
+    });
+
+    return {
+        close: function() {
+            hideToast(toast, toastContainer);
+        }
+    };
+}
+
+function hideToast(toast, container) {
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('-translate-y-full', 'opacity-0');
+
+    setTimeout(() => {
+        if (container.parentNode) {
+            document.body.removeChild(container);
+        }
+    }, 500);
+}
+
+
 // export functions for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -194,6 +284,8 @@ if (typeof module !== 'undefined' && module.exports) {
         saveAuthData,
         isLoggedIn,
         getToken,
-        logout
+        logout,
+        showToastAlert,
+        hideToast,
     };
 }

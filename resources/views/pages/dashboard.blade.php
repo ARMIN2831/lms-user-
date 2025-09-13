@@ -43,34 +43,67 @@
             0%, 100% { opacity: 1 }
             50% { opacity: 0.5 }
         }
+        .skeleton-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* انیمیشن fade-in برای محتوای واقعی */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
     </style>
 
     <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-6">
         <!-- هدر کاربر -->
+        <!-- هدر کاربر با اسکلتون لودینگ -->
         <div class="flex flex-col md:flex-row items-center justify-between bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
             <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
                 <div class="relative">
-                    <div class="w-16 h-16 rounded-full bg-purple-100 border-4 border-white shadow-lg overflow-hidden">
-                        <img id="avatar-preview" src="https://randomuser.me/api/portraits/men/32.jpg" alt="پروفایل کاربر" class="w-full h-full object-cover">
+                    <div class="w-16 h-16 rounded-full bg-purple-100 border-4 border-white shadow-lg overflow-hidden skeleton-loading animate-pulse">
+                        <img id="avatar-preview" src="" alt="پروفایل کاربر" class="w-full h-full object-cover opacity-0">
                     </div>
-                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></span>
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white skeleton-loading animate-pulse"></span>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800">محمد رضایی</h1>
+                    <h1 class="text-xl font-bold text-gray-800 skeleton-loading animate-pulse h-6 w-32 mb-2 rounded"></h1>
                     <div class="flex items-center mt-1">
-                        <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">سطح متوسط</span>
+                        <span id="level_show" class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full skeleton-loading animate-pulse h-5 w-20"></span>
                     </div>
                 </div>
             </div>
 
             <div class="flex items-center space-x-3 space-x-reverse">
-                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition skeleton-loading animate-pulse h-10 w-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                 </button>
-                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition skeleton-loading animate-pulse h-10 w-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -517,4 +550,70 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const response = await makeRequest('GET', 'fa', '/api/getUser')
+                .then(data => {
+                    const user = data.user;
+                    const student = user.student;
+                    if (!user || !student) throw new Error('اطلاعات کاربر دریافت نشد');
+                    const userNameElement = document.querySelector('.text-xl.font-bold.text-gray-800');
+                    if (userNameElement && student.name) {
+                        userNameElement.textContent = student.name + ' ' + student.family;
+                        userNameElement.classList.remove('skeleton-loading', 'animate-pulse', 'h-6', 'w-32', 'mb-2', 'rounded');
+                        userNameElement.classList.add('fade-in');
+                    }
+
+                    const avatarElement = document.getElementById('avatar-preview');
+                    const avatarContainer = avatarElement.parentElement;
+                    if (avatarElement) {
+                        if (student.image) {
+                            let imageUrl = student.image;
+                            if (!imageUrl.startsWith('http')) {
+                                imageUrl = window.location.origin + '/' + imageUrl;
+                            }
+                            avatarElement.src = imageUrl;
+                        }
+                        avatarElement.classList.remove('opacity-0');
+                        avatarElement.classList.add('fade-in');
+                        avatarContainer.classList.remove('skeleton-loading', 'animate-pulse');
+                    }
+
+                    const skeletonElements = document.querySelectorAll('.skeleton-loading');
+                    skeletonElements.forEach(element => {
+                        element.classList.remove('skeleton-loading', 'animate-pulse');
+                        element.classList.remove('h-6', 'w-32', 'h-5', 'w-20', 'h-10', 'w-10', 'rounded');
+
+                        const svgElements = element.querySelectorAll('svg');
+                        svgElements.forEach(svg => {
+                            svg.classList.remove('opacity-0');
+                        });
+
+                        if (element.tagName === 'BUTTON' || element.tagName === 'SPAN') {
+                            element.classList.add('fade-in');
+                        }
+                    });
+
+                    const userLevelElement = document.getElementById('level_show');
+                    if (userLevelElement) {
+                        userLevelElement.textContent = student.madrak || 'سطح متوسط';
+                        userLevelElement.classList.remove('skeleton-loading', 'animate-pulse', 'h-5', 'w-20');
+                        userLevelElement.classList.add('fade-in');
+                    }
+                })
+                .catch(err => {
+                    let errorMessage = 'خطا در دریافت اطلاعات کاربر';
+                    if (err.response && err.response.data) {
+                        if (err.response.data.message) errorMessage = err.response.data.message;
+                         else if (err.response.data.errors) errorMessage = Object.values(err.response.data.errors)[0][0];
+                    } else if (err.message) errorMessage = err.message;
+                    showToastAlert(errorMessage,'error',3000);
+                })
+                .finally(() => {
+
+                });
+        });
+
+    </script>
 </x-layouts.app>

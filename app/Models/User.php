@@ -63,4 +63,10 @@ class User extends Authenticatable
 
         return new NewAccessToken($token, $token->getKey() . '|' . $plainTextToken);
     }
+
+
+    public function student()
+    {
+        return $this->hasOne(Student::class,'users_id');
+    }
 }

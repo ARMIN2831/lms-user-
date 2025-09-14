@@ -79,15 +79,15 @@
                         </div>
                     </div>
 
-                    <p id="course_count" class="text-sm text-gray-600 mb-3 user_courses_loading skeleton-loading animate-pulse"></p>
+                    <p id="course_count" class="text-sm text-gray-600 mb-3 user_cards_loading skeleton-loading animate-pulse"></p>
 
                     <div class="mt-auto">
-                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2 user_courses_loading skeleton-loading animate-pulse">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2 user_cards_loading skeleton-loading animate-pulse">
                             <span>پیشرفت کلی</span>
                             <span id="course_percent"></span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="course_progress" class="h-2.5 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-progress user_courses_loading skeleton-loading animate-pulse"></div>
+                            <div id="course_progress" class="h-2.5 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-progress user_cards_loading skeleton-loading animate-pulse"></div>
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@
                         </div>
                     </div>
 
-                    <p class="text-sm text-gray-600 mb-3">۲ پرداخت معوق دارید</p>
+                    <p id="payment_count" class="text-sm text-gray-600 mb-3 user_cards_loading skeleton-loading animate-pulse"></p>
 
                     <div class="mt-auto">
                         <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
@@ -176,15 +176,16 @@
                             <span class="font-bold text-red-600">۱۵ مرداد</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="h-2.5 bg-gradient-to-r from-red-400 to-red-600 rounded-full animate-pulse" style="width: 40%"></div>
+                            <div class="h-2.5 bg-gradient-to-r from-red-400 to-red-600 rounded-full" style="width: 40%"></div>
                         </div>
                     </div>
 
-                    <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center">
+                    <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center user_cards_loading skeleton-loading animate-pulse">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
-                        ۲ اخطار
+                        <span id="payment_alert"></span>
+
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 to-red-600 animate-pulse"></div>
                 </div>
@@ -192,20 +193,20 @@
         </div>
 
         <!-- اسلایدر اعلانات -->
-        <div class="mb-6 relative">
+        <!-- اسلایدر اعلانات -->
+        <div class="mb-6 relative user_cards_loading skeleton-loading animate-pulse" id="news-container">
             <div class="flex overflow-x-auto slide space-x-4 space-x-reverse p-1 hide-scrollbar" x-data="{ currentIndex: 0 }">
+                <!-- اسکلتون لودینگ برای اسلایدر -->
                 <div class="slide-item">
                     <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 border border-purple-100 shadow-xs">
                         <div class="flex items-start space-x-3 space-x-reverse">
                             <div class="bg-purple-100 text-purple-600 p-2 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                                </svg>
+                                <div class="h-5 w-5 bg-purple-300 rounded"></div>
                             </div>
-                            <div>
-                                <h3 class="font-medium text-gray-800 mb-1">کارگاه تخصصی نوازندگی</h3>
-                                <p class="text-sm text-gray-600">۲۰ مرداد - ساعت ۱۸:۰۰</p>
-                                <button class="mt-2 text-xs bg-white border border-purple-200 text-purple-600 px-3 py-1 rounded-full hover:bg-purple-50 transition">جزئیات بیشتر</button>
+                            <div class="flex-1">
+                                <div class="h-5 bg-gray-300 rounded mb-2 w-3/4"></div>
+                                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                                <div class="h-6 bg-gray-200 rounded mt-2 w-1/3"></div>
                             </div>
                         </div>
                     </div>
@@ -214,14 +215,12 @@
                     <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-100 shadow-xs">
                         <div class="flex items-start space-x-3 space-x-reverse">
                             <div class="bg-blue-100 text-blue-600 p-2 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <div class="h-5 w-5 bg-blue-300 rounded"></div>
                             </div>
-                            <div>
-                                <h3 class="font-medium text-gray-800 mb-1">تغییر ساعت کلاس‌ها</h3>
-                                <p class="text-sm text-gray-600">کلاس‌های چهارشنبه از ساعت ۱۶</p>
-                                <button class="mt-2 text-xs bg-white border border-blue-200 text-blue-600 px-3 py-1 rounded-full hover:bg-blue-50 transition">مشاهده برنامه</button>
+                            <div class="flex-1">
+                                <div class="h-5 bg-gray-300 rounded mb-2 w-3/4"></div>
+                                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                                <div class="h-6 bg-gray-200 rounded mt-2 w-1/3"></div>
                             </div>
                         </div>
                     </div>
@@ -229,8 +228,8 @@
             </div>
             <!-- دکمه‌های ناوگیشن اسلایدر -->
             <div class="flex justify-center space-x-2 space-x-reverse mt-3">
-                <button class="w-2 h-2 rounded-full bg-purple-300"></button>
-                <button class="w-2 h-2 rounded-full bg-blue-300"></button>
+                <div class="w-2 h-2 rounded-full bg-purple-300"></div>
+                <div class="w-2 h-2 rounded-full bg-blue-300"></div>
             </div>
         </div>
 
@@ -504,7 +503,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
-            const response = await makeRequest('GET', 'fa', '{{ route('getUser') }}')
+            const UserRequest = await makeRequest('GET', 'fa', '{{ route('getUser') }}')
                 .then(data => {
                     const user = data.user;
                     const student = user.student;
@@ -533,23 +532,89 @@
                     hideSkeleton('user_information_loading');
                 });
 
-            const response2 = await makeRequest('GET', 'fa', '{{ route('getCourses') }}')
+            const CardsRequest = await makeRequest('GET', 'fa', '{{ route('getCardsData') }}')
                 .then(data => {
-                    const courses = data.data;
-                    if (!courses) throw new Error('اطلاعات دوره ها دریافت نشد');
+                    const cardsData = data.data;
+                    if (!cardsData) throw new Error('اطلاعات دوره ها دریافت نشد');
+
                     const courseCount = document.getElementById('course_count');
                     const coursePercent = document.getElementById('course_percent');
                     const courseProgress = document.getElementById('course_progress');
 
-                    courseCount.textContent = courses.courseCount + ' دوره فعال دارید';
-                    coursePercent.textContent = courses.coursePercent + '%';
-                    courseProgress.style.setProperty('--progress-width', courses.coursePercent + '%');
+                    courseCount.textContent = cardsData.courseCount + ' دوره فعال دارید';
+                    coursePercent.textContent = cardsData.coursePercent + '%';
+                    courseProgress.style.setProperty('width', cardsData.coursePercent + '%');
+
+                    const paymentCount = document.getElementById('payment_count');
+                    const paymentAlert = document.getElementById('payment_alert');
+
+                    // پردازش وضعیت پرداخت
+                    if (cardsData.paymentCount < 0) {
+                        const absoluteCount = Math.abs(cardsData.paymentCount);
+                        paymentCount.textContent = absoluteCount + ' پرداخت معوق دارید';
+                        paymentAlert.textContent = absoluteCount + ' اخطار';
+                        //paymentAlert.className = 'absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center';
+                    } else if (cardsData.paymentCount > 0) {
+                        paymentCount.textContent = cardsData.paymentCount + ' پرداخت پیش‌رو دارید';
+                        paymentAlert.textContent = 'پیش‌پرداخت';
+                        //paymentAlert.className = 'absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center';
+                    } else {
+                        paymentCount.textContent = 'هیچ پرداخت معوقی ندارید';
+                        paymentAlert.textContent = 'به روز';
+                        //paymentAlert.className = 'absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center';
+                    }
+
+
+                    // پر کردن اسلایدر اعلانات
+                    const newsContainer = document.getElementById('news-container');
+
+                    if (cardsData.news && cardsData.news.length > 0) {
+                        newsContainer.innerHTML = `
+                <div class="flex overflow-x-auto slide space-x-4 space-x-reverse p-1 hide-scrollbar" x-data="{ currentIndex: 0 }" id="news-slider"></div>
+                <div class="flex justify-center space-x-2 space-x-reverse mt-3" id="news-pagination"></div>`;
+
+                        const newsSlider = document.getElementById('news-slider');
+                        const newsPagination = document.getElementById('news-pagination');
+
+                        cardsData.news.forEach((newsItem, index) => {
+                            const newsDate = new Date(newsItem.date * 1000);
+                            const formattedDate = newsDate.toLocaleDateString('fa-IR');
+                            const slideItem = document.createElement('div');
+                            slideItem.className = 'slide-item';
+                            slideItem.innerHTML = `
+                    <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 border border-purple-100 shadow-xs">
+                        <div class="flex items-start space-x-3 space-x-reverse">
+                            <div class="bg-purple-100 text-purple-600 p-2 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-1">${newsItem.title}</h3>
+                                <p class="text-sm text-gray-600">${formattedDate}</p>
+                                <button class="mt-2 text-xs bg-white border border-purple-200 text-purple-600 px-3 py-1 rounded-full hover:bg-purple-50 transition">جزئیات بیشتر</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                            newsSlider.appendChild(slideItem);
+                            const paginationButton = document.createElement('button');
+                            paginationButton.className = `w-2 h-2 rounded-full ${index === 0 ? 'bg-purple-500' : 'bg-purple-300'}`;
+                            paginationButton.addEventListener('click', () => {
+                                newsSlider.scrollTo({
+                                    left: index * newsSlider.offsetWidth,
+                                    behavior: 'smooth'
+                                });
+                            });
+                            newsPagination.appendChild(paginationButton);
+                        });
+                    }
                 })
                 .catch(err => {
                     showToastAlert(err,'error',3000);
                 })
                 .finally(() => {
-                    hideSkeleton('user_courses_loading');
+                    hideSkeleton('user_cards_loading');
                 });
         });
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ Route::middleware('SetLan')->group(function (){
 
         //students
         Route::middleware('CheckUserType:students')->prefix('students')->group(function () {
-
+            Route::get('getCourses', [HomeController::class, 'getCourses'])->name('getCourses');
         });
 
 

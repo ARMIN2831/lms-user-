@@ -183,7 +183,14 @@ function logout() {
 }
 
 
-function showToastAlert(message = 'یک خطای غیرمنتظره رخ داده است', type = 'error', duration = 3000) {
+function showToastAlert(err, type = 'error', duration = 3000) {
+
+    let message = 'خطا در دریافت اطلاعات کاربر';
+    if (err.response && err.response.data) {
+        if (err.response.data.message) message = err.response.data.message;
+        else if (err.response.data.errors) message = Object.values(err.response.data.errors)[0][0];
+    } else if (err.message) message = err.message;
+
     // ایجاد المان‌های toast
     const toastContainer = document.createElement('div');
     toastContainer.className = `toast-alert-container fixed top-4 left-4 right-4 z-50 flex justify-center`;
@@ -271,6 +278,22 @@ function hideToast(toast, container) {
     }, 500);
 }
 
+function hideSkeleton(CName){
+    const skeletonElements = document.querySelectorAll('.'+CName);
+    skeletonElements.forEach(element => {
+        element.classList.remove('skeleton-loading', 'animate-pulse');
+        element.classList.remove('h-6', 'w-32', 'h-5', 'w-20', 'h-10', 'w-10', 'rounded');
+
+        const svgElements = element.querySelectorAll('svg');
+        svgElements.forEach(svg => {
+            svg.classList.remove('opacity-0');
+        });
+
+        if (element.tagName === 'BUTTON' || element.tagName === 'SPAN' || element.tagName === 'IMG') {
+            element.classList.add('fade-in');
+        }
+    });
+}
 
 // export functions for use in other files
 if (typeof module !== 'undefined' && module.exports) {
@@ -287,5 +310,6 @@ if (typeof module !== 'undefined' && module.exports) {
         logout,
         showToastAlert,
         hideToast,
+        hideSkeleton,
     };
 }

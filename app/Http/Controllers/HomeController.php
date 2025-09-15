@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attend;
 use App\Models\Information;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -30,6 +31,38 @@ class HomeController extends Controller
                 'coursePercent' => $percent,
                 'paymentCount' => $paymentCount,
                 'news' => $news,
+            ],
+        ]);
+    }
+
+
+    public function getAttends(Request $request)
+    {
+        $user = $request->user()->load('student');
+
+        $upcomingAttends = Attend::where('students_id', $user->student->id)
+            ->with('course.title')
+            ->where('date', '>=', time())
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $lastPastAttend = Attend::where('students_id', $user->student->id)
+            ->with('course.teacher','status')
+            ->where('date', '<', time())
+            ->orderBy('date', 'desc')
+            ->first();
+
+        $comments = Attend::where('students_id', $user->student->id)
+            ->whereNotNull('comment')
+            ->where('readComment', 0)
+            ->get();
+
+        return response()->json([
+            'message' => 'success',
+            'data' => [
+                'upcoming_attends' => $upcomingAttends,
+                'last_past_attend' => $lastPastAttend,
+                'comments' => $comments,
             ],
         ]);
     }

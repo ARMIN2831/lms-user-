@@ -30,7 +30,6 @@
 
     <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-6">
         <!-- هدر کاربر -->
-        <!-- هدر کاربر با اسکلتون لودینگ -->
         <div class="flex flex-col md:flex-row items-center justify-between bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
             <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
                 <div class="relative">
@@ -193,7 +192,6 @@
         </div>
 
         <!-- اسلایدر اعلانات -->
-        <!-- اسلایدر اعلانات -->
         <div class="mb-6 relative user_cards_loading skeleton-loading animate-pulse" id="news-container">
             <div class="flex overflow-x-auto slide space-x-4 space-x-reverse p-1 hide-scrollbar" x-data="{ currentIndex: 0 }">
                 <!-- اسکلتون لودینگ برای اسلایدر -->
@@ -283,56 +281,27 @@
                 </div>
 
                 <!-- آخرین کلاس - نسخه بهینه‌شده -->
-                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">آخرین کلاس شما</h3>
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 user_attends_loading skeleton-loading animate-pulse" id="last-class-container">
+                    <div class="h-6 bg-gray-300 rounded w-1/4 mb-4"></div>
                     <div class="flex flex-col md:flex-row items-start gap-4">
                         <div class="w-full md:w-1/3 flex justify-center">
-                            <div class="aspect-w-16 aspect-h-9 w-full max-w-xs bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg overflow-hidden flex items-center justify-center text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                </svg>
-                            </div>
+                            <div class="aspect-w-16 aspect-h-9 w-full max-w-xs bg-gray-300 rounded-lg overflow-hidden"></div>
                         </div>
                         <div class="w-full md:w-2/3 space-y-3">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <h4 class="font-medium text-gray-900 text-sm sm:text-base">تئوری موسیقی - جلسه ۵</h4>
-                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full whitespace-nowrap">تکمیل شده</span>
+                                <div class="h-6 bg-gray-300 rounded w-3/4"></div>
+                                <div class="h-6 bg-gray-200 rounded w-1/4"></div>
                             </div>
-
-                            <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
-                                <span class="text-gray-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    استاد علی محمدی
-                                </span>
-                                <span class="text-gray-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    ۲ مرداد
-                                </span>
-                                <span class="text-gray-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    ۹۰ دقیقه
-                                </span>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
                             </div>
-
-                            <div class="flex items-center">
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    <span class="font-bold text-gray-800 text-sm sm:text-base mr-1">4.5</span>
-                                </div>
-                                <span class="text-gray-500 text-xs mr-1">(از ۵)</span>
-                            </div>
-
-                            <div class="bg-purple-50 border border-purple-100 rounded-lg p-3">
-                                <p class="text-gray-800 font-medium mb-1 text-sm sm:text-base">نظر استاد:</p>
-                                <p class="text-gray-600 text-xs sm:text-sm leading-relaxed">پیشرفت خوبی داشتید. لطفا روی تمرین‌های عملی بیشتر کار کنید. تمرین جدیدی در پنل شما قرار دادم.</p>
+                            <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+                            <div class="bg-gray-100 border border-gray-200 rounded-lg p-3">
+                                <div class="h-4 bg-gray-200 rounded mb-2 w-1/3"></div>
+                                <div class="h-3 bg-gray-200 rounded w-full"></div>
+                                <div class="h-3 bg-gray-200 rounded w-2/3 mt-1"></div>
                             </div>
                         </div>
                     </div>
@@ -342,161 +311,82 @@
             <!-- ستون سمت راست -->
             <div class="space-y-5">
                 <!-- کلاس‌های رزرو شده - آکاردئون -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" x-data="{ open: true }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between p-4 pb-0 focus:outline-none">
-                        <div class="flex items-center">
-                            <h3 class="text-lg font-semibold text-gray-800">کلاس‌های بعدی</h3>
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full mr-2">۳</span>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden user_attends_loading skeleton-loading animate-pulse" id="upcoming-classes-container">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="h-6 bg-gray-300 rounded w-1/4"></div>
+                            <div class="h-5 bg-gray-200 rounded w-6"></div>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="px-4 pb-2">
-                        <button class="mt-2 text-xs bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-full transition flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            درخواست کنسلی
-                        </button>
-                    </div>
-
-
-                    <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
-                        <div class="space-y-3">
+                        <div class="px-4 pb-2">
+                            <div class="h-8 bg-gray-200 rounded w-32"></div>
+                        </div>
+                        <div class="space-y-3 max-h-64 overflow-y-auto" id="classes-list-container">
+                            <!-- اسکلتون برای کلاس‌ها -->
                             <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
                                 <div class="flex items-center space-x-3 space-x-reverse min-w-0">
-                                    <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                        </svg>
+                                    <div class="bg-blue-100 p-1.5 rounded-lg">
+                                        <div class="h-5 w-5 bg-blue-300 rounded"></div>
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="font-medium text-gray-800 text-sm sm:text-base truncate">آموزش گیتار</p>
-                                        <p class="text-xs text-gray-600 truncate">۱۰ مرداد - ۱۸:۰۰</p>
+                                        <div class="h-5 bg-gray-300 rounded mb-2 w-32"></div>
+                                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                                     </div>
                                 </div>
-                                <button class="text-red-500 hover:text-red-700 p-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
+                                <div class="h-4 w-4 bg-gray-300 rounded"></div>
                             </div>
-
                             <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
                                 <div class="flex items-center space-x-3 space-x-reverse min-w-0">
-                                    <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                        </svg>
+                                    <div class="bg-blue-100 p-1.5 rounded-lg">
+                                        <div class="h-5 w-5 bg-blue-300 rounded"></div>
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="font-medium text-gray-800 text-sm sm:text-base truncate">آواز کلاسیک</p>
-                                        <p class="text-xs text-gray-600 truncate">۱۲ مرداد - ۱۶:۰۰</p>
+                                        <div class="h-5 bg-gray-300 rounded mb-2 w-32"></div>
+                                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                                     </div>
                                 </div>
-                                <button class="text-red-500 hover:text-red-700 p-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
-                                <div class="flex items-center space-x-3 space-x-reverse min-w-0">
-                                    <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                        </svg>
-                                    </div>
-                                    <div class="min-w-0">
-                                        <p class="font-medium text-gray-800 text-sm sm:text-base truncate">سلفژ</p>
-                                        <p class="text-xs text-gray-600 truncate">۱۵ مرداد - ۱۷:۳۰</p>
-                                    </div>
-                                </div>
-                                <button class="text-red-500 hover:text-red-700 p-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
+                                <div class="h-4 w-4 bg-gray-300 rounded"></div>
                             </div>
                         </div>
-
-                        <button class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white text-sm sm:text-base py-2 px-4 rounded-lg transition-all shadow-sm hover:shadow-md">
-                            رزرو کلاس جدید
-                        </button>
+                        <div class="mt-4">
+                            <div class="h-10 bg-gray-300 rounded w-full"></div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- پیام‌های جدید - آکاردئون -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" x-data="{ open: true }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between p-4 focus:outline-none">
-                        <div class="flex items-center">
-                            <h3 class="text-lg font-semibold text-gray-800">پیام‌های جدید</h3>
-                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full mr-2">۲</span>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden user_attends_loading skeleton-loading animate-pulse" id="comments-container">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="h-6 bg-gray-300 rounded w-1/4"></div>
+                            <div class="h-5 bg-gray-200 rounded w-6"></div>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-
-                    <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
                         <div class="space-y-3">
-                            <a href="#" class="flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                                <div class="bg-purple-100 text-purple-600 p-1.5 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
+                            <!-- اسکلتون برای پیام‌ها -->
+                            <div class="flex items-start space-x-3 space-x-reverse p-2">
+                                <div class="bg-gray-200 p-1.5 rounded-lg">
+                                    <div class="h-5 w-5 bg-gray-300 rounded"></div>
                                 </div>
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <p class="font-medium text-gray-800 text-sm sm:text-base truncate">استاد احمدی</p>
-                                        <span class="text-2xs text-gray-400 whitespace-nowrap">۲ روز پیش</span>
-                                    </div>
-                                    <p class="text-gray-600 text-xs sm:text-sm truncate">تمرین جدیدی برای شما ارسال کردم...</p>
+                                <div class="flex-1">
+                                    <div class="h-5 bg-gray-300 rounded mb-2 w-3/4"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-1/2"></div>
                                 </div>
-                            </a>
-
-                            <a href="#" class="flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                                <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
+                            </div>
+                            <div class="flex items-start space-x-3 space-x-reverse p-2">
+                                <div class="bg-gray-200 p-1.5 rounded-lg">
+                                    <div class="h-5 w-5 bg-gray-300 rounded"></div>
                                 </div>
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <p class="font-medium text-gray-800 text-sm sm:text-base truncate">پشتیبانی آموزشگاه</p>
-                                        <span class="text-2xs text-gray-400 whitespace-nowrap">۱ هفته پیش</span>
-                                    </div>
-                                    <p class="text-gray-600 text-xs sm:text-sm truncate">پرداخت شما با موفقیت ثبت شد...</p>
+                                <div class="flex-1">
+                                    <div class="h-5 bg-gray-300 rounded mb-2 w-3/4"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-1/2"></div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-
-                        <a href="#" class="w-full mt-4 inline-block text-center border border-purple-200 text-purple-600 hover:bg-purple-50 text-sm sm:text-base py-2 px-4 rounded-lg transition">
-                            مشاهده همه پیام‌ها
-                        </a>
+                        <div class="mt-4">
+                            <div class="h-10 bg-gray-200 rounded w-full"></div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- تابلو اعلانات -->
-                {{--<div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">اعلانات آموزشگاه</h3>
-
-                    <div class="space-y-3">
-                        <a href="#" class="block bg-yellow-50 border border-yellow-100 rounded-lg p-3 hover:border-yellow-200 transition">
-                            <p class="font-medium text-gray-800 text-sm sm:text-base mb-1">برگزاری کارگاه تخصصی</p>
-                            <p class="text-gray-600 text-xs sm:text-sm">کارگاه تخصصی نوازندگی در تاریخ ۲۰ مرداد برگزار می‌شود.</p>
-                            <p class="text-gray-400 text-2xs mt-2">۲ روز پیش</p>
-                        </a>
-
-                        <a href="#" class="block bg-blue-50 border border-blue-100 rounded-lg p-3 hover:border-blue-200 transition">
-                            <p class="font-medium text-gray-800 text-sm sm:text-base mb-1">تغییر ساعت کلاس‌ها</p>
-                            <p class="text-gray-600 text-xs sm:text-sm">کلاس‌های روزهای چهارشنبه از این پس ساعت ۱۶ برگزار می‌شوند.</p>
-                            <p class="text-gray-400 text-2xs mt-2">۱ هفته پیش</p>
-                        </a>
-                    </div>
-                </div>--}}
             </div>
         </div>
     </div>
@@ -615,6 +505,244 @@
                 })
                 .finally(() => {
                     hideSkeleton('user_cards_loading');
+                });
+
+
+            const AttendRequest = await makeRequest('GET', 'fa', '{{ route('getAttends') }}')
+                .then(data => {
+                    const attendsData = data.data;
+                    if (!attendsData) throw new Error('اطلاعات کلاس‌ها دریافت نشد');
+
+                    // پردازش کلاس‌های آینده
+                    const upcomingClassesContainer = document.getElementById('upcoming-classes-container');
+
+                    // مخفی کردن اسکلتون
+                    hideSkeleton('user_attends_loading');
+
+                    if (attendsData.upcoming_attends && attendsData.upcoming_attends.length > 0) {
+                        // کد قبلی برای نمایش کلاس‌های آینده
+                        upcomingClassesContainer.innerHTML = `
+                <div x-data="{ open: true }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-4 pb-0 focus:outline-none">
+                        <div class="flex items-center">
+                            <h3 class="text-lg font-semibold text-gray-800">کلاس‌های بعدی</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full mr-2">${attendsData.upcoming_attends.length}</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="px-4 pb-2">
+                        <button class="mt-2 text-xs bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-full transition flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            درخواست کنسلی
+                        </button>
+                    </div>
+                    <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
+                        <div class="space-y-3 max-h-64 overflow-y-auto" id="upcoming-classes-list"></div>
+                        <button class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white text-sm sm:text-base py-2 px-4 rounded-lg transition-all shadow-sm hover:shadow-md">
+                            رزرو کلاس جدید
+                        </button>
+                    </div>
+                </div>
+            `;
+
+                        const upcomingClassesList = document.getElementById('upcoming-classes-list');
+
+                        attendsData.upcoming_attends.forEach(attend => {
+                            const classDate = new Date(attend.date * 1000);
+                            const formattedDate = classDate.toLocaleDateString('fa-IR');
+                            const formattedTime = attend.time.substring(0, 5);
+
+                            const classItem = document.createElement('div');
+                            classItem.className = 'flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100';
+                            classItem.innerHTML = `
+                    <div class="flex items-center space-x-3 space-x-reverse min-w-0">
+                        <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="font-medium text-gray-800 text-sm sm:text-base truncate">${attend.course.title.coTitle}</p>
+                            <p class="text-xs text-gray-600 truncate">${formattedDate} - ${formattedTime}</p>
+                        </div>
+                    </div>
+                    <button class="text-red-500 hover:text-red-700 p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h极" />
+                        </svg>
+                    </button>
+                `;
+                            upcomingClassesList.appendChild(classItem);
+                        });
+                    } else {
+                        // نمایش پیام عدم وجود کلاس آینده
+                        upcomingClassesContainer.innerHTML = `
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">کلاس‌های بعدی</h3>
+                    <div class="no-data-message">
+                        <p class="text-gray-600">هیچ کلاس آینده‌ای برای نمایش وجود ندارد</p>
+                    </div>
+                </div>
+            `;
+                    }
+
+                    // پردازش آخرین کلاس گذشته
+                    const lastClassContainer = document.getElementById('last-class-container');
+                    if (attendsData.last_past_attend != null) {
+                        const lastClass = attendsData.last_past_attend;
+                        const classDate = new Date(lastClass.date * 1000);
+                        const formattedDate = classDate.toLocaleDateString('fa-IR');
+                        const formattedTime = lastClass.time.substring(0, 5);
+
+                        const colorMap = {
+                            'default': 'bg-gray-100 text-gray-800 border border-gray-200',
+                            'info': 'bg-blue-100 text-blue-800 border border-blue-200',
+                            'success': 'bg-green-100 text-green-800 border border-green-200',
+                            'danger': 'bg-red-100 text-red-800 border border-red-200',
+                            'warning': 'bg-yellow-100 text-yellow-800 border border-yellow-200',
+                            'primary': 'bg-purple-100 text-purple-800 border border-purple-200',
+                            'secondary': 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                        };
+                        const cleanColor = lastClass.status.sColor.replace('btn-', '');
+                        // تعیین وضعیت کلاس
+                        let statusText = lastClass.status.ststitle;
+                        let statusClass = colorMap[cleanColor];
+
+                        lastClassContainer.innerHTML = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">آخرین کلاس شما</h3>
+                <div class="flex flex-col md:flex-row items-start gap-4">
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="aspect-w-16 aspect-h-9 w-full max-w-xs bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg overflow-hidden flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/s极" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                </svg>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h4 class="font-medium text-gray-900 text-sm sm:text-base">${lastClass.courses_id ? 'کلاس دوره ' + lastClass.courses_id : 'کلاس موسیقی'}</h4>
+                            <span class="${statusClass} text-xs px-2 py-1 rounded-full whitespace-nowrap">${statusText}</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
+                            <span class="text-gray-600 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                ${lastClass.course.teacher.name} ${lastClass.course.teacher.family || 'استاد'}
+                            </span>
+                            <span class="text-gray-600 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V极m8 4V3m-9 8h10M5 21h14a2 2 0 002-2极7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                ${formattedDate}
+                            </span>
+                            <span class="text-gray-600 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 极 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                ${formattedTime} - ${lastClass.duration || 30} دقیقه
+                            </span>
+                        </div>
+                        ${lastClass.grade ? `
+                        <div class="flex items-center">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0极-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                <span class="font-bold text-gray-800 text-sm sm:text-base mr-1">${lastClass.grade}</span>
+                            </div>
+                            <span class="text-gray-500 text-xs mr-1">(از ۵)</span>
+                        </div>
+                        ` : ''}
+                        ${lastClass.comment ? `
+                        <div class="bg-purple-50 border border-purple-100 rounded-lg p-3">
+                            <p class="text-gray-800 font-medium mb-1 text-sm sm:text-base">نظر استاد:</p>
+                            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed">${lastClass.comment}</p>
+                        </div>
+                        ` : '<div class="bg-gray-50 border border-gray-100 rounded-lg p-3"><p class="text-gray-600 text-xs sm:text-sm">هنوز نظری ثبت نشده است</p></div>'}
+                    </div>
+                </div>
+            `;
+                    } else {
+                        // نمایش پیام عدم وجود آخرین کلاس
+                        lastClassContainer.innerHTML = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">آخرین کلاس شما</h3>
+                <div class="no-data-message">
+                    <p class="text-gray-600">هیچ کلاس گذشته‌ای برای نمایش وجود ندارد</p>
+                </div>
+            `;
+                    }
+
+                    // پردازش نظرات جدید
+                    const commentsContainer = document.getElementById('comments-container');
+
+                    if (attendsData.comments && attendsData.comments.length > 0) {
+                        commentsContainer.innerHTML = `
+        <div x-data="{ open: true }">
+            <button @click="open = !open" class="w-full flex items-center justify-between p-4 focus:outline-none">
+                <div class="flex items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">پیام‌های جدید</h3>
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full mr-2">${attendsData.comments.length}</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
+                <div class="space-y-3" id="messages-list"></div>
+                <a href="#" class="w-full mt-4 inline-block text-center border border-purple-200 text-purple-600 hover:bg-purple-50 text-sm sm:text-base py-2 px-4 rounded-lg transition">
+                    مشاهده همه پیام‌ها
+                </a>
+            </div>
+        </div>
+    `;
+
+                        const messagesList = document.getElementById('messages-list');
+
+                        attendsData.comments.forEach(comment => {
+                            const commentDate = new Date(comment.date * 1000);
+                            const formattedDate = commentDate.toLocaleDateString('fa-IR');
+
+                            const messageItem = document.createElement('a');
+                            messageItem.href = '#';
+                            messageItem.className = 'flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
+                            messageItem.innerHTML = `
+            <div class="bg-purple-100 text-purple-600 p-1.5 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between">
+                    <p class="font-medium text-gray-800 text-sm sm:text-base truncate">${comment.teacher_name || 'استاد'}</p>
+                    <span class="text-2xs text-gray-400 whitespace-nowrap">${formattedDate}</span>
+                </div>
+                <p class="text-gray-600 text-xs sm:text-sm truncate">${comment.comment ? comment.comment.substring(0, 50) + '...' : 'نظر جدید'}</p>
+            </div>
+        `;
+                            messagesList.appendChild(messageItem);
+                        });
+                    } else {
+                        // نمایش پیام عدم وجود نظر
+                        commentsContainer.innerHTML = `
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">پیام‌های جدید</h3>
+                    <div class="no-data-message">
+                        <p class="text-gray-600">هیچ پیام جدیدی برای نمایش وجود ندارد</p>
+                    </div>
+                </div>
+            `;
+                    }
+                })
+                .catch(err => {
+                    showToastAlert(err,'error',3000);
+                })
+                .finally(() => {
+                    hideSkeleton('user_attends_loading');
                 });
         });
 

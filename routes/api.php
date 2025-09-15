@@ -33,10 +33,11 @@ Route::middleware('SetLan')->group(function (){
         Route::post('setPassword', [UserAuthController::class, 'setPassword']);
         Route::get('getUser', [UserAuthController::class, 'getUser'])->name('getUser');
 
-
         //students
         Route::middleware('CheckUserType:students')->prefix('students')->group(function () {
             Route::get('getCardsData', [HomeController::class, 'getCardsData'])->name('getCardsData');
+            Route::get('getAttends', [HomeController::class, 'getAttends'])->name('getAttends');
+
         });
 
 

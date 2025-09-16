@@ -384,7 +384,7 @@
                                 </div>
                             </div>
                             <div class="mt-6 flex space-x-3 space-x-reverse">
-                                <a href="/courseDetail/${course.id}" class="flex-1 action-button bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-4 rounded-xl text-center font-medium shadow-md hover:shadow-lg">
+                                <a href="/courseDetail/${courseData.id}" class="flex-1 action-button bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-4 rounded-xl text-center font-medium shadow-md hover:shadow-lg">
                                     جزئیات دوره
                                 </a>
                                 <button class="action-button bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 p-3 rounded-xl shadow-md hover:shadow-lg">

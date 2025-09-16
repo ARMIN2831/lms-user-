@@ -85,12 +85,10 @@ class HomeController extends Controller
     public function getCourseData(Request $request,$id)
     {
         $user = $request->user()->load('student');
-        $studentCourseData = StudentCourse::where('students_id', $user->student->id)->where('id',$id)->with('course.title','course.teacher','attends.status')->first();
+        $studentCourseData = StudentCourse::where('students_id', $user->student->id)->where('id',$id)->with('course.title','course.teacher','attends.status','student')->first();
         return response()->json([
             'message' => 'success',
-            'data' => [
-                'studentCourse' => $studentCourseData,
-            ],
+            'studentCourse' => $studentCourseData,
         ]);
     }
 }

@@ -41,6 +41,14 @@ Route::get('/courseDetail/{id}', function () {
     return view('pages.courseDetail');
 });
 
+Route::get('/courseDetailTest', function () {
+    return view('pages.courseDetailTest');
+});
+
+Route::get('/courseDetailDynamic/{id}', function () {
+    return view('pages.courseDetailDynamic');
+});
+
 Route::get('/payments', function () {
     return view('pages.payments');
 });

@@ -21,4 +21,10 @@ class StudentCourse extends Model
     {
         return $this->hasMany(Attend::class,'students_courses_id');
     }
+
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class,'students_id');
+    }
 }

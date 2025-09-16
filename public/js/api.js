@@ -1,3 +1,4 @@
+const mainFrontServerUrl = "http://tolueacademy.ir";
 async function makeRequest(method, lan, url, data = {}, isFormData = false) {
     const config = {
         method: method,

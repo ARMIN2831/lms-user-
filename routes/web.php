@@ -35,9 +35,9 @@ Route::get('/dashboard', function () {
 });
 Route::get('/course', function () {
     return view('pages.course');
-});
+})->name('course');
 
-Route::get('/courseDetail', function () {
+Route::get('/courseDetail/{id}', function () {
     return view('pages.courseDetail');
 });
 

@@ -66,7 +66,7 @@
         <!-- کارت‌های اصلی دشبورد -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
             <!-- کارت دوره‌ها -->
-            <div class="dashboard-card bg-gradient-to-br from-purple-50 via-white to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-purple-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <a href="{{ route('course') }}" class="dashboard-card bg-gradient-to-br from-purple-50 via-white to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-purple-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div class="absolute inset-0 bg-purple-500 opacity-5"></div>
                 <div class="relative p-5 flex flex-col h-full">
                     <div class="flex items-center justify-between mb-4">
@@ -92,7 +92,7 @@
 
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
                 </div>
-            </div>
+            </a>
 
             <!-- کارت آزمون‌ها (غیرفعال) -->
             <div class="dashboard-card bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100 transform transition-all duration-300 opacity-90 hover:opacity-100">

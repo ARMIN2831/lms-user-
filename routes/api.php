@@ -37,6 +37,8 @@ Route::middleware('SetLan')->group(function (){
         Route::middleware('CheckUserType:students')->prefix('students')->group(function () {
             Route::get('getCardsData', [HomeController::class, 'getCardsData'])->name('getCardsData');
             Route::get('getAttends', [HomeController::class, 'getAttends'])->name('getAttends');
+            Route::get('getCourses', [HomeController::class, 'getCourses'])->name('getCourses');
+            Route::get('getCourseData/{id}', [HomeController::class, 'getCourseData'])->name('getCourseData');
 
         });
 

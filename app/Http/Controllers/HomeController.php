@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attend;
 use App\Models\Information;
 use App\Models\Student;
+use App\Models\StudentCourse;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -63,6 +64,32 @@ class HomeController extends Controller
                 'upcoming_attends' => $upcomingAttends,
                 'last_past_attend' => $lastPastAttend,
                 'comments' => $comments,
+            ],
+        ]);
+    }
+
+
+    public function getCourses(Request $request)
+    {
+        $user = $request->user()->load('student');
+        $studentCourse = StudentCourse::where('students_id', $user->student->id)->with('course.title','course.teacher','attends.status')->get();
+        return response()->json([
+            'message' => 'success',
+            'data' => [
+                'studentCourse' => $studentCourse,
+            ],
+        ]);
+    }
+
+
+    public function getCourseData(Request $request,$id)
+    {
+        $user = $request->user()->load('student');
+        $studentCourseData = StudentCourse::where('students_id', $user->student->id)->where('id',$id)->with('course.title','course.teacher','attends.status')->first();
+        return response()->json([
+            'message' => 'success',
+            'data' => [
+                'studentCourse' => $studentCourseData,
             ],
         ]);
     }

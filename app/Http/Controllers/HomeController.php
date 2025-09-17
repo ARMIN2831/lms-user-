@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\studentRequests\UpdateProfileRequest;
 use App\Models\Attend;
 use App\Models\Information;
 use App\Models\Student;
 use App\Models\StudentCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -89,6 +91,72 @@ class HomeController extends Controller
         return response()->json([
             'message' => 'success',
             'studentCourse' => $studentCourseData,
+        ]);
+    }
+
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $request->validated();
+        $user = $request->user();
+        $user->update([
+            'mobile'=> $request->email,
+            'email' => $request->mobile,
+        ]);
+        Student::where('users_id',$user->id)->update([
+            'name' => $request->first_name,
+            'family' => $request->last_name,
+            'father' => $request->father_name,
+            'Pno' => $request->id_number,
+            'sodor' => $request->issue_place,
+            'Mid' => $request->national_code,
+            'married' => $request->marital_status,
+            'madrak' => $request->education,
+            'field' => $request->field,
+            'job' => $request->job,
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.profile_updated'),
+        ]);
+    }
+
+
+    public function uploadProfile(Request $request)
+    {
+        $user = $request->user();
+        deleteUploadedFile($user->student->image);
+        Student::where('users_id',$user->id)->update([
+            'image' => uploadFile($request->file('avatar')),
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.profile_updated'),
+        ]);
+    }
+
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password) || Hash::check($request->new_password, $user->password))
+            return response()->json([
+                'status' => 'error',
+                'message' => trans('messages.password_wrong')
+            ],422);
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.password_changed')
         ]);
     }
 }

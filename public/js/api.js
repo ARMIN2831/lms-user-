@@ -187,14 +187,19 @@ function logout() {
 function showToastAlert(err, type = 'error', duration = 3000) {
 
     let message = 'خطا در دریافت اطلاعات کاربر';
-    if (err.response && err.response.data) {
-        if (err.response.data.message) message = err.response.data.message;
-        else if (err.response.data.errors) message = Object.values(err.response.data.errors)[0][0];
-    } else if (err.message) message = err.message;
+    if (type === 'success'){
+        message = err;
+    }else {
+        if (err.response && err.response.data) {
+            if (err.response.data.message) message = err.response.data.message;
+            else if (err.response.data.errors) message = Object.values(err.response.data.errors)[0][0];
+        } else if (err.message) message = err.message;
+    }
+
 
     // ایجاد المان‌های toast
     const toastContainer = document.createElement('div');
-    toastContainer.className = `toast-alert-container fixed top-4 left-4 right-4 z-50 flex justify-center`;
+    toastContainer.className = `toast-alert-container fixed top-16 left-4 right-4 z-50 flex justify-center`;
 
     const toast = document.createElement('div');
     toast.className = `toast-alert bg-white shadow-lg rounded-lg p-4 max-w-md w-full border-l-4 ${

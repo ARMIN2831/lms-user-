@@ -32,7 +32,8 @@ Route::get('/login', function () {
 });
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
-});
+})->name('dashboard');
+
 Route::get('/course', function () {
     return view('pages.course');
 })->name('course');
@@ -41,21 +42,13 @@ Route::get('/courseDetail/{id}', function () {
     return view('pages.courseDetail');
 });
 
-Route::get('/courseDetailTest', function () {
-    return view('pages.courseDetailTest');
-});
-
-Route::get('/courseDetailDynamic/{id}', function () {
-    return view('pages.courseDetailDynamic');
-});
-
 Route::get('/payments', function () {
     return view('pages.payments');
-});
+})->name('payments');
 
 Route::get('/profile', function () {
     return view('pages.profile');
-});
+})->name('profile');
 
 Route::view('/menu-main', 'menus.menu-main');
 Route::view('/menu-share', 'menus.menu-share');

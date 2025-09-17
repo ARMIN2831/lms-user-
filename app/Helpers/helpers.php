@@ -19,7 +19,7 @@ if (!function_exists('uploadFile')) {
             mkdir($uploadPath, 0755, true);
         }
         $file->move($uploadPath, $filename);
-        return 'http://127.0.0.1:8000/' . $filename;
+        return 'http://127.0.0.1:8000/storage/uploads/' . $filename;
     }
 }
 
@@ -27,10 +27,10 @@ if (!function_exists('uploadFile')) {
 if (!function_exists('deleteUploadedFile')) {
     function deleteUploadedFile($fileUrl)
     {
-        $baseUrl = 'https://api.arabi-ca.com/uploads/';
+        $baseUrl = 'http://127.0.0.1:8000/storage/uploads/';
         if (strpos($fileUrl, $baseUrl) !== 0) return false;
         $relativePath = str_replace($baseUrl, '', $fileUrl);
-        $uploadPath = base_path('../public_html/api.arabi-ca.com/uploads');
+        $uploadPath = base_path('public\storage\uploads');
         $filePath = $uploadPath . '/' . $relativePath;
         if (file_exists($filePath)) return unlink($filePath);
         return false;

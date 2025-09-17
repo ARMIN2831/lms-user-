@@ -52,12 +52,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                 </button>
-                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition user_information_loading skeleton-loading animate-pulse h-10 w-10">
+                <a href="{{ route('profile') }}" class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition user_information_loading skeleton-loading animate-pulse h-10 w-10">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                </button>
+                </a>
             </div>
         </div>
 
@@ -155,7 +155,7 @@
             </div>
 
             <!-- کارت شهریه -->
-            <div class="dashboard-card bg-gradient-to-br from-red-50 via-white to-red-50 rounded-2xl shadow-lg overflow-hidden border border-red-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <a href="{{ route('payments') }}" class="dashboard-card bg-gradient-to-br from-red-50 via-white to-red-50 rounded-2xl shadow-lg overflow-hidden border border-red-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div class="absolute inset-0 bg-red-500 opacity-5"></div>
                 <div class="relative p-5 flex flex-col h-full">
                     <div class="flex items-center justify-between mb-4">
@@ -188,7 +188,7 @@
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 to-red-600 animate-pulse"></div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- اسلایدر اعلانات -->
@@ -617,7 +617,7 @@
                 <div class="flex flex-col md:flex-row items-start gap-4">
                     <div class="w-full md:w-1/3 flex justify-center">
                         <div class="aspect-w-16 aspect-h-9 w-full max-w-xs bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg overflow-hidden flex items-center justify-center text-white">
-                            <svg xmlns="http://www.w3.org/2000/s极" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                                 </svg>
                         </div>
@@ -636,13 +636,13 @@
                             </span>
                             <span class="text-gray-600 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V极m8 4V3m-9 8h10M5 21h14a2 2 0 002-2极7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 ${formattedDate}
                             </span>
                             <span class="text-gray-600 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 极 11-18 0 9 9 0 0118 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 ${formattedTime} - ${lastClass.duration || 30} دقیقه
                             </span>
@@ -651,7 +651,7 @@
                         <div class="flex items-center">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0极-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                     </svg>
                                 <span class="font-bold text-gray-800 text-sm sm:text-base mr-1">${lastClass.grade}</span>
                             </div>

@@ -113,8 +113,8 @@
             <x-shared.header/>
 
 
-            <script src="https://cdn.tailwindcss.com"></script>
-            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+            <script src="{{ asset('js/3.4.17') }}"></script>
+            <script src="{{ asset('js/cdn.min.js') }}" defer></script>
 
 
             {{ $slot }}

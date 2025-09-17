@@ -318,10 +318,14 @@
                     courseCard.innerHTML = `
                         <div class="relative overflow-hidden">
                             <div class="h-48 bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center course-thumbnail">
-                                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-30"></div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="absolute inset-0 ${course.title.coCover ? `` : `bg-[url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover` } bg-center opacity-30"></div>
+                                ${course.title.coCover ?
+                        `<img src="${mainFrontServerUrl+"/"+course.title.coCover}" alt="${course.teacher.name} ${course.teacher.family}" class="w-full h-full object-cover">` :
+                        `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                </svg>
+                                </svg>`
+                    }
+
                             </div>
                             <span class="status-badge absolute top-4 left-4 ${status.class} text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                                 ${status.text}
@@ -334,7 +338,7 @@
                                     <div class="flex items-center mt-3">
                                         <div class="teacher-avatar w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border-2 border-white shadow-md overflow-hidden">
                                             ${course.teacher.image ?
-                        `<img src="${course.teacher.image.startsWith('http') ? course.teacher.image : window.location.origin + '/' + course.teacher.image}" alt="${course.teacher.name} ${course.teacher.family}" class="w-full h-full object-cover">` :
+                        `<img src="${mainFrontServerUrl+"/"+course.teacher.image}" alt="${course.teacher.name} ${course.teacher.family}" class="w-full h-full object-cover">` :
                         `<span class="text-lg font-medium">${course.teacher.name.charAt(0)}${course.teacher.family.charAt(0)}</span>`
                     }
                                         </div>

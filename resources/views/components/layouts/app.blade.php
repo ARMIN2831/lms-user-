@@ -126,7 +126,6 @@
     </div>
 
     <script type="text/javascript" src="{{ asset('scripts/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('scripts/custom.js') }}"></script>
     <p class="offline-message bg-red-dark color-white">شما به اینترنت متصل نیستید</p><p class="online-message bg-green-dark color-white">اتصال به اینترنت برقرار شد</p>
 </body>
 </html>

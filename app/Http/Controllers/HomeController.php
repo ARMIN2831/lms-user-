@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\studentRequests\UpdateProfileRequest;
 use App\Models\Attend;
+use App\Models\Fee;
 use App\Models\Information;
 use App\Models\Student;
 use App\Models\StudentCourse;
+use App\Models\StudentPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -157,6 +159,45 @@ class HomeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => trans('messages.password_changed')
+        ]);
+    }
+
+
+    public function getStudentPayments(Request $request)
+    {
+        $user = $request->user();
+
+        $fee = Fee::where('year',1404)->first();
+        $studentCourses = StudentCourse::with(['course.title','payments' => function($query) use ($user) {
+            $query->where('students_id', $user->student->id);
+        }])->where('students_id', $user->student->id)->get()
+        ->map(function ($studentCourse) use ($user, $fee) {
+            $remainPrice = 0;
+            if ($studentCourse->remain >= 0){
+                $studentCourse->payment_count = $remainPrice;
+                $studentCourse->payment_with_discount = 0;
+            }else{
+                if ($studentCourse->course->courseType_id == 1) {
+                    $fieldName = "fee_" . $studentCourse->perclocko;
+                    if (isset($fee->$fieldName)) {
+                        $remainPrice += $studentCourse->remain * $fee->$fieldName;
+                    }
+                } else if ($studentCourse->course->courseType_id == 2) {
+                    $remainPrice += $studentCourse->remain * $fee->feeg;
+                }
+                $studentCourse->payment_count = $remainPrice * (-1);
+                $studentCourse->payment_with_discount = round((100 - $user->student->discount) * ($remainPrice * (-1)) / 100 , 2);
+            }
+            $studentCourse->total_payed = $studentCourse->payments->sum('pay_amount');
+            $studentCourse->total_payed_count = $studentCourse->payments->sum('count');
+            return $studentCourse;
+        });
+
+
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $studentCourses,
         ]);
     }
 }

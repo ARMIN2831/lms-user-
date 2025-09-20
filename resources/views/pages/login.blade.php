@@ -567,10 +567,10 @@
                         <div class="input-field">
                             <select id="education">
                                 <option value="">مدرک تحصیلی</option>
-                                <option value="diploma">دیپلم</option>
-                                <option value="bachelor">لیسانس</option>
-                                <option value="master">فوق لیسانس</option>
-                                <option value="phd">دکترا</option>
+                                <option value="دیپلم">دیپلم</option>
+                                <option value="لیسانس">لیسانس</option>
+                                <option value="فوق لیسانس">فوق لیسانس</option>
+                                <option value="دکترا">دکترا</option>
                             </select>
                             <i class="input-icon fas fa-graduation-cap"></i>
                             <div class="error-message" id="education-error"></div>

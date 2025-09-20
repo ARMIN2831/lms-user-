@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\UserAuthRequests;
 
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -20,7 +22,8 @@ class CompleteProfileRequest extends FormRequest
         $rules = [
             'type' => 'required|in:students,teachers',
         ];
-
+        $user = User::where('mobile',$this->mobile)->first();
+        if ($user) $student = Student::where('users_id',$user->id)->first();
         if ($this->type === 'students') {
             $rules['mobile'] = 'required|exists:users,mobile';
             $rules['firstName'] = 'required';
@@ -28,7 +31,7 @@ class CompleteProfileRequest extends FormRequest
             $rules['fatherName'] = 'required';
             $rules['idNumber'] = 'required';
             $rules['issuePlace'] = 'required';
-            $rules['nationalCode'] = 'required|unique:'. $this->type .',Mid';
+            $rules['nationalCode'] = 'required|unique:'. $this->type .',Mid,'.$student->id;
             $rules['maritalStatus'] = 'required';
             $rules['education'] = 'required';
             $rules['field'] = 'required';

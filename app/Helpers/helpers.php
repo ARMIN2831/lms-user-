@@ -1,25 +1,20 @@
 <?php
 
-use App\Models\Currency;
-use App\Models\Discount;
-use App\Models\Setting;
 use App\Models\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use Morilog\Jalali\Jalalian;
 
 if (!function_exists('uploadFile')) {
     function uploadFile($file)
     {
         $filename = uniqid() . '_' . hash_file('md5', $file) . '.' . $file->getClientOriginalExtension();
-        $uploadPath = base_path('/public/storage/uploads');
+        $uploadPath = base_path('public_html/uploads');
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
         $file->move($uploadPath, $filename);
-        return 'http://127.0.0.1:8000/storage/uploads/' . $filename;
+        return 'http://app.tolueacademy.ir/uploads/' . $filename;
     }
 }
 
@@ -27,11 +22,13 @@ if (!function_exists('uploadFile')) {
 if (!function_exists('deleteUploadedFile')) {
     function deleteUploadedFile($fileUrl)
     {
-        $baseUrl = 'http://127.0.0.1:8000/storage/uploads/';
+        $baseUrl = 'http://app.tolueacademy.ir/uploads/';
+        //dd(strpos($fileUrl, $baseUrl) !== 0);
         if (strpos($fileUrl, $baseUrl) !== 0) return false;
         $relativePath = str_replace($baseUrl, '', $fileUrl);
-        $uploadPath = base_path('public\storage\uploads');
+        $uploadPath = base_path('public_html/uploads');
         $filePath = $uploadPath . '/' . $relativePath;
+        //dd(file_exists($filePath),$filePath);
         if (file_exists($filePath)) return unlink($filePath);
         return false;
     }

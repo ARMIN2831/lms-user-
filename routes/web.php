@@ -33,6 +33,7 @@ Route::get('/login', function () {
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->name('dashboard');
+Route::get('/', function () { return view('pages.dashboard'); });
 
 Route::get('/course', function () {
     return view('pages.course');

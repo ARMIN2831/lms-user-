@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Global Variables
     let isPWA = true;  // Enables or disables the service worker and PWA
-    let isAJAX = true; // AJAX transitions. Requires local server or server
+    let isAJAX = false; // AJAX transitions. Requires local server or server
     var pwaName = "Appkit"; //Local Storage Names for PWA
     var pwaRemind = 1; //Days to re-remind to add to home
     var pwaNoCache = false; //Requires server and HTTPS/SSL. Will clear cache with each visit
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //Attaching Menu Hider
 		var menuHider = document.getElementsByClassName('menu-hider');
 		if(!menuHider.length){var hider = document.createElement('div'); hider.setAttribute("class", "menu-hider");document.body.insertAdjacentElement('beforebegin', hider);}
-		setTimeout(function() {if(hider.classList.contains('menu-active')){hider.classList.remove('menu-active');}}, 50);
+		setTimeout(function() {if(hider && hider.classList.contains('menu-active')){hider.classList.remove('menu-active');}}, 50);
 
         //Demo function for programtic creation of Menu
         //menu('menu-settings', 'show', 250);
@@ -1632,6 +1632,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const swup = new Swup(options);
             document.addEventListener('swup:pageView',(e) => { init_template(); })
         }
-    } 
+    }
     init_template();
 });

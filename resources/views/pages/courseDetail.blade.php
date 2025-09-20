@@ -1,6 +1,6 @@
 <x-layouts.app title="جلسات دوره">
     <!-- افزودن فونت ایران سنس -->
-    <link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/IRANSans/IRANSans.css">
+    {{--<link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/IRANSans/IRANSans.css">--}}
 
     <!-- استایل سفارشی -->
     <style>

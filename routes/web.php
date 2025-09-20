@@ -8,12 +8,12 @@ Route::get('/start', function () {
     $log = [];
 
     $commands = [
-        'migrate' => 'Database migrated (fresh)',
+        //'migrate' => 'Database migrated (fresh)',
         //'db:seed --class=StartSeeder' => 'Database seeded (StartSeeder)',
         'cache:clear' => 'Cache cleared',
         'route:clear' => 'Route cache cleared',
         'config:clear' => 'Config cache cleared',
-        'view:clear' => 'View cache cleared',
+        'view:clear' => 'View cache clear+ed',
     ];
 
     foreach ($commands as $cmd => $message) {

@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-    <title>اپکیت</title>
+    <title>سامانه اساتید موسیقی</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/bootstrap.rtl.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/custom.css') }}">
@@ -126,6 +126,7 @@
     </div>
 
     <script type="text/javascript" src="{{ asset('scripts/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('scripts/custom.js') }}"></script>
     <p class="offline-message bg-red-dark color-white">شما به اینترنت متصل نیستید</p><p class="online-message bg-green-dark color-white">اتصال به اینترنت برقرار شد</p>
 </body>
-</html>
+</html>z

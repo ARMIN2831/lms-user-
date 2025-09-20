@@ -1,6 +1,6 @@
 <x-layouts.app title="دوره‌های من">
     <!-- افزودن فونت ایران سنس -->
-    <link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/IRANSans/IRANSans.css">
+    {{--<link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/IRANSans/IRANSans.css">--}}
 
     <!-- استایل سفارشی -->
     <style>
@@ -241,7 +241,7 @@
         </div>
 
         <!-- صفحه‌بندی -->
-        <div class="mt-10 flex items-center justify-center space-x-3 space-x-reverse">
+        {{--<div class="mt-10 flex items-center justify-center space-x-3 space-x-reverse">
             <button class="pagination-button w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm hover:shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -255,7 +255,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
             </button>
-        </div>
+        </div>--}}
     </div>
 
     <script>

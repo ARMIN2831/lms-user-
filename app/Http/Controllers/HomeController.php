@@ -200,4 +200,14 @@ class HomeController extends Controller
             'data' => $studentCourses,
         ]);
     }
+
+
+    public function readComment(Request $request,$id)
+    {
+        Attend::where('id', $id)->update(['readComment' => 1]);
+        return response()->json([
+            'status' => 'success',
+            'message' => '',
+        ]);
+    }
 }

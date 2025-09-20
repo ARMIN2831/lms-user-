@@ -4,6 +4,44 @@
 
     <!-- استایل سفارشی -->
     <style>
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .animate-ping {
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        /* یا اگر می‌خواهید انیمیشن مخصوص خودتان را داشته باشید */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+        }
+
+        .notification-dot {
+            position: relative;
+        }
+
+        .notification-dot::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+    <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -535,7 +573,7 @@
                             const sessionNumber = attends.length - index; // شماره جلسه از آخر
 
                             return `
-            <div class="session-card bg-white border border-gray-200 rounded-xl p-5 hover:border-purple-200 hover:shadow-md" onclick="openModal('session-${attend.id}')" data-session-id="${attend.id}">
+            <div class="session-card bg-white border border-gray-200 rounded-xl p-5 hover:border-purple-200 hover:shadow-md" data-session-id="${attend.id}">
                                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div class="flex items-start gap-4">
                                         <div class="bg-${statusClass.color}-100 text-${statusClass.color}-600 rounded-lg p-3 flex items-center justify-center">
@@ -558,12 +596,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center self-start md:self-center">
+                                    <button class="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center self-start md:self-center relative">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            <path stroke-linecap="round"
+stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                         مشاهده جزئیات
+                                    ${attend.readComment === 0 && attend.comment != null ? `<span class="absolute -top-1 -right-1 flex items-center justify-center">
+                                        <span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-red-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                                    </span>` : ''}
+
                                     </button>
                                 </div>
                             </div>
@@ -770,7 +814,7 @@
                 return statusClasses[statusId] || statusClasses[3];
             }
             // توابع مدیریت مودال در scope جهانی
-            function openModal(sessionId) {
+            async function openModal(sessionId) {
                 // پیدا کردن sessionId واقعی از رشته
                 const actualSessionId = sessionId.replace('session-', '');
 
@@ -778,23 +822,23 @@
                 const sessionData = attends.find(a => a.id == actualSessionId);
 
                 if (!sessionData) {
-                    showToastAlert('جلسه مورد نظر یافت نشد', 'error', 3000);
+                    showToastAlert({message: 'جلسه مورد نظر یافت نشد'}, 'error', 3000);
                     return;
                 }
-
-                // پر کردن مودال با اطلاعات جلسه
-                fillModalWithSessionData(sessionData);
-
-                // نمایش مودال
-                document.getElementById('sessionModal').classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal() {
-                const modal = document.getElementById('sessionModal');
-                if (modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
+                if(sessionData.readComment === 0 && sessionData.comment != null){
+                    const ReadCommentRequest = await makeRequest('POST', 'fa', 'http://localhost:8000/api/students/readComment/'+actualSessionId)
+                        .then(data => {
+                            fillModalWithSessionData(sessionData);
+                            document.getElementById('sessionModal').classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        })
+                        .catch(err => {
+                            showToastAlert({message: 'مشکلی پیش امد,لطفا دوباره تلاس کنید!'},'error',3000);
+                        })
+                }else{
+                    fillModalWithSessionData(sessionData);
+                    document.getElementById('sessionModal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
                 }
             }
 
@@ -892,7 +936,7 @@
             <div class="comment-box bg-blue-50 border border-blue-100 rounded-xl p-4 md:p-5">
                 <div class="flex flex-col sm:flex-row items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-blue-100 border-2 border-white overflow-hidden flex-shrink-0">
-                        <img src="${courseData.course.teacher.image}" alt="${courseData.course.teacher.name} ${courseData.course.teacher.family}" class="w-full h-full object-cover">
+                        <img src="${mainFrontServerUrl+"/"+courseData.course.teacher.image}" alt="${courseData.course.teacher.name} ${courseData.course.teacher.family}" class="w-full h-full object-cover">
                     </div>
                     <div class="w-full">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
@@ -962,5 +1006,14 @@
                 }
             });
         });
+
+
+        function closeModal() {
+            const modal = document.getElementById('sessionModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
     </script>
 </x-layouts.app>

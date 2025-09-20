@@ -694,9 +694,9 @@
             </button>
             <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
                 <div class="space-y-3" id="messages-list"></div>
-                <a href="#" class="w-full mt-4 inline-block text-center border border-purple-200 text-purple-600 hover:bg-purple-50 text-sm sm:text-base py-2 px-4 rounded-lg transition">
+                <!--<a href="#" class="w-full mt-4 inline-block text-center border border-purple-200 text-purple-600 hover:bg-purple-50 text-sm sm:text-base py-2 px-4 rounded-lg transition">
                     مشاهده همه پیام‌ها
-                </a>
+                </a>-->
             </div>
         </div>
     `;
@@ -708,7 +708,7 @@
                             const formattedDate = commentDate.toLocaleDateString('fa-IR');
 
                             const messageItem = document.createElement('a');
-                            messageItem.href = '#';
+                            messageItem.href = '/courseDetail/'+comment.students_courses_id;
                             messageItem.className = 'flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
                             messageItem.innerHTML = `
             <div class="bg-purple-100 text-purple-600 p-1.5 rounded-lg">

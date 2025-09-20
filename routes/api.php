@@ -43,6 +43,7 @@ Route::middleware('SetLan')->group(function (){
             Route::post('uploadProfile', [HomeController::class, 'uploadProfile'])->name('uploadProfile');
             Route::post('changePassword', [HomeController::class, 'changePassword'])->name('changePassword');
             Route::get('getStudentPayments', [HomeController::class, 'getStudentPayments'])->name('getStudentPayments');
+            Route::post('readComment/{id}', [HomeController::class, 'readComment'])->name('readComment');
         });
 
 

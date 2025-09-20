@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserAuthRequests\ChangePasswordRequest;
 use App\Http\Requests\UserAuthRequests\CompleteProfileRequest;
 use App\Http\Requests\UserAuthRequests\LoginRequest;
-use App\Http\Requests\UserAuthRequests\SendOTPForgetPasswordRequest;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -18,12 +16,13 @@ class UserAuthController extends Controller
 
     function userCheck(Request $request)
     {
-        $type = match($request->type) {
+        /*$type = match($request->type) {
             'students' => '2',
             'teachers' => '1',
-        };
+        };*/
 
-        $user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
+        //$user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
+        $user = User::where('mobile', $request->mobile)->first();
         if ($user) {
             return response()->json([
                 'status' => 'success',
@@ -42,11 +41,12 @@ class UserAuthController extends Controller
     {
         $request->validated();
 
-        $type = match($request->type) {
+        /*$type = match($request->type) {
             'students' => '2',
             'teachers' => '1',
-        };
-        $user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
+        };*/
+        //$user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
+        $user = User::where('mobile', $request->mobile)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             if ($user->verified == 1){
                 return response()->json([
@@ -72,12 +72,8 @@ class UserAuthController extends Controller
     {
         $request->validated();
         $user = User::where('mobile',$request->mobile)->first();
-        if ($user and $user->verified == 0 and $request->type == 'students') {
-            User::where('mobile',$request->mobile)->update([
-                'verified'=> true,
-                'password' => bcrypt($request->nationalCode),
-            ]);
-            Student::where('users_id',$user->id)->update([
+        if ($user and $user->verified == 0){
+            $userData = [
                 'name' => $request->firstName,
                 'family' => $request->lastName,
                 'father' => $request->fatherName,
@@ -89,9 +85,13 @@ class UserAuthController extends Controller
                 'field' => $request->field,
                 'job' => $request->job,
                 'image' => uploadFile($request->file('profilePhoto')),
+            ];
+            User::where('mobile',$request->mobile)->update([
+                'verified'=> 1,
+                'password' => bcrypt($request->nationalCode),
             ]);
-        }else if ($request->type == 'teachers'){
-
+            if ($user->user_type_id == 2) Student::where('users_id',$user->id)->update($userData);
+            if ($user->user_type_id == 1) Teacher::where('users_id',$user->id)->update($userData);
         }else{
             return response()->json([
                 'status' => 'error',
@@ -125,58 +125,10 @@ class UserAuthController extends Controller
     {
         $user = $request->user();
         if ($user->user_type_id == 2) $user = $user->load('student');
+        if ($user->user_type_id == 1) $user = $user->load('teacher');
         return response()->json([
             'message' => 'success',
             'user' => $user,
-        ]);
-    }
-
-
-    public function changePassword(ChangePasswordRequest $request)
-    {
-        $request->validated();
-        $email_mobile = $request->email_mobile;
-        $isEmail = filter_var($email_mobile, FILTER_VALIDATE_EMAIL);
-        $field = $isEmail ? 'email' : 'mobile';
-        $model = match($request->type) {
-            'doctors' => Doctor::class,
-            'patients' => Patient::class,
-            'translators' => Translator::class,
-            'drivers' => Driver::class,
-        };
-        $user = $model::where($field,$email_mobile)->first();
-        verifyOTPCode($field,$user->id,get_class($user),$request->otp);
-        $user->password = Hash::make($request->new_password);
-        $user->save();
-        return response()->json([
-            'status' => 'success',
-            'message' => trans('messages.password_changed')
-        ]);
-    }
-
-
-    public function SendOTPForgetPassword(SendOTPForgetPasswordRequest $request)
-    {
-        $request->validated();
-        $email_mobile = $request->email_mobile;
-        $isEmail = filter_var($email_mobile, FILTER_VALIDATE_EMAIL);
-        $field = $isEmail ? 'email' : 'mobile';
-
-        $model = match($request->type) {
-            'doctors' => Doctor::class,
-            'patients' => Patient::class,
-            'translators' => Translator::class,
-            'drivers' => Driver::class,
-        };
-
-        $user = $model::where($field,$email_mobile)->first();
-
-        sendOTPCode($field,$user->id,get_class($user),$email_mobile);
-
-        return response()->json([
-            'status' => 'error',
-            'message' => trans('messages.OTP_send'),
-            'remaining_time' => 120
         ]);
     }
 }

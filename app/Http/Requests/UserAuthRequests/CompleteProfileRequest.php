@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UserAuthRequests;
 
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -19,30 +20,33 @@ class CompleteProfileRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [
-            'type' => 'required|in:students,teachers',
-        ];
         $user = User::where('mobile',$this->mobile)->first();
-        if ($user) $student = Student::where('users_id',$user->id)->first();
-        if ($this->type === 'students') {
-            $rules['mobile'] = 'required|exists:users,mobile';
-            $rules['firstName'] = 'required';
-            $rules['lastName'] = 'required';
-            $rules['fatherName'] = 'required';
-            $rules['idNumber'] = 'required';
-            $rules['issuePlace'] = 'required';
-            $rules['nationalCode'] = 'required|unique:'. $this->type .',Mid,'.$student->id;
-            $rules['maritalStatus'] = 'required';
-            $rules['education'] = 'required';
-            $rules['field'] = 'required';
-            $rules['job'] = 'required';
-            $rules['profilePhoto'] = 'required|image|mimes:jpeg,png,jpg';
+        $type = match($user->user_type_id) {
+            2 => 'students',
+            1 => 'teachers',
+        };
+        $model = [];
+        if ($user){
+            $model = match($type) {
+                'students' => Student::class,
+                'teachers' => Teacher::class,
+            };
         }
-        if ($this->type === 'customers') {
-
-        }
-
-        return $rules;
+        if ($user) $model = $model::where('users_id',$user->id)->first();
+        return [
+            'mobile' => 'required|exists:users,mobile',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'fatherName' => 'required',
+            'idNumber' => 'required',
+            'issuePlace' => 'required',
+            'nationalCode' => 'required|unique:'. $type .',Mid,'.$model->id,
+            'maritalStatus' => 'required',
+            'education' => 'required',
+            'field' => 'required',
+            'job' => 'required',
+            'profilePhoto' => 'required|image|mimes:jpeg,png,jpg',
+        ];
     }
 
 

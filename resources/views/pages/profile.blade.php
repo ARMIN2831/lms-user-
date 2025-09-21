@@ -468,7 +468,7 @@
                     this.updating = true;
 
                     try {
-                        const response = await makeRequest('POST', 'fa', '{{ route('students.updateProfile') }}', this.formData);
+                        const response = await makeRequest('POST', 'fa', '{{ route('updateProfile') }}', this.formData);
                         showToastAlert(response.message, 'success');
                     } catch (err) {
                         showToastAlert(err, 'error');
@@ -497,7 +497,7 @@
                         const formData = new FormData();
                         formData.append('avatar', file);
 
-                        const response = await makeRequest('POST', 'fa', '{{ route('students.uploadProfile') }}', formData, true);
+                        const response = await makeRequest('POST', 'fa', '{{ route('uploadProfile') }}', formData, true);
 
                         // آپدیت آواتار در صفحه
                         const reader = new FileReader();
@@ -530,7 +530,7 @@
                     this.changingPassword = true;
 
                     try {
-                        const response = await makeRequest('POST', 'fa', '{{ route('students.changePassword') }}', this.passwordData);
+                        const response = await makeRequest('POST', 'fa', '{{ route('changePassword') }}', this.passwordData);
                         showToastAlert(response.message, 'success');
 
                         // پاک کردن فرم پس از موفقیت

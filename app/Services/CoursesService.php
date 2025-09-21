@@ -5,24 +5,19 @@ namespace App\Services;
 
 use App\Models\StudentCourse;
 use App\Models\User;
+use App\Traits\HandlesUserTypeTrait;
 
 class CoursesService
 {
-    protected $user;
-    protected $model;
+    use HandlesUserTypeTrait;
 
     public function __construct(User $user)
     {
-        $this->user = $user;
-        $this->model = match($user->user_type_id) {
-            1 => $user->teacher,
-            2 => $user->student,
-            default => throw new \Exception('Invalid user type')
-        };
+        $this->initUser($user);
     }
 
 
-    public function getStudentCourses()
+    public function getCourses()
     {
         $studentCourse = StudentCourse::where('students_id', $this->model->id)->with('course.title','course.teacher','attends.status')->get();
         foreach ($studentCourse as $key => $course) {

@@ -357,7 +357,7 @@
 
                 async fetchCourses() {
                     try {
-                        const response = await makeRequest('GET', 'fa', '{{ route('students.getCourses') }}');
+                        const response = await makeRequest('GET', 'fa', '{{ route('getCourses') }}');
 
                         if (response.message === 'success' && response.data && response.data.studentCourse) {
                             this.courses = response.data.studentCourse;

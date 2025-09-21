@@ -35,8 +35,8 @@ Route::middleware('SetLan')->group(function (){
         Route::post('setPassword', [UserAuthController::class, 'setPassword']);
         Route::get('getUser', [UserAuthController::class, 'getUser'])->name('getUser');
 
-        //students
-        Route::middleware('CheckUserType:students')->name('students.')->prefix('students')->controller(StudentHomeController::class)->group(function () {
+        //user routes
+        Route::controller(HomeController::class)->group(function () {
             Route::get('getCardsData', 'getCardsData')->name('getCardsData');
             Route::get('getAttends', 'getAttends')->name('getAttends');
             Route::get('getCourses', 'getCourses')->name('getCourses');
@@ -44,22 +44,8 @@ Route::middleware('SetLan')->group(function (){
             Route::post('updateProfile', 'updateProfile')->name('updateProfile');
             Route::post('uploadProfile', 'uploadProfile')->name('uploadProfile');
             Route::post('changePassword', 'changePassword')->name('changePassword');
-            Route::get('getStudentPayments', 'getStudentPayments')->name('getStudentPayments');
-            Route::post('readComment/{id}', 'readComment')->name('readComment');
-        });
-
-
-        //teachers
-        Route::middleware('CheckUserType:teachers')->name('teachers.')->prefix('teachers')->controller(TeacherHomeController::class)->group(function () {
-            Route::get('getCardsData', 'getCardsData')->name('getCardsData');
-            Route::get('getAttends', 'getAttends')->name('getAttends');
-            Route::get('getCourses', 'getCourses')->name('getCourses');
-            Route::get('getCourseData/{id}', 'getCourseData')->name('getCourseData');
-            Route::post('updateProfile', 'updateProfile')->name('updateProfile');
-            Route::post('uploadProfile', 'uploadProfile')->name('uploadProfile');
-            Route::post('changePassword', 'changePassword')->name('changePassword');
-            Route::get('getStudentPayments', 'getStudentPayments')->name('getStudentPayments');
-            Route::post('readComment/{id}', 'readComment')->name('readComment');
+            Route::get('getPayments', 'getPayments')->name('getPayments');
+            Route::post('readComment/{id?}', 'readComment')->name('readComment');
         });
     });
 });

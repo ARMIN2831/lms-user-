@@ -5,22 +5,16 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Traits\FileUploadTrait;
+use App\Traits\HandlesUserTypeTrait;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileService
 {
-    use FileUploadTrait;
-    protected $user;
-    protected $model;
+    use FileUploadTrait, HandlesUserTypeTrait;
 
     public function __construct(User $user)
     {
-        $this->user = $user;
-        $this->model = match($user->user_type_id) {
-            1 => $user->teacher,
-            2 => $user->student,
-            default => throw new \Exception('Invalid user type')
-        };
+        $this->initUser($user);
     }
 
 

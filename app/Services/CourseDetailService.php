@@ -6,20 +6,15 @@ namespace App\Services;
 use App\Models\Attend;
 use App\Models\StudentCourse;
 use App\Models\User;
+use App\Traits\HandlesUserTypeTrait;
 
 class CourseDetailService
 {
-    protected $user;
-    protected $model;
+    use HandlesUserTypeTrait;
 
     public function __construct(User $user)
     {
-        $this->user = $user;
-        $this->model = match($user->user_type_id) {
-            1 => $user->teacher,
-            2 => $user->student,
-            default => throw new \Exception('Invalid user type')
-        };
+        $this->initUser($user);
     }
 
 

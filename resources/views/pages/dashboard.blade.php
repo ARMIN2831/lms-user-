@@ -426,18 +426,8 @@
                 .finally(() => {
                     hideSkeleton('user_information_loading');
                 });
-            let cardsRoute;
-            let attendsRoute;
-            if (user.user_type_id === 1){
-                cardsRoute = '{{ route('teachers.getCardsData') }}';
-                attendsRoute= '{{ route('teachers.getAttends') }}';
-            }
-            if (user.user_type_id === 2){
-                cardsRoute = '{{ route('students.getCardsData') }}';
-                attendsRoute= '{{ route('students.getAttends') }}';
-            }
 
-            const CardsRequest = await makeRequest('GET', 'fa', cardsRoute)
+            const CardsRequest = await makeRequest('GET', 'fa', '{{ route('getCardsData') }}')
                 .then(data => {
                     const cardsData = data.data;
                     if (!cardsData) throw new Error('اطلاعات دوره ها دریافت نشد');
@@ -523,7 +513,7 @@
                 });
 
 
-            const AttendRequest = await makeRequest('GET', 'fa', attendsRoute)
+            const AttendRequest = await makeRequest('GET', 'fa', '{{ route('getAttends') }}')
                 .then(data => {
                     const attendsData = data.data;
                     if (!attendsData) throw new Error('اطلاعات کلاس‌ها دریافت نشد');

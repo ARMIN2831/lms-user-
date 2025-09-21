@@ -472,7 +472,7 @@
         document.addEventListener('DOMContentLoaded', async function () {
             let attends;
             let courseData;
-            const courseDataRequest = await makeRequest('GET', 'fa', '{{ route("students.getCourseData", ["id" => request()->route("id")]) }}')
+            const courseDataRequest = await makeRequest('GET', 'fa', '{{ route("getCourseData", ["id" => request()->route("id")]) }}')
                 .then(data => {
                     courseData = data.data.studentCourse;
                     //header section
@@ -826,7 +826,7 @@ stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4
                     return;
                 }
                 if(sessionData.readComment === 0 && sessionData.comment != null){
-                    const ReadCommentRequest = await makeRequest('POST', 'fa', 'http://localhost:8000/api/students/readComment/'+actualSessionId)
+                    const ReadCommentRequest = await makeRequest('POST', 'fa', '{{ route('readComment') }}/'+actualSessionId)
                         .then(data => {
                             fillModalWithSessionData(sessionData);
                             document.getElementById('sessionModal').classList.add('active');

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StudentHomeController;
+use App\Http\Controllers\TeacherHomeController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
@@ -34,22 +36,30 @@ Route::middleware('SetLan')->group(function (){
         Route::get('getUser', [UserAuthController::class, 'getUser'])->name('getUser');
 
         //students
-        Route::middleware('CheckUserType:students')->prefix('students')->group(function () {
-            Route::get('getCardsData', [HomeController::class, 'getCardsData'])->name('getCardsData');
-            Route::get('getAttends', [HomeController::class, 'getAttends'])->name('getAttends');
-            Route::get('getCourses', [HomeController::class, 'getCourses'])->name('getCourses');
-            Route::get('getCourseData/{id}', [HomeController::class, 'getCourseData'])->name('getCourseData');
-            Route::post('updateProfile', [HomeController::class, 'updateProfile'])->name('updateProfile');
-            Route::post('uploadProfile', [HomeController::class, 'uploadProfile'])->name('uploadProfile');
-            Route::post('changePassword', [HomeController::class, 'changePassword'])->name('changePassword');
-            Route::get('getStudentPayments', [HomeController::class, 'getStudentPayments'])->name('getStudentPayments');
-            Route::post('readComment/{id}', [HomeController::class, 'readComment'])->name('readComment');
+        Route::middleware('CheckUserType:students')->name('students.')->prefix('students')->controller(StudentHomeController::class)->group(function () {
+            Route::get('getCardsData', 'getCardsData')->name('getCardsData');
+            Route::get('getAttends', 'getAttends')->name('getAttends');
+            Route::get('getCourses', 'getCourses')->name('getCourses');
+            Route::get('getCourseData/{id}', 'getCourseData')->name('getCourseData');
+            Route::post('updateProfile', 'updateProfile')->name('updateProfile');
+            Route::post('uploadProfile', 'uploadProfile')->name('uploadProfile');
+            Route::post('changePassword', 'changePassword')->name('changePassword');
+            Route::get('getStudentPayments', 'getStudentPayments')->name('getStudentPayments');
+            Route::post('readComment/{id}', 'readComment')->name('readComment');
         });
 
 
         //teachers
-        Route::middleware('CheckUserType:teachers')->prefix('teachers')->group(function () {
-
+        Route::middleware('CheckUserType:teachers')->name('teachers.')->prefix('teachers')->controller(TeacherHomeController::class)->group(function () {
+            Route::get('getCardsData', 'getCardsData')->name('getCardsData');
+            Route::get('getAttends', 'getAttends')->name('getAttends');
+            Route::get('getCourses', 'getCourses')->name('getCourses');
+            Route::get('getCourseData/{id}', 'getCourseData')->name('getCourseData');
+            Route::post('updateProfile', 'updateProfile')->name('updateProfile');
+            Route::post('uploadProfile', 'uploadProfile')->name('uploadProfile');
+            Route::post('changePassword', 'changePassword')->name('changePassword');
+            Route::get('getStudentPayments', 'getStudentPayments')->name('getStudentPayments');
+            Route::post('readComment/{id}', 'readComment')->name('readComment');
         });
     });
 });

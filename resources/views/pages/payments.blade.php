@@ -414,7 +414,7 @@
 
                 async fetchPayments() {
                     try {
-                        const response = await makeRequest('GET', 'fa', '{{ route('getStudentPayments') }}');
+                        const response = await makeRequest('GET', 'fa', '{{ route('students.getStudentPayments') }}');
 
                         if (response.status === 'success' && response.data.length > 0) {
                             this.courses = response.data;

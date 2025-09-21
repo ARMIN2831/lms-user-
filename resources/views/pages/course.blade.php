@@ -273,7 +273,7 @@
 
             // تابع برای دریافت داده‌های دوره‌ها
             async function loadCourses() {
-                const UserRequest = await makeRequest('GET', 'fa', '{{ route('getCourses') }}')
+                const UserRequest = await makeRequest('GET', 'fa', '{{ route('students.getCourses') }}')
                     .then(data => {
                         if (data.message === 'success' && data.data && data.data.studentCourse) {
                             renderCourses(data.data.studentCourse);

@@ -12,7 +12,7 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class HomeController extends Controller
+class TeacherHomeController extends Controller
 {
     public function getCardsData(Request $request)
     {

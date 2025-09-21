@@ -9,11 +9,23 @@ use App\Models\Information;
 use App\Models\Student;
 use App\Models\StudentCourse;
 use App\Models\Teacher;
+use App\Services\ProfileService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class HomeController extends Controller
+class StudentHomeController extends Controller
 {
+    protected $profileService;
+
+    /**
+     * @throws Exception
+     */
+    public function __construct()
+    {
+        $this->profileService = new ProfileService(auth()->user());
+    }
+
     public function getCardsData(Request $request)
     {
         $user = $request->user();
@@ -137,24 +149,7 @@ class HomeController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request)
     {
-        $request->validated();
-        $user = $request->user();
-        $user->update([
-            'mobile'=> $request->email,
-            'email' => $request->mobile,
-        ]);
-        Student::where('users_id',$user->id)->update([
-            'name' => $request->first_name,
-            'family' => $request->last_name,
-            'father' => $request->father_name,
-            'Pno' => $request->id_number,
-            'sodor' => $request->issue_place,
-            'Mid' => $request->national_code,
-            'married' => $request->marital_status,
-            'madrak' => $request->education,
-            'field' => $request->field,
-            'job' => $request->job,
-        ]);
+        $this->profileService->updateProfile($request->validated());
         return response()->json([
             'status' => 'success',
             'message' => trans('messages.profile_updated'),
@@ -164,11 +159,7 @@ class HomeController extends Controller
 
     public function uploadProfile(Request $request)
     {
-        $user = $request->user();
-        deleteUploadedFile($user->student->image);
-        Student::where('users_id',$user->id)->update([
-            'image' => uploadFile($request->file('avatar')),
-        ]);
+        $this->profileService->uploadProfile($request->file('avatar'));
         return response()->json([
             'status' => 'success',
             'message' => trans('messages.profile_updated'),
@@ -178,21 +169,17 @@ class HomeController extends Controller
 
     public function changePassword(Request $request)
     {
+        $user = $request->user();
         $request->validate([
             'current_password' => 'required|string',
             'new_password' => 'required|string|min:6|confirmed',
         ]);
-
-        $user = $request->user();
-
-        if (!Hash::check($request->current_password, $user->password) || Hash::check($request->new_password, $user->password))
+        if (!Hash::check($request->current_password, $user->password))
             return response()->json([
                 'status' => 'error',
                 'message' => trans('messages.password_wrong')
             ],422);
-
-        $user->password = Hash::make($request->new_password);
-        $user->save();
+        $this->profileService->changePassword($request->input());
 
         return response()->json([
             'status' => 'success',

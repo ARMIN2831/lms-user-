@@ -472,7 +472,7 @@
         document.addEventListener('DOMContentLoaded', async function () {
             let attends;
             let courseData;
-            const courseDataRequest = await makeRequest('GET', 'fa', '{{ route("getCourseData", ["id" => request()->route("id")]) }}')
+            const courseDataRequest = await makeRequest('GET', 'fa', '{{ route("students.getCourseData", ["id" => request()->route("id")]) }}')
                 .then(data => {
                     courseData = data.studentCourse;
                     //header section

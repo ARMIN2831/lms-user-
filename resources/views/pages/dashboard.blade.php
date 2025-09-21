@@ -393,10 +393,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
+            let user;
             const UserRequest = await makeRequest('GET', 'fa', '{{ route('getUser') }}')
                 .then(data => {
-                    const user = data.user;
-                    const student = user.student;
+                    user = data.user;
+
+                    let student;
+                    if(user.user_type_id === 1) student = user.teacher;
+                    if(user.user_type_id === 2) student = user.student;
+
                     if (!user || !student) throw new Error('اطلاعات کاربر دریافت نشد');
                     const userNameElement = document.querySelector('.text-xl.font-bold.text-gray-800');
                     if (userNameElement && student.name) userNameElement.textContent = student.name + ' ' + student.family;
@@ -421,8 +426,18 @@
                 .finally(() => {
                     hideSkeleton('user_information_loading');
                 });
+            let cardsRoute;
+            let attendsRoute;
+            if (user.user_type_id === 1){
+                cardsRoute = '{{ route('teachers.getCardsData') }}';
+                attendsRoute= '{{ route('teachers.getAttends') }}';
+            }
+            if (user.user_type_id === 2){
+                cardsRoute = '{{ route('students.getCardsData') }}';
+                attendsRoute= '{{ route('students.getAttends') }}';
+            }
 
-            const CardsRequest = await makeRequest('GET', 'fa', '{{ route('getCardsData') }}')
+            const CardsRequest = await makeRequest('GET', 'fa', cardsRoute)
                 .then(data => {
                     const cardsData = data.data;
                     if (!cardsData) throw new Error('اطلاعات دوره ها دریافت نشد');
@@ -508,7 +523,7 @@
                 });
 
 
-            const AttendRequest = await makeRequest('GET', 'fa', '{{ route('getAttends') }}')
+            const AttendRequest = await makeRequest('GET', 'fa', attendsRoute)
                 .then(data => {
                     const attendsData = data.data;
                     if (!attendsData) throw new Error('اطلاعات کلاس‌ها دریافت نشد');
@@ -542,9 +557,9 @@
                     </div>
                     <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
                         <div class="space-y-3 max-h-64 overflow-y-auto" id="upcoming-classes-list"></div>
-                        <button class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white text-sm sm:text-base py-2 px-4 rounded-lg transition-all shadow-sm hover:shadow-md">
+                        <!--<button class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white text-sm sm:text-base py-2 px-4 rounded-lg transition-all shadow-sm hover:shadow-md">
                             رزرو کلاس جدید
-                        </button>
+                        </button>-->
                     </div>
                 </div>
             `;
@@ -559,7 +574,7 @@
                             const classItem = document.createElement('div');
                             classItem.className = 'flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100';
                             classItem.innerHTML = `
-                    <div class="flex items-center space-x-3 space-x-reverse min-w-0">
+                    <a href="/courseDetail/${attend.students_courses_id}" class="flex items-center space-x-3 space-x-reverse min-w-0">
                         <div class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -569,12 +584,12 @@
                             <p class="font-medium text-gray-800 text-sm sm:text-base truncate">${attend.course.title.coTitle}</p>
                             <p class="text-xs text-gray-600 truncate">${formattedDate} - ${formattedTime}</p>
                         </div>
-                    </div>
-                    <button class="text-red-500 hover:text-red-700 p-1">
+                    </a>
+                    <!--<button class="text-red-500 hover:text-red-700 p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h极" />
                         </svg>
-                    </button>
+                    </button>-->
                 `;
                             upcomingClassesList.appendChild(classItem);
                         });
@@ -679,9 +694,10 @@
 
                     // پردازش نظرات جدید
                     const commentsContainer = document.getElementById('comments-container');
+                    if(user.user_type_id === 2){
 
-                    if (attendsData.comments && attendsData.comments.length > 0) {
-                        commentsContainer.innerHTML = `
+                        if (attendsData.comments && attendsData.comments.length > 0) {
+                            commentsContainer.innerHTML = `
         <div x-data="{ open: true }">
             <button @click="open = !open" class="w-full flex items-center justify-between p-4 focus:outline-none">
                 <div class="flex items-center">
@@ -701,16 +717,16 @@
         </div>
     `;
 
-                        const messagesList = document.getElementById('messages-list');
+                            const messagesList = document.getElementById('messages-list');
 
-                        attendsData.comments.forEach(comment => {
-                            const commentDate = new Date(comment.date * 1000);
-                            const formattedDate = commentDate.toLocaleDateString('fa-IR');
+                            attendsData.comments.forEach(comment => {
+                                const commentDate = new Date(comment.date * 1000);
+                                const formattedDate = commentDate.toLocaleDateString('fa-IR');
 
-                            const messageItem = document.createElement('a');
-                            messageItem.href = '/courseDetail/'+comment.students_courses_id;
-                            messageItem.className = 'flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
-                            messageItem.innerHTML = `
+                                const messageItem = document.createElement('a');
+                                messageItem.href = '/courseDetail/'+comment.students_courses_id;
+                                messageItem.className = 'flex items-start space-x-3 space-x-reverse p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
+                                messageItem.innerHTML = `
             <div class="bg-purple-100 text-purple-600 p-1.5 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -724,11 +740,11 @@
                 <p class="text-gray-600 text-xs sm:text-sm truncate">${comment.comment ? comment.comment.substring(0, 50) + '...' : 'نظر جدید'}</p>
             </div>
         `;
-                            messagesList.appendChild(messageItem);
-                        });
-                    } else {
-                        // نمایش پیام عدم وجود نظر
-                        commentsContainer.innerHTML = `
+                                messagesList.appendChild(messageItem);
+                            });
+                        } else {
+                            // نمایش پیام عدم وجود نظر
+                            commentsContainer.innerHTML = `
                 <div class="p-4">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">پیام‌های جدید</h3>
                     <div class="no-data-message">
@@ -736,6 +752,9 @@
                     </div>
                 </div>
             `;
+                        }
+                    }else {
+                        commentsContainer.remove()
                     }
                 })
                 .catch(err => {

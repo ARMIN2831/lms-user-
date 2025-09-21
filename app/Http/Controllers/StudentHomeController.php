@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\studentRequests\UpdateProfileRequest;
 use App\Services\CourseDetailService;
+use App\Services\CoursesService;
 use App\Services\DashboardService;
 use App\Services\PaymentsService;
 use App\Services\ProfileService;
@@ -28,6 +29,7 @@ class StudentHomeController extends Controller
         $this->user = $user = request()->user();
         $this->profileService = new ProfileService($user);
         $this->dashboardService = new DashboardService($user);
+        $this->coursesService = new CoursesService($user);
         $this->courseDetailService = new CourseDetailService($user);
         $this->paymentsService = new PaymentsService($user);
     }

@@ -639,7 +639,7 @@
                     </div>
                     <div class="w-full md:w-2/3 space-y-3">
                         <div class="flex flex-wrap items-center justify-between gap-2">
-                            <h4 class="font-medium text-gray-900 text-sm sm:text-base">${lastClass.courses_id ? 'کلاس دوره ' + lastClass.courses_id : 'کلاس موسیقی'}</h4>
+                            <h4 class="font-medium text-gray-900 text-sm sm:text-base">${lastClass.course.title.coTitle ? 'کلاس دوره ' + lastClass.course.title.coTitle : 'کلاس موسیقی'}</h4>
                             <span class="${statusClass} text-xs px-2 py-1 rounded-full whitespace-nowrap">${statusText}</span>
                         </div>
                         <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm">

@@ -81,7 +81,7 @@ class DashboardService
             ->get();
 
         $lastPastAttend = Attend::where('students_id', $this->model->id)
-            ->with('course.teacher','status')
+            ->with('course.teacher','course.title','status')
             ->where('date', '<', time())
             ->orderBy('date', 'desc')
             ->first();

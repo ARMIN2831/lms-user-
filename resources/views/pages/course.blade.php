@@ -1,7 +1,4 @@
 <x-layouts.app title="دوره‌های من">
-    <!-- افزودن فونت ایران سنس -->
-    {{--<link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/IRANSans/IRANSans.css">--}}
-
     <!-- استایل سفارشی -->
     <style>
         @keyframes fadeIn {
@@ -83,7 +80,7 @@
         }
     </style>
 
-    <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-8 font-sans">
+    <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-8 font-sans" x-data="coursesPage()">
         <!-- هدر صفحه -->
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
             <div class="mb-4 md:mb-0">
@@ -107,232 +104,176 @@
         </div>
 
         <!-- کارت‌های دوره (اسکلتون لودینگ) -->
-        <div id="courses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- اسکلتون لودینگ برای دوره‌ها -->
-            <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                <div class="relative overflow-hidden">
-                    <div class="h-48 bg-gray-200 skeleton-loading"></div>
-                    <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
+        <template x-if="loading">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- اسکلتون لودینگ برای دوره‌ها -->
+                <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden">
+                        <div class="h-48 bg-gray-200 skeleton-loading"></div>
+                        <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between">
+                            <div class="w-full">
+                                <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
+                                <div class="flex items-center mt-3">
+                                    <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
+                                </div>
+                            </div>
+                            <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
+                        </div>
+                        <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                            <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
+                            <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
+                        </div>
+                        <div class="mt-5 space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex space-x-3 space-x-reverse">
+                            <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                            <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-5">
-                    <div class="flex items-start justify-between">
-                        <div class="w-full">
-                            <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
-                            <div class="flex items-center mt-3">
-                                <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
+
+                <!-- تکرار اسکلتون برای دو دوره دیگر -->
+                <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden">
+                        <div class="h-48 bg-gray-200 skeleton-loading"></div>
+                        <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between">
+                            <div class="w-full">
+                                <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
+                                <div class="flex items-center mt-3">
+                                    <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
+                                </div>
+                            </div>
+                            <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
+                        </div>
+                        <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                            <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
+                            <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
+                        </div>
+                        <div class="mt-5 space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
                             </div>
                         </div>
-                        <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
-                    </div>
-                    <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                        <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
-                        <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
-                    </div>
-                    <div class="mt-5 space-y-4">
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                        <div class="mt-6 flex space-x-3 space-x-reverse">
+                            <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                            <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
                         </div>
                     </div>
-                    <div class="mt-6 flex space-x-3 space-x-reverse">
-                        <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
-                        <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                </div>
+
+                <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden">
+                        <div class="h-48 bg-gray-200 skeleton-loading"></div>
+                        <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between">
+                            <div class="w-full">
+                                <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
+                                <div class="flex items-center mt-3">
+                                    <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
+                                </div>
+                            </div>
+                            <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
+                        </div>
+                        <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                            <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
+                            <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
+                        </div>
+                        <div class="mt-5 space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
+                                    <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex space-x-3 space-x-reverse">
+                            <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                            <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </template>
 
-            <!-- تکرار اسکلتون برای دو دوره دیگر -->
-            <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                <div class="relative overflow-hidden">
-                    <div class="h-48 bg-gray-200 skeleton-loading"></div>
-                    <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
-                </div>
-                <div class="p-5">
-                    <div class="flex items-start justify-between">
-                        <div class="w-full">
-                            <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
-                            <div class="flex items-center mt-3">
-                                <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
-                            </div>
-                        </div>
-                        <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
-                    </div>
-                    <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                        <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
-                        <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
-                    </div>
-                    <div class="mt-5 space-y-4">
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex space-x-3 space-x-reverse">
-                        <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
-                        <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                <div class="relative overflow-hidden">
-                    <div class="h-48 bg-gray-200 skeleton-loading"></div>
-                    <div class="status-badge absolute top-4 left-4 bg-gray-200 text-transparent text-xs px-3 py-1 rounded-full font-medium shadow-sm skeleton-loading">در حال برگزاری</div>
-                </div>
-                <div class="p-5">
-                    <div class="flex items-start justify-between">
-                        <div class="w-full">
-                            <div class="h-7 bg-gray-200 rounded skeleton-loading mb-3"></div>
-                            <div class="flex items-center mt-3">
-                                <div class="teacher-avatar w-10 h-10 rounded-full bg-gray-200 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded mr-3 w-32 skeleton-loading"></div>
-                            </div>
-                        </div>
-                        <div class="w-6 h-6 bg-gray-200 rounded skeleton-loading"></div>
-                    </div>
-                    <div class="flex items-center mt-4 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                        <div class="h-5 w-5 ml-2 bg-gray-200 rounded skeleton-loading"></div>
-                        <div class="h-4 bg-gray-200 rounded w-40 skeleton-loading"></div>
-                    </div>
-                    <div class="mt-5 space-y-4">
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-32 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between text-sm mb-2">
-                                <div class="h-4 bg-gray-200 rounded w-24 skeleton-loading"></div>
-                                <div class="h-4 bg-gray-200 rounded w-8 skeleton-loading"></div>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 skeleton-loading"></div>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex space-x-3 space-x-reverse">
-                        <div class="flex-1 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
-                        <div class="w-12 h-12 bg-gray-200 rounded-xl skeleton-loading"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- صفحه‌بندی -->
-        {{--<div class="mt-10 flex items-center justify-center space-x-3 space-x-reverse">
-            <button class="pagination-button w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm hover:shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-            <button class="pagination-button w-10 h-10 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl shadow-md">1</button>
-            <button class="pagination-button w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm hover:shadow-md">2</button>
-            <button class="pagination-button w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm hover:shadow-md">3</button>
-            <button class="pagination-button w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm hover:shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-        </div>--}}
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // نقشه رنگ برای وضعیت‌های مختلف
-            const colorMap = {
-                'default': 'bg-gray-100 text-gray-800 border border-gray-200',
-                'info': 'bg-blue-100 text-blue-800 border border-blue-200',
-                'success': 'bg-green-100 text-green-800 border border-green-200',
-                'danger': 'bg-red-100 text-red-800 border border-red-200',
-                'warning': 'bg-yellow-100 text-yellow-800 border border-yellow-200',
-                'primary': 'bg-purple-100 text-purple-800 border border-purple-200',
-                'secondary': 'bg-indigo-100 text-indigo-800 border border-indigo-200'
-            };
-
-            // تابع برای دریافت داده‌های دوره‌ها
-            async function loadCourses() {
-                const UserRequest = await makeRequest('GET', 'fa', '{{ route('students.getCourses') }}')
-                    .then(data => {
-                        if (data.message === 'success' && data.data && data.data.studentCourse) {
-                            renderCourses(data.data.studentCourse);
-                        } else {
-                            throw new Error('داده‌های دوره‌ها دریافت نشد');
-                        }
-                    })
-                    .catch(err => {
-                        showToastAlert(err, 'error', 3000);
-                    })
-                    .finally(() => {
-                        hideSkeleton('skeleton-loading');
-                    });
-            }
-
-            // تابع برای رندر کردن دوره‌ها
-            function renderCourses(coursesData) {
-                const coursesContainer = document.getElementById('courses-container');
-                coursesContainer.innerHTML = '';
-
-                // ایجاد کارت برای هر دوره
-                coursesData.forEach(courseData => {
-
-                    // تعیین وضعیت دوره
-                    let status = { text: 'غیر فعال', class: colorMap['warning'] };
-                    if (courseData.active === 1) {
-                        status =  { text: 'فعال', class: colorMap['success'] };
-                    }
-                    // ایجاد HTML کارت دوره
-                    const courseCard = document.createElement('div');
-                    courseCard.className = 'course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300';
-                    courseCard.innerHTML = `
+        <!-- کارت‌های دوره (داینامیک) -->
+        <template x-if="!loading">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="course in courses" :key="course.id">
+                    <div class="course-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
                         <div class="relative overflow-hidden">
                             <div class="h-48 bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center course-thumbnail">
-                                <div class="absolute inset-0 ${courseData.cover ? `` : `bg-[url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover` } bg-center opacity-30"></div>
-                                ${courseData.title ?
-                        `<img src="${mainFrontServerUrl+"/"+courseData.cover}" alt="${courseData.teacher.name} ${courseData.teacher.family}" class="w-full h-full object-cover">` :
-                        `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                                </svg>`
-                    }
-
+                                <div class="absolute inset-0" :class="course.cover ? '' : 'bg-[url(\'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80\')] bg-cover bg-center opacity-30'"></div>
+                                <template x-if="course.cover">
+                                    <img :src="mainFrontServerUrl + '/' + course.cover" :alt="course.teacher.name + ' ' + course.teacher.family" class="w-full h-full object-cover">
+                                </template>
+                                <template x-if="!course.cover">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                    </svg>
+                                </template>
                             </div>
-                            <span class="status-badge absolute top-4 left-4 ${status.class} text-xs px-3 py-1 rounded-full font-medium shadow-sm">
-                                ${status.text}
+                            <span class="status-badge absolute top-4 left-4 text-xs px-3 py-1 rounded-full font-medium shadow-sm" :class="course.active === 1 ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-yellow-100 text-yellow-800 border border-yellow-200'">
+                                <span x-text="course.active === 1 ? 'فعال' : 'غیر فعال'"></span>
                             </span>
                         </div>
                         <div class="p-5">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <h2 class="text-xl font-bold text-gray-800 leading-tight">${courseData.title}</h2>
+                                    <h2 class="text-xl font-bold text-gray-800 leading-tight" x-text="course.title"></h2>
                                     <div class="flex items-center mt-3">
                                         <div class="teacher-avatar w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border-2 border-white shadow-md overflow-hidden">
-                                            ${courseData.teacher.image ?
-                        `<img src="${mainFrontServerUrl+"/"+courseData.teacher.image}" alt="${courseData.teacher.name} ${courseData.teacher.family}" class="w-full h-full object-cover">` :
-                        `<span class="text-lg font-medium">${courseData.teacher.name.charAt(0)}${courseData.teacher.family.charAt(0)}</span>`
-                    }
+                                            <template x-if="course.teacher.image">
+                                                <img :src="mainFrontServerUrl + '/' + course.teacher.image" :alt="course.teacher.name + ' ' + course.teacher.family" class="w-full h-full object-cover">
+                                            </template>
+                                            <template x-if="!course.teacher.image">
+                                                <span class="text-lg font-medium" x-text="course.teacher.name.charAt(0) + course.teacher.family.charAt(0)"></span>
+                                            </template>
                                         </div>
-                                        <span class="text-sm text-gray-600 mr-3">استاد ${courseData.teacher.name} ${courseData.teacher.family}</span>
+                                        <span class="text-sm text-gray-600 mr-3">استاد <span x-text="course.teacher.name + ' ' + course.teacher.family"></span></span>
                                     </div>
                                 </div>
                                 <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
@@ -345,7 +286,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <span>تعداد جلسات: <span class="font-medium">${courseData.totalClasses} جلسه</span></span>
+                                <span>تعداد جلسات: <span class="font-medium" x-text="course.totalClasses + ' جلسه'"></span></span>
                             </div>
                             <div class="mt-5 space-y-4">
                                 <div>
@@ -354,12 +295,12 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
-                                            جلسات شرکت کرده (${courseData.presentClasses} از ${courseData.totalClasses})
+                                            جلسات شرکت کرده (<span x-text="course.presentClasses"></span> از <span x-text="course.totalClasses"></span>)
                                         </span>
-                                        <span class="font-medium">${courseData.presentPercentage}%</span>
+                                        <span class="font-medium" x-text="course.presentPercentage + '%'"></span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="progress-bar bg-gradient-to-r from-green-400 to-green-600 h-2.5 rounded-full" style="width: ${courseData.presentPercentage}%"></div>
+                                        <div class="progress-bar bg-gradient-to-r from-green-400 to-green-600 h-2.5 rounded-full" :style="'width: ' + course.presentPercentage + '%'"></div>
                                     </div>
                                 </div>
                                 <div>
@@ -368,17 +309,17 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
-                                            غیبت‌ها (${courseData.absentClasses} جلسه)
+                                            غیبت‌ها (<span x-text="course.absentClasses + ' جلسه'"></span>)
                                         </span>
-                                        <span class="font-medium">${courseData.absentPercentage}%</span>
+                                        <span class="font-medium" x-text="course.absentPercentage + '%'"></span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="progress-bar bg-gradient-to-r from-red-400 to-red-600 h-2.5 rounded-full" style="width: ${courseData.absentPercentage}%"></div>
+                                        <div class="progress-bar bg-gradient-to-r from-red-400 to-red-600 h-2.5 rounded-full" :style="'width: ' + course.absentPercentage + '%'"></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-6 flex space-x-3 space-x-reverse">
-                                <a href="/courseDetail/${courseData.id}" class="flex-1 action-button bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-4 rounded-xl text-center font-medium shadow-md hover:shadow-lg">
+                                <a :href="'/courseDetail/' + course.id" class="flex-1 action-button bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-4 rounded-xl text-center font-medium shadow-md hover:shadow-lg">
                                     جزئیات دوره
                                 </a>
                                 <button class="action-button bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 p-3 rounded-xl shadow-md hover:shadow-lg">
@@ -388,29 +329,48 @@
                                 </button>
                             </div>
                         </div>
-                    `;
+                    </div>
+                </template>
 
-                    coursesContainer.appendChild(courseCard);
-                });
+                <template x-if="courses.length === 0">
+                    <div class="col-span-3 flex flex-col items-center justify-center py-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        </svg>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">دوره‌ای یافت نشد</h3>
+                        <p class="text-gray-500 text-center">شما در هیچ دوره‌ای ثبت‌نام نکرده‌اید.</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
 
-                // اگر دوره‌ای وجود نداشت
-                if (coursesData.length === 0) {
-                    coursesContainer.innerHTML = `
-                        <div class="col-span-3 flex flex-col items-center justify-center py-12">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                            </svg>
-                            <h3 class="text-xl font-semibold text-gray-700 mb-2">دوره‌ای یافت نشد</h3>
-                            <p class="text-gray-500 text-center">شما در هیچ دوره‌ای ثبت‌نام نکرده‌اید.</p>
-                        </div>
-                    `;
+    <script>
+        function coursesPage() {
+            return {
+                loading: true,
+                courses: [],
+
+                async init() {
+                    await this.fetchCourses();
+                },
+
+                async fetchCourses() {
+                    try {
+                        const response = await makeRequest('GET', 'fa', '{{ route('students.getCourses') }}');
+
+                        if (response.message === 'success' && response.data && response.data.studentCourse) {
+                            this.courses = response.data.studentCourse;
+                        } else {
+                            throw new Error('داده‌های دوره‌ها دریافت نشد');
+                        }
+                    } catch (error) {
+                        showToastAlert(error, 'error', 3000);
+                    } finally {
+                        this.loading = false;
+                    }
                 }
-            }
-
-            // بارگذاری دوره‌ها پس از لود صفحه
-            setTimeout(() => {
-                loadCourses();
-            }, 100);
-        });
+            };
+        }
     </script>
 </x-layouts.app>

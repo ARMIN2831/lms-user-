@@ -432,7 +432,9 @@
                     try {
                         const response = await makeRequest('GET', 'fa', '{{ route('getUser') }}');
                         const user = response.user;
-                        const student = user.student;
+                        let student;
+                        if(response.user.user_type_id === 1) student = user.teacher;
+                        if(response.user.user_type_id === 2) student = user.student;
 
                         this.user = {
                             full_name: student.name + " " + student.family,

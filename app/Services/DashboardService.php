@@ -98,7 +98,7 @@ class DashboardService
     {
         $model = $this->model;
         $upcomingAttends = Attend::where('date', '>=', time())
-            ->whereHas('course',function ($query) use ($model) {
+            ->whereHas('course.title',function ($query) use ($model) {
                 $query->where('teachers_id', $model->id);
             })
             ->with('course.title')
@@ -109,7 +109,7 @@ class DashboardService
             ->whereHas('course',function ($query) use ($model) {
                 $query->where('teachers_id', $model->id);
             })
-            ->with('course.teacher','status')
+            ->with('course.teacher','course.title','status')
             ->orderBy('date', 'desc')
             ->first();
 

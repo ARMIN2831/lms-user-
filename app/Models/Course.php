@@ -20,4 +20,10 @@ class Course extends Model
     {
         return $this->belongsTo(Teacher::class,'teachers_id');
     }
+
+
+    public function attends()
+    {
+        return $this->hasMany(Attend::class,'courses_id');
+    }
 }

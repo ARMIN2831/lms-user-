@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\StudentHomeController;
-use App\Http\Controllers\TeacherHomeController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;

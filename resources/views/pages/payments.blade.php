@@ -135,7 +135,7 @@
         }
     </style>
 
-    <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-8 font-sans" x-data="paymentsPage()" x-init="init()">
+    <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-8 font-sans" x-data="paymentsPage()">
         <!-- هدر صفحه -->
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
             <div>
@@ -416,8 +416,8 @@
                     try {
                         const response = await makeRequest('GET', 'fa', '{{ route('students.getStudentPayments') }}');
 
-                        if (response.status === 'success' && response.data.length > 0) {
-                            this.courses = response.data;
+                        if (response.status === 'success' && response.data.payments.length > 0) {
+                            this.courses = response.data.payments;
                             this.selectedCourseId = this.courses[0].id;
                             this.selectedCourse = this.courses[0];
                         }

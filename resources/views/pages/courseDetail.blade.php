@@ -474,7 +474,7 @@
             let courseData;
             const courseDataRequest = await makeRequest('GET', 'fa', '{{ route("students.getCourseData", ["id" => request()->route("id")]) }}')
                 .then(data => {
-                    courseData = data.studentCourse;
+                    courseData = data.data.studentCourse;
                     //header section
                     const headerContainer = document.querySelector('.course-header .max-w-6xl');
                     const course = courseData.course;

@@ -5,35 +5,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Mail;
 
-if (!function_exists('uploadFile')) {
-    function uploadFile($file)
-    {
-        $filename = uniqid() . '_' . hash_file('md5', $file) . '.' . $file->getClientOriginalExtension();
-        $uploadPath = base_path('public_html/uploads');
-        if (!file_exists($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
-        }
-        $file->move($uploadPath, $filename);
-        return 'http://app.tolueacademy.ir/uploads/' . $filename;
-    }
-}
-
-
-if (!function_exists('deleteUploadedFile')) {
-    function deleteUploadedFile($fileUrl)
-    {
-        $baseUrl = 'http://app.tolueacademy.ir/uploads/';
-        //dd(strpos($fileUrl, $baseUrl) !== 0);
-        if (strpos($fileUrl, $baseUrl) !== 0) return false;
-        $relativePath = str_replace($baseUrl, '', $fileUrl);
-        $uploadPath = base_path('public_html/uploads');
-        $filePath = $uploadPath . '/' . $relativePath;
-        //dd(file_exists($filePath),$filePath);
-        if (file_exists($filePath)) return unlink($filePath);
-        return false;
-    }
-}
-
 
 if (!function_exists('sendOTPCode')) {
     function sendOTPCode($type,$userId,$userModel,$userField)

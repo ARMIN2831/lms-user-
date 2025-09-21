@@ -3,13 +3,13 @@
 
 namespace App\Services;
 
-use App\Models\Student;
-use App\Models\Teacher;
 use App\Models\User;
+use App\Traits\FileUploadTrait;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileService
 {
+    use FileUploadTrait;
     protected $user;
     protected $model;
 
@@ -47,9 +47,9 @@ class ProfileService
 
     public function uploadProfile($file)
     {
-        deleteUploadedFile($this->model->image);
+        $this->deleteUploadedFile($this->model->image);
         $this->model->update([
-            'image' => uploadFile($file),
+            'image' => $this->uploadFile($file),
         ]);
     }
 

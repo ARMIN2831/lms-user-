@@ -9,6 +9,7 @@ use App\Models\Information;
 use App\Models\Student;
 use App\Models\StudentCourse;
 use App\Models\Teacher;
+use App\Services\DashboardService;
 use App\Services\ProfileService;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 class StudentHomeController extends Controller
 {
     protected $profileService;
+    protected $dashboardService;
 
     /**
      * @throws Exception
@@ -24,102 +26,24 @@ class StudentHomeController extends Controller
     public function __construct()
     {
         $this->profileService = new ProfileService(auth()->user());
+        $this->dashboardService = new DashboardService(auth()->user());
     }
 
     public function getCardsData(Request $request)
     {
-        $user = $request->user();
-        $active_count = 0;
-        $paymentCount = 0;
-        $count = 0;
-        $percent = 0;
-        if ($user->user_type_id == 1){
-            $courses = Teacher::where('users_id',$user->id)->with('courses')->get()[0]->courses;
-            $count = count($courses);
-            foreach ($courses as $course) if ($course->active == 1) $active_count++;
-        }
-
-        if ($user->user_type_id == 2) {
-            $courses = Student::where('users_id',$user->id)->with('courses')->get()[0]->courses;
-            $count = count($courses);
-            foreach ($courses as $course) {
-                if ($course->pivot->active and $course->pivot->active == 1) $active_count++;
-                $paymentCount += $course->pivot->remain;
-            }
-            $percent = $count > 0 ? round(($active_count / $count) * 100,2) : 0;
-        }
-        $news = Information::where('namayesh',1)->where('activeMainpage',1)->get();
-
-
         return response()->json([
             'message' => 'success',
-            'data' => [
-                'courseCount' => $count,
-                'coursePercent' => $percent,
-                'paymentCount' => $paymentCount,
-                'news' => $news,
-            ],
+            'data' => $this->dashboardService->getStudentCardsData(),
         ]);
     }
 
 
     public function getAttends(Request $request)
     {
-        $user = $request->user();
-        if ($user->user_type_id == 2) {
-            $user = $user->load('student');
-            $upcomingAttends = Attend::where('students_id', $user->student->id)
-                ->with('course.title')
-                ->where('date', '>=', time())
-                ->orderBy('date', 'asc')
-                ->get();
-
-            $lastPastAttend = Attend::where('students_id', $user->student->id)
-                ->with('course.teacher','status')
-                ->where('date', '<', time())
-                ->orderBy('date', 'desc')
-                ->first();
-
-            $comments = Attend::where('students_id', $user->student->id)
-                ->whereNotNull('comment')
-                ->where('readComment', 0)
-                ->get();
-
-            return response()->json([
-                'message' => 'success',
-                'data' => [
-                    'upcoming_attends' => $upcomingAttends,
-                    'last_past_attend' => $lastPastAttend,
-                    'comments' => $comments,
-                ],
-            ]);
-        }
-        if ($user->user_type_id == 1) {
-            $user = $user->load('teacher');
-            $upcomingAttends = Attend::where('date', '>=', time())
-                ->whereHas('course',function ($query) use ($user) {
-                    $query->where('teachers_id', $user->teacher->id);
-                })
-                ->with('course.title')
-                ->orderBy('date', 'asc')
-                ->get();
-
-            $lastPastAttend = Attend::where('date', '<', time())
-                ->whereHas('course',function ($query) use ($user) {
-                    $query->where('teachers_id', $user->teacher->id);
-                })
-                ->with('course.teacher','status')
-                ->orderBy('date', 'desc')
-                ->first();
-
-            return response()->json([
-                'message' => 'success',
-                'data' => [
-                    'upcoming_attends' => $upcomingAttends,
-                    'last_past_attend' => $lastPastAttend,
-                ],
-            ]);
-        }
+        return response()->json([
+            'message' => 'success',
+            'data' => $this->dashboardService->getStudentAttends(),
+        ]);
     }
 
 

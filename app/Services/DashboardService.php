@@ -6,8 +6,6 @@ namespace App\Services;
 use App\Models\Attend;
 use App\Models\Information;
 use App\Models\User;
-use App\Traits\FileUploadTrait;
-use Illuminate\Support\Facades\Hash;
 
 class DashboardService
 {

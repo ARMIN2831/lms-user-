@@ -296,16 +296,6 @@
 
                 // ایجاد کارت برای هر دوره
                 coursesData.forEach(courseData => {
-                    const course = courseData.course;
-                    const courseAttends = courseData.attends || [];
-
-                    // محاسبه آمار حضور و غیاب
-                    const totalClasses = courseAttends.length;
-                    const presentClasses = courseAttends.filter(a => a.attend_status_id === 3).length;
-                    const absentClasses = courseAttends.filter(a => [4, 7].includes(a.attend_status_id)).length;
-
-                    const presentPercentage = totalClasses > 0 ? Math.round((presentClasses / totalClasses) * 100) : 0;
-                    const absentPercentage = totalClasses > 0 ? Math.round((absentClasses / totalClasses) * 100) : 0;
 
                     // تعیین وضعیت دوره
                     let status = { text: 'غیر فعال', class: colorMap['warning'] };
@@ -318,9 +308,9 @@
                     courseCard.innerHTML = `
                         <div class="relative overflow-hidden">
                             <div class="h-48 bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center course-thumbnail">
-                                <div class="absolute inset-0 ${course.title.coCover ? `` : `bg-[url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover` } bg-center opacity-30"></div>
-                                ${course.title.coCover ?
-                        `<img src="${mainFrontServerUrl+"/"+course.title.coCover}" alt="${course.teacher.name} ${course.teacher.family}" class="w-full h-full object-cover">` :
+                                <div class="absolute inset-0 ${courseData.cover ? `` : `bg-[url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover` } bg-center opacity-30"></div>
+                                ${courseData.title ?
+                        `<img src="${mainFrontServerUrl+"/"+courseData.cover}" alt="${courseData.teacher.name} ${courseData.teacher.family}" class="w-full h-full object-cover">` :
                         `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                                 </svg>`
@@ -334,15 +324,15 @@
                         <div class="p-5">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <h2 class="text-xl font-bold text-gray-800 leading-tight">${course.title.coTitle}</h2>
+                                    <h2 class="text-xl font-bold text-gray-800 leading-tight">${courseData.title}</h2>
                                     <div class="flex items-center mt-3">
                                         <div class="teacher-avatar w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border-2 border-white shadow-md overflow-hidden">
-                                            ${course.teacher.image ?
-                        `<img src="${mainFrontServerUrl+"/"+course.teacher.image}" alt="${course.teacher.name} ${course.teacher.family}" class="w-full h-full object-cover">` :
-                        `<span class="text-lg font-medium">${course.teacher.name.charAt(0)}${course.teacher.family.charAt(0)}</span>`
+                                            ${courseData.teacher.image ?
+                        `<img src="${mainFrontServerUrl+"/"+courseData.teacher.image}" alt="${courseData.teacher.name} ${courseData.teacher.family}" class="w-full h-full object-cover">` :
+                        `<span class="text-lg font-medium">${courseData.teacher.name.charAt(0)}${courseData.teacher.family.charAt(0)}</span>`
                     }
                                         </div>
-                                        <span class="text-sm text-gray-600 mr-3">استاد ${course.teacher.name} ${course.teacher.family}</span>
+                                        <span class="text-sm text-gray-600 mr-3">استاد ${courseData.teacher.name} ${courseData.teacher.family}</span>
                                     </div>
                                 </div>
                                 <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
@@ -355,7 +345,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <span>تعداد جلسات: <span class="font-medium">${totalClasses} جلسه</span></span>
+                                <span>تعداد جلسات: <span class="font-medium">${courseData.totalClasses} جلسه</span></span>
                             </div>
                             <div class="mt-5 space-y-4">
                                 <div>
@@ -364,12 +354,12 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
-                                            جلسات شرکت کرده (${presentClasses} از ${totalClasses})
+                                            جلسات شرکت کرده (${courseData.presentClasses} از ${courseData.totalClasses})
                                         </span>
-                                        <span class="font-medium">${presentPercentage}%</span>
+                                        <span class="font-medium">${courseData.presentPercentage}%</span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="progress-bar bg-gradient-to-r from-green-400 to-green-600 h-2.5 rounded-full" style="width: ${presentPercentage}%"></div>
+                                        <div class="progress-bar bg-gradient-to-r from-green-400 to-green-600 h-2.5 rounded-full" style="width: ${courseData.presentPercentage}%"></div>
                                     </div>
                                 </div>
                                 <div>
@@ -378,12 +368,12 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
-                                            غیبت‌ها (${absentClasses} جلسه)
+                                            غیبت‌ها (${courseData.absentClasses} جلسه)
                                         </span>
-                                        <span class="font-medium">${absentPercentage}%</span>
+                                        <span class="font-medium">${courseData.absentPercentage}%</span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="progress-bar bg-gradient-to-r from-red-400 to-red-600 h-2.5 rounded-full" style="width: ${absentPercentage}%"></div>
+                                        <div class="progress-bar bg-gradient-to-r from-red-400 to-red-600 h-2.5 rounded-full" style="width: ${courseData.absentPercentage}%"></div>
                                     </div>
                                 </div>
                             </div>

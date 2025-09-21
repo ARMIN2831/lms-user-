@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\studentRequests\UpdateProfileRequest;
 use App\Models\Attend;
 use App\Models\Fee;
-use App\Models\Information;
-use App\Models\Student;
 use App\Models\StudentCourse;
-use App\Models\Teacher;
+use App\Services\CoursesService;
 use App\Services\DashboardService;
 use App\Services\ProfileService;
 use Exception;
@@ -19,6 +17,7 @@ class StudentHomeController extends Controller
 {
     protected $profileService;
     protected $dashboardService;
+    protected $coursesService;
 
     /**
      * @throws Exception
@@ -27,6 +26,7 @@ class StudentHomeController extends Controller
     {
         $this->profileService = new ProfileService(auth()->user());
         $this->dashboardService = new DashboardService(auth()->user());
+        $this->coursesService = new CoursesService(auth()->user());
     }
 
     public function getCardsData(Request $request)
@@ -49,13 +49,9 @@ class StudentHomeController extends Controller
 
     public function getCourses(Request $request)
     {
-        $user = $request->user()->load('student');
-        $studentCourse = StudentCourse::where('students_id', $user->student->id)->with('course.title','course.teacher','attends.status')->get();
         return response()->json([
             'message' => 'success',
-            'data' => [
-                'studentCourse' => $studentCourse,
-            ],
+            'data' => $this->coursesService->getStudentCourses(),
         ]);
     }
 
@@ -67,6 +63,16 @@ class StudentHomeController extends Controller
         return response()->json([
             'message' => 'success',
             'studentCourse' => $studentCourseData,
+        ]);
+    }
+
+
+    public function readComment(Request $request,$id)
+    {
+        Attend::where('id', $id)->update(['readComment' => 1]);
+        return response()->json([
+            'status' => 'success',
+            'message' => '',
         ]);
     }
 
@@ -147,16 +153,6 @@ class StudentHomeController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $studentCourses,
-        ]);
-    }
-
-
-    public function readComment(Request $request,$id)
-    {
-        Attend::where('id', $id)->update(['readComment' => 1]);
-        return response()->json([
-            'status' => 'success',
-            'message' => '',
         ]);
     }
 }

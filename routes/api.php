@@ -24,7 +24,8 @@ Route::middleware('SetLan')->group(function (){
     Route::middleware(['auth:sanctum', 'checkLogin'])->group(function() {
         Route::get('/check-token', function (Request $request) {
             try {
-                if ($request->user()) return response()->json(['valid' => true]);
+                $user = $request->user();
+                if ($user) return response()->json(['valid' => true,'type' => $user->user_type_id]);
                 return response()->json(['valid' => false], 401);
             } catch (\Exception $e) {
                 return response()->json(['valid' => false], 401);

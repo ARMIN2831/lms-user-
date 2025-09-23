@@ -1,4 +1,5 @@
 const mainFrontServerUrl = "http://tolueacademy.ir";
+let userType = null;
 async function makeRequest(method, lan, url, data = {}, isFormData = false) {
     const config = {
         method: method,
@@ -49,6 +50,7 @@ async function checkTokenValidity() {
             if (isLoginPage(currentPath)) {
                 redirectToDashboardOrSavedUrl();
             } else {
+                userType = response.data.type;
                 // اگر در صفحه لاگین نیست و redirect_url وجود دارد، بررسی می‌کنیم
                 checkAndRedirectToSavedUrl();
             }

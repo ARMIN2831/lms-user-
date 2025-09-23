@@ -267,7 +267,7 @@
                                     <div class="flex items-center mt-3">
                                         <div class="teacher-avatar w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border-2 border-white shadow-md overflow-hidden">
                                             <template x-if="course.teacher.image">
-                                                <img :src="mainFrontServerUrl + '/' + course.teacher.image" :alt="course.teacher.name + ' ' + course.teacher.family" class="w-full h-full object-cover">
+                                                <img :src="course.teacher.image" :alt="course.teacher.name + ' ' + course.teacher.family" class="w-full h-full object-cover">
                                             </template>
                                             <template x-if="!course.teacher.image">
                                                 <span class="text-lg font-medium" x-text="course.teacher.name.charAt(0) + course.teacher.family.charAt(0)"></span>

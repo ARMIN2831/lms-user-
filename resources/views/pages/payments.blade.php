@@ -925,7 +925,7 @@
 
                 // متدهای مشترک
                 selectCourse(course) {
-                    this.selectedCourseId = this.userType === 1 ? course.course_id : course.id;
+                    this.selectedCourseId = userType === 1 ? course.course_id : course.id;
                     this.selectedCourse = course;
                     this.expandedPayments = {};
                 },

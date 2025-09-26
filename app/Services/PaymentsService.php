@@ -10,6 +10,7 @@ use App\Models\StudentCourse;
 use App\Models\TeacherPayment;
 use App\Models\User;
 use App\Traits\HandlesUserTypeTrait;
+use Illuminate\Support\Facades\DB;
 
 class PaymentsService
 {
@@ -60,19 +61,37 @@ class PaymentsService
 
     public function TeacherGetPayments()
     {
+        DB::enableQueryLog();
         $model = $this->model;
+        $fee = Fee::where('year', 1404)->first();
 
-        // استفاده از روابط برای بهینه‌سازی بیشتر
+        // دریافت تمام دوره‌های استاد با روابط لازم
         $courses = Course::where('teachers_id', $model->id)
             ->with([
                 'title',
-                'attends.teacherPayment',
                 'attends' => function($query) {
-                    $query->select('id', 'courses_id', 'feeFlag', 'date', 'duration');
-                }
+                    $query->select('id', 'courses_id', 'students_courses_id', 'feeFlag', 'date');
+                },
+                'attends.studentCourse', // رابطه برای محاسبه هزینه
+                'attends.teacherPayment'
             ])
-            ->select('id','courseTitle_id')
+            ->select('id', 'courseTitle_id', 'courseType_id')
             ->get();
+
+        // دریافت تمام student_courses_id های مورد نیاز
+        $studentCourseIds = $courses->pluck('attends')
+            ->flatten()
+            ->pluck('students_courses_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // دریافت تمام studentCourseها در یک کوئری
+        $studentCourses = StudentCourse::whereIn('id', $studentCourseIds)
+            ->get()
+            ->keyBy('id');
+
         $result = [
             'teacher_id' => $model->id,
             'courses' => [],
@@ -86,12 +105,12 @@ class PaymentsService
         ];
 
         foreach ($courses as $course) {
-            // استفاده از collection methods برای جداسازی
+            // جدا کردن جلسات پرداخت شده و نشده
             $attends = $course->attends;
             $paidAttends = $attends->whereNotNull('feeFlag');
             $unpaidAttends = $attends->whereNull('feeFlag');
 
-            // گروه‌بندی با استفاده از groupBy
+            // گروه‌بندی جلسات پرداخت شده بر اساس payment_id
             $groupedPaidAttends = $paidAttends->groupBy('feeFlag');
 
             $paidSessionsByPayment = [];
@@ -100,15 +119,35 @@ class PaymentsService
             foreach ($groupedPaidAttends as $paymentId => $attendsGroup) {
                 $payment = $attendsGroup->first()->teacherPayment;
 
-                $sessions = $attendsGroup->map(function($attend) {
-                    return [
+                $sessions = [];
+                $sessionsTotalAmount = 0;
+
+                foreach ($attendsGroup as $attend) {
+                    $price = 0;
+
+                    // محاسبه هزینه با استفاده از داده‌های از پیش لود شده
+                    if ($attend->students_courses_id && isset($studentCourses[$attend->students_courses_id])) {
+                        $studentCourse = $studentCourses[$attend->students_courses_id];
+
+                        if ($course->courseType_id == 1) {
+                            $fieldName = "fee_" . $studentCourse->perclocko;
+                            if (isset($fee->$fieldName)) {
+                                $price = $fee->$fieldName;
+                            }
+                        } else if ($course->courseType_id == 2) {
+                            $price = $fee->feeg;
+                        }
+                    }
+
+                    $sessionsTotalAmount += $price;
+
+                    $sessions[] = [
                         'attend_id' => $attend->id,
                         'session_date' => $attend->date,
-                        'amount' => $attend->duration
+                        'amount' => $price
                     ];
-                })->toArray();
+                }
 
-                $sessionsTotalAmount = $attendsGroup->sum('duration');
                 $courseTotalPaid += $sessionsTotalAmount;
 
                 $paidSessionsByPayment[] = [
@@ -121,21 +160,42 @@ class PaymentsService
                 ];
             }
 
-            // بقیه کد مانند قبل...
-            $courseTotalUnpaid = $unpaidAttends->sum('duration');
+            // محاسبه هزینه جلسات پرداخت نشده
+            $courseTotalUnpaid = 0;
+            $unpaidSessions = [];
+
+            foreach ($unpaidAttends as $attend) {
+                $price = 0;
+
+                if ($attend->students_courses_id && isset($studentCourses[$attend->students_courses_id])) {
+                    $studentCourse = $studentCourses[$attend->students_courses_id];
+
+                    if ($course->courseType_id == 1) {
+                        $fieldName = "fee_" . $studentCourse->perclocko;
+                        if (isset($fee->$fieldName)) {
+                            $price = $fee->$fieldName;
+                        }
+                    } else if ($course->courseType_id == 2) {
+                        $price = $fee->feeg;
+                    }
+                }
+
+                $courseTotalUnpaid += $price;
+
+                $unpaidSessions[] = [
+                    'attend_id' => $attend->id,
+                    'session_date' => $attend->date,
+                    'amount' => $price
+                ];
+            }
+
             $courseData = [
                 'course_id' => $course->id,
-                'course_name' => $course->title->coTitle,
+                'course_name' => $course->title->coTitle ?? 'بدون عنوان',
                 'paid_sessions' => $paidSessionsByPayment,
                 'unpaid_sessions' => [
                     'sessions_count' => $unpaidAttends->count(),
-                    'sessions' => $unpaidAttends->map(function($attend) {
-                        return [
-                            'attend_id' => $attend->id,
-                            'session_date' => $attend->date,
-                            'amount' => $attend->duration
-                        ];
-                    })->toArray(),
+                    'sessions' => $unpaidSessions,
                     'total_amount' => $courseTotalUnpaid
                 ],
                 'summary' => [
@@ -156,7 +216,7 @@ class PaymentsService
             $result['summary']['paid_sessions'] += $paidAttends->count();
             $result['summary']['unpaid_sessions'] += $unpaidAttends->count();
         }
-
+        $queries = DB::getQueryLog();
         return $result;
     }
 }

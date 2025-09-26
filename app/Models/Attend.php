@@ -16,6 +16,12 @@ class Attend extends Model
     }
 
 
+    public function studentCourse()
+    {
+        return $this->belongsTo(StudentCourse::class,'students_courses_id ');
+    }
+
+
     public function status()
     {
         return $this->belongsTo(AttendStatus::class,'attend_status_id');

@@ -122,9 +122,12 @@ class HomeController extends Controller
 
     public function getPayments(Request $request)
     {
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 10);
+        $courseId = $request->get('course_id', null);
         return response()->json([
             'status' => 'success',
-            'data' => $this->paymentsService->getPayments(),
+            'data' => $this->paymentsService->getPayments($page, $perPage, $courseId),
         ]);
     }
 }

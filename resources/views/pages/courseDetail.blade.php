@@ -777,6 +777,7 @@
                 modalSessionNumber: 0,
 
                 async init() {
+                    await waitForCheckToken();
                     await this.fetchCourseData();
                 },
 

@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('fonts/css/all.min.css') }}">
     <link rel="manifest" href="{{ asset('_manifest.json') }}" data-pwa-version="3.4">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('app/icons/icon-192x192.png') }}">
-    <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
+    <script defer src="{{ asset('js/api.js') }}"></script>
     <style>
         /* استایل‌های toast notification */
         .toast-alert-container {
@@ -129,4 +129,4 @@
     <script type="text/javascript" src="{{ asset('scripts/custom.js') }}"></script>
     <p class="offline-message bg-red-dark color-white">شما به اینترنت متصل نیستید</p><p class="online-message bg-green-dark color-white">اتصال به اینترنت برقرار شد</p>
 </body>
-</html>z
+</html>

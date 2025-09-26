@@ -648,6 +648,7 @@
                 attendsData: null,
 
                 async init() {
+                    await waitForCheckToken();
                     await Promise.all([
                         this.fetchUserData(),
                         this.fetchCardsData(),

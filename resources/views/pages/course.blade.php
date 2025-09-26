@@ -352,6 +352,7 @@
                 courses: [],
 
                 async init() {
+                    await waitForCheckToken();
                     await this.fetchCourses();
                 },
 

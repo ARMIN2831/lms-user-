@@ -417,6 +417,7 @@
                 },
 
                 async init() {
+                    await waitForCheckToken();
                     await this.fetchUserProfile();
 
                     // تغییر تب‌ها

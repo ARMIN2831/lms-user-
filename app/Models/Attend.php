@@ -20,4 +20,10 @@ class Attend extends Model
     {
         return $this->belongsTo(AttendStatus::class,'attend_status_id');
     }
+
+
+    public function teacherPayment()
+    {
+        return $this->belongsTo(TeacherPayment::class,'feeFlag');
+    }
 }

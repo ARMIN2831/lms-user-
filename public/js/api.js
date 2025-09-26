@@ -1,5 +1,5 @@
 const mainFrontServerUrl = "http://tolueacademy.ir";
-let userType = null;
+var userType = null;
 async function makeRequest(method, lan, url, data = {}, isFormData = false) {
     const config = {
         method: method,
@@ -27,47 +27,65 @@ async function checkTokenValidity() {
     const token = localStorage.getItem("access_token");
     const currentPath = window.location.pathname;
 
-    // اگر توکن وجود ندارد و کاربر در صفحه لاگین نیست، به صفحه لاگین هدایت می‌شود
-    if (!token) {
-        if (!isLoginPage(currentPath)) {
-            redirectToLogin();
-        }
-        return false;
-    }
-
-    // اگر توکن وجود دارد، اعتبار آن را بررسی می‌کنیم
-    if (token) {
-        try {
-            // این endpoint باید در بک‌اند شما وجود داشته باشد و وضعیت توکن را بررسی کند
-            const response = await axios.get('/api/check-token', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'user_lan': 'fa'
-                }
-            });
-
-            // اگر توکن معتبر است و کاربر در صفحه لاگین است، به داشبرد هدایت می‌شود
-            if (isLoginPage(currentPath)) {
-                redirectToDashboardOrSavedUrl();
-            } else {
-                userType = response.data.type;
-                // اگر در صفحه لاگین نیست و redirect_url وجود دارد، بررسی می‌کنیم
-                checkAndRedirectToSavedUrl();
+    try {
+        if (!token) {
+            if (!isLoginPage(currentPath)) {
+                redirectToLogin();
             }
-
-            return true;
-
-        } catch (error) {
-            // اگر توکن نامعتبر است
-            if (error.response && error.response.status === 401) {
-                if (!isLoginPage(currentPath)) {
-                    handleInvalidToken();
-                }
-            }
+            // حتی بدون توکن، event منتشر کنید تا صفحات بدون userType به‌روزرسانی شوند
+            window.dispatchEvent(new CustomEvent('userTypeReady'));
             return false;
         }
+
+        const response = await axios.get('/api/check-token', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'user_lan': 'fa'
+            }
+        });
+
+        if (isLoginPage(currentPath)) {
+            redirectToDashboardOrSavedUrl();
+        } else {
+            userType = response.data.type;  // تنظیم userType
+            checkAndRedirectToSavedUrl();
+        }
+
+        // event سفارشی برای اطلاع به صفحات: userType آماده است
+        window.dispatchEvent(new CustomEvent('waitForCheckToken'));
+        return true;
+
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            if (!isLoginPage(currentPath)) {
+                handleInvalidToken();
+            }
+            userType = null;  // صریحاً null تنظیم کنید
+        } else {
+            showToastAlert(error, 'error');
+        }
+        // event حتی در خطا منتشر شود
+        window.dispatchEvent(new CustomEvent('waitForCheckToken'));
+        return false;
     }
 }
+
+
+function waitForCheckToken() {
+    return new Promise((resolve) => {
+        if (userType !== null) {
+            resolve(userType);
+        } else {
+            // اگر null است، منتظر event بمانید
+            const handler = (e) => {
+                window.removeEventListener('waitForCheckToken', handler);
+                resolve(userType);
+            };
+            window.addEventListener('waitForCheckToken', handler);
+        }
+    });
+}
+
 
 // تابع برای بررسی اینکه آیا کاربر در صفحه لاگین است
 function isLoginPage(path) {
@@ -133,10 +151,7 @@ setInterval(() => {
 
 // وقتی صفحه load شد، توکن را بررسی کنید
 document.addEventListener('DOMContentLoaded', function() {
-    // کمی تاخیر برای اطمینان از لود کامل صفحه
-    setTimeout(() => {
-        checkTokenValidity();
-    }, 100);
+    checkTokenValidity();
 });
 
 // تابع برای ذخیره اطلاعات کاربر و توکن
@@ -319,5 +334,6 @@ if (typeof module !== 'undefined' && module.exports) {
         showToastAlert,
         hideToast,
         hideSkeleton,
+        getUserType,
     };
 }

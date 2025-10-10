@@ -38,5 +38,5 @@ return [
     'not_enough_wallet' => 'رصيد المحفظة غير كافٍ.',
     'rate_successful' => 'تم إرسال التقييم بنجاح.',
     'advertisement_uploaded' => 'تم تحميل الإعلان بنجاح.',
-
+    'comment_submitted' => 'تم إرسال التعليق بنجاح.',
 ];

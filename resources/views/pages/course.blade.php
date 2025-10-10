@@ -264,7 +264,7 @@
                             <div class="flex items-start justify-between">
                                 <div>
                                     <h2 class="text-xl font-bold text-gray-800 leading-tight" x-text="course.title"></h2>
-                                    <div class="flex items-center mt-3">
+                                    <div x-show="type !== 1" class="flex items-center mt-3">
                                         <div class="teacher-avatar w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border-2 border-white shadow-md overflow-hidden">
                                             <template x-if="course.teacher.image">
                                                 <img :src="course.teacher.image" :alt="course.teacher.name + ' ' + course.teacher.family" class="w-full h-full object-cover">
@@ -350,9 +350,11 @@
             return {
                 loading: true,
                 courses: [],
+                type : null,
 
                 async init() {
                     await waitForCheckToken();
+                    this.type = userType;
                     await this.fetchCourses();
                 },
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\studentRequests\UpdateProfileRequest;
 use App\Services\CourseDetailService;
+use App\Services\CourseFilterService;
 use App\Services\CoursesService;
 use App\Services\DashboardService;
 use App\Services\PaymentsService;
@@ -19,6 +20,7 @@ class HomeController extends Controller
     protected $coursesService;
     protected $courseDetailService;
     protected $paymentsService;
+    protected $courseFilterService;
     protected $user;
 
     /**
@@ -32,6 +34,7 @@ class HomeController extends Controller
         $this->coursesService = new CoursesService($user);
         $this->courseDetailService = new CourseDetailService($user);
         $this->paymentsService = new PaymentsService($user);
+        $this->courseFilterService = new CourseFilterService($user);
     }
 
     public function getCardsData(Request $request)
@@ -128,6 +131,34 @@ class HomeController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $this->paymentsService->getPayments($page, $perPage, $courseId),
+        ]);
+    }
+
+
+    public function getFilterData(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => $this->courseFilterService->getFilterData(),
+        ]);
+    }
+
+
+    public function getAttendFilter(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => $this->courseFilterService->getAttendFilter($request->input()),
+        ]);
+    }
+
+
+    public function submitSessionComment(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.comment_submitted'),
+            'data' => $this->courseFilterService->submitSessionComment($request->input(),$request->file('sylabes')),
         ]);
     }
 }

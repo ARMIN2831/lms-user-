@@ -55,6 +55,10 @@ Route::get('/profile', function () {
     return view('pages.profile');
 })->name('profile');
 
+Route::get('/courseFilter', function () {
+    return view('pages.courseFilter');
+})->name('courseFilter');
+
 Route::view('/menu-main', 'menus.menu-main');
 Route::view('/menu-share', 'menus.menu-share');
 Route::view('/menu-colors', 'menus.menu-colors');

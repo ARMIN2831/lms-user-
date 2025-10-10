@@ -36,4 +36,5 @@ return [
     'not_enough_wallet' => 'موجودی کیف پول کافی نیست.',
     'rate_successful' => 'امتیازدهی با موفقیت انجام شد.',
     'advertisement_uploaded' => 'آگهی با موفقیت آپلود شد.',
+    'comment_submitted' => 'کامنت با موفقیت ثبت شد.',
 ];

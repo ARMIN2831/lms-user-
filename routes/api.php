@@ -45,6 +45,9 @@ Route::middleware('SetLan')->group(function (){
             Route::post('changePassword', 'changePassword')->name('changePassword');
             Route::get('getPayments', 'getPayments')->name('getPayments');
             Route::post('readComment/{id?}', 'readComment')->name('readComment');
+            Route::get('getFilterData', 'getFilterData')->name('getFilterData');
+            Route::post('getAttendFilter', 'getAttendFilter')->name('getAttendFilter');
+            Route::post('submitSessionComment', 'submitSessionComment')->name('submitSessionComment');
         });
     });
 });

@@ -35,4 +35,5 @@ return [
     'not_enough_wallet' => 'Not enough wallet balance.',
     'rate_successful' => 'Rating submitted successfully.',
     'advertisement_uploaded' => 'Advertisement uploaded successfully.',
+    'comment_submitted' => 'Comment submitted successfully.',
 ];

@@ -10,70 +10,26 @@
 </div>
 <div class="mt-4"></div>
 <h6 class="menu-divider">منو</h6>
+
 <div class="list-group list-custom-small list-menu">
-    <a id="nav-welcome" href="index.html">
+    <a id="nav-welcome" href="{{ route('dashboard') }}">
         <i class="fa fa-heart gradient-red color-white"></i>
         <span>خانه</span>
         <i class="fa fa-angle-left"></i>
     </a>
-    <a id="nav-homepages" href="index-homepages.html">
-        <i class="fa fa-home gradient-green color-white"></i>
-        <span>صفحات اصلی</span>
+    <a id="nav-homepages" href="{{ route('course') }}">
+        <i class="fas fa-book-open gradient-green color-white"></i>
+        <span>دوره ها</span>
         <i class="fa fa-angle-left"></i>
     </a>
-    <a id="nav-components" href="index-components.html">
-        <i class="fa fa-cog gradient-blue color-white"></i>
-        <span>المان ها</span>
+    <a id="nav-components" href="{{ route('payments') }}">
+        <i class="fas fa-wallet gradient-blue color-white"></i>
+        <span>شهریه</span>
         <i class="fa fa-angle-left"></i>
     </a>
-    <a id="nav-pages" href="index-pages.html">
-        <i class="fa fa-file gradient-brown color-white"></i>
-        <span>صفحات</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a id="nav-media" href="index-projects.html">
-        <i class="fa fa-camera gradient-magenta color-white"></i>
-        <span>پروژه ها</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a id="nav-contact" href="page-contact.html">
-        <i class="fa fa-envelope gradient-teal color-white"></i>
-        <span>ارتباط</span>
+    <a id="nav-pages" href="{{ route('profile') }}">
+        <i class="fas fa-user-circle gradient-brown color-white"></i>
+        <span>پروفایل</span>
         <i class="fa fa-angle-left"></i>
     </a>
 </div>
-<h6 class="menu-divider mt-4">تنظیمات</h6>
-<div class="list-group list-custom-small list-menu">
-    <a href="#" data-menu="menu-colors">
-        <i class="fa fa-brush gradient-highlight color-white"></i>
-        <span>رنگ بندی</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a href="#" data-toggle-theme="" data-trigger-switch="switch-dark-mode">
-        <i class="fa fa-moon gradient-dark color-white"></i>
-        <span>تم تاریک</span>
-        <div class="custom-control small-switch ios-switch">
-            <input data-toggle-theme type="checkbox" class="ios-input" id="toggle-dark-menu">
-            <label class="custom-control-label" for="toggle-dark-menu"></label>
-        </div>
-    </a>
-</div>
-<h6 class="menu-divider mt-4">مخاطبین</h6>
-<div class="list-group list-custom-small list-menu ps-2">
-    <a href="#">
-        <img src="{{ asset('images/pictures/1s.jpg') }}">
-        <span>زانیار مدنی</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a href="#">
-        <img src="{{ asset('images/pictures/5s.jpg') }}">
-        <span>مالیا دانی</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a href="#">
-        <img src="{{ asset('images/pictures/6s.jpg') }}">
-        <span>اکرم محمدی</span>
-        <i class="fa fa-angle-left"></i>
-    </a>
-</div>
-<h6 class="menu-divider font-10 mt-4">ساخته شده با <i class="fa fa-heart color-red-dark pl-1 pr-1"></i> توسط دیزاینسیا در <span class="copyright-year">1402</span></h6>

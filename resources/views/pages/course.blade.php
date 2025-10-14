@@ -87,7 +87,7 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-gray-800">دوره‌های من</h1>
                 <p class="text-gray-600 mt-2 text-sm md:text-base">لیست دوره‌های فعال و گذشته شما</p>
             </div>
-            <div class="flex space-x-3 space-x-reverse w-full md:w-auto">
+            {{--<div class="flex space-x-3 space-x-reverse w-full md:w-auto">
                 <button class="flex-1 md:flex-none bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-50 transition-all duration-300 flex items-center justify-center shadow-sm hover:shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -100,7 +100,7 @@
                     </svg>
                     <span>مرتب‌سازی</span>
                 </button>
-            </div>
+            </div>--}}
         </div>
 
         <!-- کارت‌های دوره (اسکلتون لودینگ) -->

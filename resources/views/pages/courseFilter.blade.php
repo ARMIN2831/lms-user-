@@ -498,7 +498,7 @@
                             <i class="fas fa-undo ml-2"></i>
                             <span>بازنشانی فیلترها</span>
                         </button>
-                        <button @click="fetchSessions()"
+                        <button @click="fetchSessions(true)"
                                 class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center shadow-lg hover:shadow-xl font-medium">
                             <i class="fas fa-search ml-2"></i>
                             <span>اعمال فیلترها</span>
@@ -834,18 +834,18 @@
                                         <div class="flex flex-col sm:flex-row items-start gap-4">
                                             <!-- آواتار استاد -->
                                             <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-medium shadow-lg flex-shrink-0 overflow-hidden">
-                                                <template x-if="session.Timage">
-                                                    <img :src="mainFrontServerUrl + '/' + session.Timage" :alt="`${session.Tname} ${session.Tfamily}`" class="w-full h-full object-cover">
+                                                <template x-if="modalSessionData.Timage">
+                                                    <img :src="modalSessionData.Timage" :alt="`${modalSessionData.Tname} ${modalSessionData.Tfamily}`" class="w-full h-full object-cover">
                                                 </template>
-                                                <template x-if="!session.Timage">
-                                                    <span x-text="(session.Tname?.charAt(0) || 'ا') + (session.Tfamily?.charAt(0) || 'س')"></span>
+                                                <template x-if="!modalSessionData.Timage">
+                                                    <span x-text="(modalSessionData.Tname?.charAt(0) || 'ا') + (modalSessionData.Tfamily?.charAt(0) || 'س')"></span>
                                                 </template>
                                             </div>
 
                                             <!-- فرم ثبت کامنت -->
                                             <div class="flex-1 w-full">
                                                 <div class="flex items-center gap-3 mb-4">
-                                                    <span class="font-semibold text-gray-800" x-text="`استاد ${session.Tname} ${session.Tfamily}`"></span>
+                                                    <span class="font-semibold text-gray-800" x-text="`استاد ${modalSessionData.Tname} ${modalSessionData.Tfamily}`"></span>
                                                     <div class="flex items-center gap-1 text-amber-500">
                                                         <span class="text-sm text-gray-600 ml-2">امتیاز:</span>
                                                         <template x-for="i in 5" :key="i">
@@ -1386,10 +1386,11 @@
                 totalSessions: 0,
                 lastPage: 1,
 
-                async fetchSessions() {
+                async fetchSessions(resetPaginate = false) {
                     try {
                         this.sessionsLoading = true;
                         this.updateUrlParams();
+                        if (resetPaginate === true) this.currentPage = 1;
 
                         const requestData = {
                             ...this.filters,

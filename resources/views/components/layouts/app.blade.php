@@ -104,7 +104,7 @@
     </style>
 </head>
 <body class="theme-light" data-highlight="highlight-red">
-    <div id="preloader" class="preloader-hide"><div class="spinner-border color-highlight" role="status"></div></div>
+    <div id="preloader"><div class="spinner-border color-highlight" role="status"></div></div>
     <div id="page" class="device-is-android">
 
         <x-shared.footer/>

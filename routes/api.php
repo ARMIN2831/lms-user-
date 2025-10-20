@@ -11,8 +11,8 @@ Route::middleware('SetLan')->group(function (){
 
     Route::middleware('logged')->group(function() {
         //Route::post('userRegister', [UserAuthController::class, 'userRegister'])->name('userRegister');
-        Route::post('sendOTP', [UserAuthController::class, 'sendOTP']);
-        Route::post('verifyOtp', [UserAuthController::class, 'verifyOtp']);
+        Route::post('verifyOtp', [UserAuthController::class, 'verifyOtp'])->name('verifyOtp');
+        //Route::post('resendOtp', [UserAuthController::class, 'resendOtp'])->name('resendOtp');
         Route::post('userLogin', [UserAuthController::class, 'userLogin'])->name('userLogin');
         Route::post('completeProfile', [UserAuthController::class, 'completeProfile'])->name('completeProfile');
         Route::post('userCheck', [UserAuthController::class, 'userCheck'])->name('userCheck');
@@ -25,10 +25,33 @@ Route::middleware('SetLan')->group(function (){
         Route::get('/check-token', function (Request $request) {
             try {
                 $user = $request->user();
-                if ($user) return response()->json(['valid' => true,'type' => $user->user_type_id]);
+                $name = '';
+                $image = '';
+                if ($user->user_type_id == 1) {
+                    $name = $user->teacher->name . " " . $user->teacher->family;
+                    $image = $user->teacher->image;
+                }
+                if ($user->user_type_id == 2) {
+                    $name = $user->student->name . " " . $user->student->family;
+                    $image = $user->student->image;
+                }
+                if ($user) return response()->json(['valid' => true,'type' => $user->user_type_id, 'name' => $name, 'image' => $image]);
                 return response()->json(['valid' => false], 401);
             } catch (\Exception $e) {
                 return response()->json(['valid' => false], 401);
+            }
+        });
+        Route::get('/remove-token', function (Request $request) {
+            try {
+                $request->user()->currentAccessToken()->delete();
+
+                return response()->json([
+                    'message' => 'با موفقیت خارج شدید'
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'خطا در خروج از سیستم'
+                ], 500);
             }
         });
         Route::post('setPassword', [UserAuthController::class, 'setPassword']);

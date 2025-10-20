@@ -7,7 +7,6 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 class VerifyOTPRequest extends FormRequest
 {
-    public bool $isEmail;
 
 
     public function authorize(): bool
@@ -16,21 +15,11 @@ class VerifyOTPRequest extends FormRequest
     }
 
 
-    protected function prepareForValidation()
-    {
-        $this->isEmail = filter_var($this->email_mobile, FILTER_VALIDATE_EMAIL);
-    }
-
-
     public function rules(): array
     {
-        $rules = [
-            'type' => 'required|in:doctors,patients,translators,drivers',
+        return [
             'code' => 'required',
-            'email_mobile' => ['required'],
         ];
-
-        return $rules;
     }
 
 

@@ -62,209 +62,6 @@
     <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-6"
          x-data="dashboardPage()"
          x-init="init()">
-
-        <!-- هدر کاربر -->
-        <div class="flex flex-col md:flex-row items-center justify-between bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
-            <template x-if="loading.user">
-                <!-- اسکلتون هدر کاربر -->
-                <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
-                    <div class="relative">
-                        <div class="w-16 h-16 skeleton skeleton-circle"></div>
-                        <span class="absolute bottom-0 right-0 w-4 h-4 skeleton skeleton-circle"></span>
-                    </div>
-                    <div>
-                        <div class="skeleton skeleton-header w-32 mb-2"></div>
-                        <div class="skeleton skeleton-text w-20"></div>
-                    </div>
-                </div>
-            </template>
-
-            <template x-if="!loading.user && userData">
-                <!-- محتوای واقعی هدر کاربر -->
-                <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
-                    <div class="relative">
-                        <div class="w-16 h-16 rounded-full bg-purple-100 border-4 border-white shadow-lg overflow-hidden">
-                            <img :src="userData.avatar" :alt="userData.name" class="w-full h-full object-cover">
-                        </div>
-                        <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-800" x-text="userData.name"></h1>
-                        <div class="flex items-center mt-1">
-                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full" x-text="userData.level"></span>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                </button>
-                <a href="{{ route('profile') }}" class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-
-        <!-- کارت‌های اصلی دشبورد -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-            <!-- کارت دوره‌ها -->
-            <a href="{{ route('course') }}" class="dashboard-card bg-gradient-to-br from-purple-50 via-white to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-purple-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-0 bg-purple-500 opacity-5"></div>
-                <div class="relative p-5 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">دوره‌های من</h3>
-                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-purple-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <template x-if="loading.cards">
-                        <div class="space-y-3">
-                            <div class="skeleton skeleton-text w-32"></div>
-                            <div class="skeleton skeleton-text w-24"></div>
-                            <div class="skeleton skeleton-text w-full"></div>
-                        </div>
-                    </template>
-
-                    <template x-if="!loading.cards && cardsData">
-                        <div>
-                            <p class="text-sm text-gray-600 mb-3" x-text="`${cardsData.courseCount} دوره فعال دارید`"></p>
-                            <div class="mt-auto">
-                                <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
-                                    <span>پیشرفت کلی</span>
-                                    <span x-text="`${cardsData.coursePercent}%`"></span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="h-2.5 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-progress"
-                                         :style="`width: ${cardsData.coursePercent}%`"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
-                </div>
-            </a>
-
-            <!-- کارت آزمون‌ها (غیرفعال) -->
-            <div class="dashboard-card bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100 transform transition-all duration-300 opacity-90 hover:opacity-100">
-                <div class="absolute inset-0 bg-blue-500 opacity-5"></div>
-                <div class="relative p-5 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">آزمون‌ها</h3>
-                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-blue-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <p class="text-sm text-gray-600 mb-3">آزمون‌های آینده</p>
-
-                    <div class="mt-auto">
-                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
-                            <span>آماده‌سازی</span>
-                            <span>۰%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="h-2.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style="width: 0%"></div>
-                        </div>
-                    </div>
-
-                    <div class="absolute top-4 right-4 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">به زودی</div>
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-blue-600 opacity-50"></div>
-                </div>
-            </div>
-
-            <!-- کارت گواهینامه‌ها (غیرفعال) -->
-            <div class="dashboard-card bg-gradient-to-br from-green-50 via-white to-green-50 rounded-2xl shadow-lg overflow-hidden border border-green-100 transform transition-all duration-300 opacity-90 hover:opacity-100">
-                <div class="absolute inset-0 bg-green-500 opacity-5"></div>
-                <div class="relative p-5 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">گواهینامه‌ها</h3>
-                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-green-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <p class="text-sm text-gray-600 mb-3">گواهینامه‌های شما</p>
-
-                    <div class="mt-auto">
-                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
-                            <span>آماده‌سازی</span>
-                            <span>۰%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="h-2.5 bg-gradient-to-r from-green-400 to-green-600 rounded-full" style="width: 0%"></div>
-                        </div>
-                    </div>
-
-                    <div class="absolute top-4 right-4 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">به زودی</div>
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-green-600 opacity-50"></div>
-                </div>
-            </div>
-
-            <!-- کارت شهریه -->
-            <a href="{{ route('payments') }}" class="dashboard-card bg-gradient-to-br from-red-50 via-white to-red-50 rounded-2xl shadow-lg overflow-hidden border border-red-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-0 bg-red-500 opacity-5"></div>
-                <div class="relative p-5 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">وضعیت پرداخت</h3>
-                        <div class="p-2 bg-white bg-opacity-50 rounded-xl shadow-sm border border-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <template x-if="loading.cards">
-                        <div class="space-y-3">
-                            <div class="skeleton skeleton-text w-32"></div>
-                            <div class="skeleton skeleton-text w-24"></div>
-                        </div>
-                    </template>
-
-                    <template x-if="!loading.cards && cardsData">
-                        <div>
-                            <p class="text-sm text-gray-600 mb-3" x-text="getPaymentText(cardsData.paymentCount)"></p>
-                            <div class="mt-auto">
-                                <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
-                                    <span>تاریخ سررسید</span>
-                                    <span class="font-bold text-red-600">۱۵ مرداد</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="h-2.5 bg-gradient-to-r from-red-400 to-red-600 rounded-full" style="width: 40%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-
-                    <template x-if="!loading.cards && cardsData">
-                        <div class="absolute top-4 right-4 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center"
-                             :class="getPaymentAlertClass(cardsData.paymentCount)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span x-text="getPaymentAlertText(cardsData.paymentCount)"></span>
-                        </div>
-                    </template>
-
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 to-red-600 animate-pulse"></div>
-                </div>
-            </a>
-        </div>
-
         <!-- اسلایدر اعلانات -->
         <div class="mb-6 relative">
             <template x-if="loading.cards">
@@ -327,6 +124,62 @@
                 </div>
             </template>
         </div>
+
+        <!-- کارت‌های اصلی دشبورد -->
+        <div class="flex justify-between mb-4 lg:px-4">
+            <!-- کارت دوره‌ها -->
+            <a href="{{ route('course') }}" class="relative flex flex-col items-center justify-center h-full cursor-pointer">
+                <div class="relative mb-4">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-book-open text-2xl text-purple-600"></i>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white text-sm font-bold" x-text="cardsData?.courseCount || '0'"></span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">دوره‌ها</h3>
+            </a>
+
+            <!-- کارت آزمون‌ها -->
+            <a class="relative flex flex-col items-center justify-center h-full cursor-pointer">
+                <div class="relative mb-4">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-clipboard-list text-2xl text-blue-600"></i>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white text-sm font-bold">۰</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">آزمون‌ها</h3>
+            </a>
+
+            <!-- کارت گواهینامه‌ها -->
+            <a class="relative flex flex-col items-center justify-center h-full cursor-pointer">
+                <div class="relative mb-4">
+                    <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-award text-2xl text-green-600"></i>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white text-sm font-bold">۰</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">گواهینامه‌ها</h3>
+            </a>
+
+            <!-- کارت پرداخت -->
+            <a href="{{ route('payments') }}" class="relative flex flex-col items-center justify-center h-full cursor-pointer">
+                <div class="relative mb-4">
+                    <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-credit-card text-2xl text-red-600"></i>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white text-sm font-bold" x-text="cardsData?.paymentCount || '0'"></span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">پرداخت‌ها</h3>
+            </a>
+        </div>
+
 
         <!-- بخش اصلی -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -523,7 +376,7 @@
                                 </button>
                             </div>
 
-                            <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
+                            <div x-show="open" class="accordion-content px-4 pb-4">
                                 <div class="space-y-3 max-h-64 overflow-y-auto">
                                     <template x-for="attend in attendsData.upcoming_attends" :key="attend.id">
                                         <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
@@ -594,7 +447,7 @@
                                     </svg>
                                 </button>
 
-                                <div x-show="open" x-collapse class="accordion-content px-4 pb-4">
+                                <div x-show="open" class="accordion-content px-4 pb-4">
                                     <div class="space-y-3">
                                         <template x-for="comment in attendsData.comments" :key="comment.id">
                                             <a :href="'/courseDetail/' + comment.students_courses_id"

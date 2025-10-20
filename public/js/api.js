@@ -48,11 +48,16 @@ async function checkTokenValidity() {
             redirectToDashboardOrSavedUrl();
         } else {
             userType = response.data.type;  // تنظیم userType
+
+            document.querySelector("#header_title").textContent = response.data.name;
+            document.querySelector("#header_title2").textContent = response.data.name;
+            document.querySelector("#header_image").src = response.data.image;
             checkAndRedirectToSavedUrl();
         }
 
         // event سفارشی برای اطلاع به صفحات: userType آماده است
         window.dispatchEvent(new CustomEvent('waitForCheckToken'));
+        document.querySelector("#preloader").classList.add('preloader-hide');
         return true;
 
     } catch (error) {
@@ -67,6 +72,24 @@ async function checkTokenValidity() {
         // event حتی در خطا منتشر شود
         window.dispatchEvent(new CustomEvent('waitForCheckToken'));
         return false;
+    }
+}
+
+
+async function logoutUser() {
+    try {
+        const token = localStorage.getItem("access_token");
+        const response = await axios.get('/api/remove-token', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'user_lan': 'fa'
+            }
+        });
+    } catch (error) {
+        showToastAlert(error, 'error', 3000);
+    } finally {
+        localStorage.removeItem("access_token");
+        window.location.href = '/login';
     }
 }
 

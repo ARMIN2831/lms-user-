@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,25 @@ Route::get('/start', function () {
 
     return response(implode(PHP_EOL, $log), 200)
         ->header('Content-Type', 'text/plain; charset=utf-8');
+});
+
+Route::get('/nationalCode', function () {
+    $users = \App\Models\User::with('student','teacher')->get();
+    foreach ($users as $user){
+        $nationalCode = null;
+
+        if ($user->user_type_id == 1 && $user->teacher) {
+            $nationalCode = $user->teacher->Mid;
+        } elseif ($user->user_type_id == 2 && $user->student) {
+            $nationalCode = $user->student->Mid;
+        }
+
+        if (!empty($nationalCode)) {
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['nationalCode' => $nationalCode]);
+        }
+    }
 });
 
 Route::get('/login', function () {

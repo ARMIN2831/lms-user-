@@ -18,15 +18,17 @@ if (!function_exists('sendOTPCode')) {
             $remainingTime = Carbon::now()->diffInSeconds($existingOtp->expires_at);
             throw new HttpResponseException(
                 response()->json([
-                   'status' => 'error',
+                   'status' => 'success',
                    'message' => trans('messages.OTP_is_valid'),
-                   'remaining_time' => round($remainingTime)
-               ], 429)
+                   'remaining_time' => round($remainingTime),
+                   'verified' => 0,
+               ], 200)
             );
         }
 
 
-        $otpCode = rand(10000, 99999);
+        //$otpCode = rand(10000, 99999);
+        $otpCode = 11111;
         if ($type == "email"){
             Mail::raw('Your verify code: ' . $otpCode, function ($message) use ($userField) {
                 $message->to($userField)

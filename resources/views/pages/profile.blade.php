@@ -117,6 +117,65 @@
             align-items: center;
             justify-content: center;
         }
+
+        /* استایل‌های جدید برای حالت دیزیبل */
+        .disabled-input {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .disabled-input:focus {
+            outline: none;
+            border-color: #e5e7eb;
+            box-shadow: none;
+        }
+
+        .edit-btn {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .cancel-btn {
+            transition: all 0.3s ease;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
     </style>
 
     <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white p-4 md:p-8 font-sans" x-data="profilePage()">
@@ -243,69 +302,111 @@
                 <template x-if="!loading">
                     <div class="profile-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 lg:col-span-2">
                         <div class="p-6">
-                            <div class="flex flex-row justify-between">
-                                <h3 class="text-lg font-bold text-gray-800 md:mb-6 flex items-center">اطلاعات شخصی</h3>
-                                <div class="flex items-center">
-                                    <button @click="updateProfile" :disabled="updating" class="save-btn bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <template x-if="!updating">
-                                            <span>ذخیره تغییرات</span>
-                                        </template>
-                                        <template x-if="updating">
-                                            <div class="flex items-center gap-2">
-                                                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                                در حال ذخیره...
-                                            </div>
-                                        </template>
-                                    </button>
+                            <div class="flex flex-row justify-between items-center mb-6">
+                                <h3 class="text-lg font-bold text-gray-800 flex items-center">اطلاعات شخصی</h3>
+                                <div class="action-buttons">
+                                    <!-- دکمه ویرایش (نمایش در حالت دیزیبل) -->
+                                    <template x-if="!editMode">
+                                        <button @click="enableEditMode" class="edit-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            ویرایش اطلاعات
+                                        </button>
+                                    </template>
+
+                                    <!-- دکمه‌های حالت ویرایش -->
+                                    <template x-if="editMode">
+                                        <button @click="cancelEdit" class="cancel-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            انصراف
+                                        </button>
+                                    </template>
+                                    <template x-if="editMode">
+
+                                        <button @click="updateProfile" :disabled="updating" class="save-btn bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <template x-if="!updating">
+                                                <span class="flex items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    ثبت تغییرات
+                                                </span>
+                                            </template>
+                                            <template x-if="updating">
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    در حال ذخیره...
+                                                </div>
+                                            </template>
+                                        </button>
+                                    </template>
                                 </div>
                             </div>
-
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- ردیف 1 -->
                                 <div>
                                     <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">نام</label>
-                                    <input type="text" id="first-name" x-model="formData.first_name" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="first-name" x-model="formData.first_name"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                                 <div>
                                     <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">نام خانوادگی</label>
-                                    <input type="text" id="last-name" x-model="formData.last_name" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="last-name" x-model="formData.last_name"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
 
                                 <!-- ردیف 2 -->
                                 <div>
                                     <label for="father-name" class="block text-sm font-medium text-gray-700 mb-1">نام پدر</label>
-                                    <input type="text" id="father-name" x-model="formData.father_name" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="father-name" x-model="formData.father_name"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                                 <div>
                                     <label for="id-number" class="block text-sm font-medium text-gray-700 mb-1">شماره شناسنامه</label>
-                                    <input type="text" id="id-number" x-model="formData.id_number" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="id-number" x-model="formData.id_number"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
 
                                 <!-- ردیف 3 -->
                                 <div>
                                     <label for="issue-place" class="block text-sm font-medium text-gray-700 mb-1">محل صدور</label>
-                                    <input type="text" id="issue-place" x-model="formData.issue_place" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="issue-place" x-model="formData.issue_place"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                                 <div>
                                     <label for="national-code" class="block text-sm font-medium text-gray-700 mb-1">کد ملی</label>
-                                    <input type="text" id="national-code" x-model="formData.national_code" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="national-code" x-model="formData.national_code"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
 
                                 <!-- ردیف 4 -->
                                 <div>
                                     <label for="marital-status" class="block text-sm font-medium text-gray-700 mb-1">وضعیت تاهل</label>
-                                    <select id="marital-status" x-model="formData.marital_status" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <select id="marital-status" x-model="formData.marital_status"
+                                            :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                            :disabled="!editMode">
                                         <option value="0">مجرد</option>
                                         <option value="1">متاهل</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label for="education" class="block text-sm font-medium text-gray-700 mb-1">مدرک تحصیلی</label>
-                                    <select id="education" x-model="formData.education" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <select id="education" x-model="formData.education"
+                                            :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                            :disabled="!editMode">
                                         <option value="diploma">دیپلم</option>
                                         <option value="bachelor">لیسانس</option>
                                         <option value="master">فوق لیسانس</option>
@@ -316,11 +417,15 @@
                                 <!-- ردیف 5 -->
                                 <div>
                                     <label for="field" class="block text-sm font-medium text-gray-700 mb-1">رشته تحصیلی</label>
-                                    <input type="text" id="field" x-model="formData.field" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="field" x-model="formData.field"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                                 <div>
                                     <label for="job" class="block text-sm font-medium text-gray-700 mb-1">شغل</label>
-                                    <input type="text" id="job" x-model="formData.job" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="text" id="job" x-model="formData.job"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                             </div>
 
@@ -330,11 +435,15 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label for="mobile" class="block text-sm font-medium text-gray-700 mb-1">تلفن همراه</label>
-                                    <input type="tel" id="mobile" x-model="formData.mobile" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="tel" id="mobile" x-model="formData.mobile"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                                 <div>
                                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">ایمیل</label>
-                                    <input type="email" id="email" x-model="formData.email" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <input type="email" id="email" x-model="formData.email"
+                                           :class="editMode ? 'form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500' : 'disabled-input w-full px-4 py-2 border border-gray-200 rounded-lg'"
+                                           :disabled="!editMode">
                                 </div>
                             </div>
                         </div>
@@ -395,6 +504,8 @@
                 uploadingAvatar: false,
                 changingPassword: false,
                 activeTab: 'profile',
+                editMode: false, // حالت جدید برای مدیریت ویرایش
+                originalFormData: {}, // برای ذخیره داده‌های اصلی
                 user: {},
                 formData: {
                     first_name: '',
@@ -460,11 +571,26 @@
                             email: user.email
                         };
 
+                        // ذخیره داده‌های اصلی برای امکان بازگشت
+                        this.originalFormData = {...this.formData};
+
                     } catch (err) {
                         showToastAlert(err, 'error');
                     } finally {
                         this.loading = false;
                     }
+                },
+
+                // فعال کردن حالت ویرایش
+                enableEditMode() {
+                    this.editMode = true;
+                },
+
+                // لغو ویرایش و بازگشت به حالت اول
+                cancelEdit() {
+                    this.editMode = false;
+                    // بازگرداندن داده‌ها به حالت اولیه
+                    this.formData = {...this.originalFormData};
                 },
 
                 async updateProfile() {
@@ -473,6 +599,14 @@
                     try {
                         const response = await makeRequest('POST', 'fa', '{{ route('updateProfile') }}', this.formData);
                         showToastAlert(response.message, 'success');
+
+                        // به‌روزرسانی داده‌های اصلی
+                        this.originalFormData = {...this.formData};
+                        this.editMode = false;
+
+                        // به‌روزرسانی نام کاربر در کارت آواتار
+                        this.user.full_name = this.formData.first_name + " " + this.formData.last_name;
+
                     } catch (err) {
                         showToastAlert(err, 'error');
                     } finally {

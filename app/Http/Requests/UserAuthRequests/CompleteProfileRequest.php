@@ -20,7 +20,7 @@ class CompleteProfileRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = User::where('mobile',$this->mobile)->first();
+        $user = User::where('nationalCode',$this->nationalCode)->first();
         $type = match($user->user_type_id) {
             2 => 'students',
             1 => 'teachers',
@@ -34,13 +34,13 @@ class CompleteProfileRequest extends FormRequest
         }
         if ($user) $model = $model::where('users_id',$user->id)->first();
         return [
-            'mobile' => 'required|exists:users,mobile',
+            'nationalCode' => 'required|exists:users,nationalCode',
             'firstName' => 'required',
             'lastName' => 'required',
             'fatherName' => 'required',
             'idNumber' => 'required',
             'issuePlace' => 'required',
-            'nationalCode' => 'required|unique:'. $type .',Mid,'.$model->id,
+            //'nationalCode' => 'required|unique:'. $type .',Mid,'.$model->id,
             'maritalStatus' => 'required',
             'education' => 'required',
             'field' => 'required',

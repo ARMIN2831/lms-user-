@@ -78,6 +78,7 @@ class DashboardService
         $lastPastAttend = Attend::where('students_id', $this->model->id)
             ->with('course.teacher','course.title','status')
             ->where('date', '<', time())
+            ->whereIn('attend_status_id',[1,7])
             ->orderBy('date', 'desc')
             ->first();
 

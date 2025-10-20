@@ -32,4 +32,9 @@
         <span>پروفایل</span>
         <i class="fa fa-angle-left"></i>
     </a>
+    <a id="nav-logout" href="#" @click.prevent="logoutUser()" class="logout-btn">
+        <i class="fas fa-sign-out-alt gradient-red color-white"></i>
+        <span>خروج از سیستم</span>
+        <i class="fa fa-angle-left"></i>
+    </a>
 </div>

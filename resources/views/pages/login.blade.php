@@ -427,6 +427,126 @@
                 height: 100px;
                 font-size: 2rem;
             }
+        }.otp-header {
+             background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+             padding: 1.5rem;
+             border-radius: 1rem;
+             border: 1px solid #e2e8f0;
+         }
+
+        .otp-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .otp-inputs {
+            direction: ltr;
+        }
+
+        .otp-box {
+            width: 3.5rem;
+            height: 3.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            background: #f8fafc;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #1e293b;
+            outline: none;
+        }
+
+        .otp-box:focus {
+            border-color: #8b5cf6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            transform: scale(1.05);
+        }
+
+        .otp-box.filled {
+            border-color: #10b981;
+            background: #f0fdf4;
+            color: #047857;
+        }
+
+        .otp-box.error {
+            border-color: #ef4444;
+            background: #fef2f2;
+            color: #dc2626;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .otp-box:disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        #verify-btn {
+            position: relative;
+            min-height: 3rem;
+        }
+
+        .btn-text, .btn-loading {
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #verify-btn.loading .btn-text {
+            opacity: 0;
+        }
+
+        #verify-btn.loading .btn-loading {
+            opacity: 1;
+        }
+
+        #resend-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .otp-box {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1.25rem;
+            }
+
+            .otp-container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .otp-box {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.1rem;
+            }
+
+            .otp-inputs {
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -444,9 +564,9 @@
             </div>
 
             <div class="input-field">
-                <input type="tel" id="phone" placeholder="شماره موبایل" pattern="09[0-9]{9}">
+                <input type="tel" id="nationalCode" placeholder="کد ملی" pattern="[0-9]{10}">
                 <i class="input-icon fas fa-mobile-alt"></i>
-                <div class="error-message" id="phone-error"></div>
+                <div class="error-message" id="nationalCode-error"></div>
             </div>
 
             <div class="mt-8">
@@ -454,6 +574,65 @@
                     ادامه
                     <i class="fas fa-arrow-left ml-2"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- Step 1: Phone OTP -->
+        <div class="form-step" id="step-otp">
+            <div class="logo-container mb-6">
+                <div class="logo">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">سامانه اساتید موسیقی</h2>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="otp-header mb-4">
+                    <i class="fas fa-shield-check text-3xl text-purple-500 mb-3"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">تأیید شماره موبایل</h3>
+                    <p class="text-gray-600">کد تأیید ۵ رقمی به شماره شما ارسال شد</p>
+                    <p class="text-sm text-gray-500 mt-1" id="phone-display">۰۹۱۲••••۱۲۳</p>
+                </div>
+            </div>
+
+            <!-- OTP Input Boxes -->
+            <div class="otp-container mb-6">
+                <div class="otp-inputs flex justify-center gap-3" id="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-box" data-index="0" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="otp-box" data-index="1" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="otp-box" data-index="2" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="otp-box" data-index="3" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="otp-box" data-index="4" inputmode="numeric" pattern="[0-9]">
+                </div>
+                <div class="error-message text-center mt-3" id="otp-error"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+                <button onclick="verifyOTP()" class="btn btn-primary w-full relative" id="verify-btn">
+                    <span class="btn-text">تأیید و ادامه</span>
+                    <div class="btn-loading hidden">
+                        <i class="fas fa-spinner fa-spin ml-2"></i>
+                        <span>در حال بررسی...</span>
+                    </div>
+                </button>
+
+                <div class="text-center">
+                    <button onclick="resendOTP()" class="text-sm text-purple-600 hover:text-purple-700 font-medium" id="resend-btn">
+                        <i class="fas fa-redo ml-1"></i>
+                        <span>ارسال مجدد کد</span>
+                    </button>
+                    <div class="text-xs text-gray-500 mt-2 hidden" id="countdown">
+                        امکان ارسال مجدد تا <span id="countdown-timer">120</span> ثانیه دیگر
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button onclick="backToPhone()" class="text-sm text-gray-600 hover:text-gray-700">
+                        <i class="fas fa-arrow-right ml-1"></i>
+                        تغییر شماره موبایل
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -691,8 +870,229 @@
 </div>
 
 <script>
+    // OTP Management
+    let otpTimer = null;
+    let otpTimeLeft = 120;
+
+    function initializeOTP() {
+        const otpInputs = document.querySelectorAll('.otp-box');
+
+        otpInputs.forEach((input, index) => {
+            // Handle input
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+
+                if (value && /[0-9]/.test(value)) {
+                    e.target.classList.add('filled');
+                    e.target.classList.remove('error');
+
+                    // Auto-focus next input
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                } else {
+                    e.target.classList.remove('filled');
+                }
+
+                hideOTPError();
+            });
+
+            // Handle paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').slice(0, 5);
+
+                pasteData.split('').forEach((char, i) => {
+                    if (i < otpInputs.length && /[0-9]/.test(char)) {
+                        otpInputs[i].value = char;
+                        otpInputs[i].classList.add('filled');
+                    }
+                });
+
+                if (pasteData.length === 5) {
+                    otpInputs[4].focus();
+                }
+
+                hideOTPError();
+            });
+
+            // Handle backspace
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Start countdown for resend
+        startResendCountdown();
+    }
+
+    function getOTP() {
+        const otpInputs = document.querySelectorAll('.otp-box');
+        let otp = '';
+
+        otpInputs.forEach(input => {
+            otp += input.value;
+        });
+
+        return otp;
+    }
+
+    function showOTPError(message) {
+        const errorElement = document.getElementById('otp-error');
+        const otpInputs = document.querySelectorAll('.otp-box');
+
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+
+        otpInputs.forEach(input => {
+            input.classList.add('error');
+        });
+    }
+
+    function hideOTPError() {
+        const errorElement = document.getElementById('otp-error');
+        const otpInputs = document.querySelectorAll('.otp-box');
+
+        errorElement.style.display = 'none';
+
+        otpInputs.forEach(input => {
+            input.classList.remove('error');
+        });
+    }
+
+    function startResendCountdown() {
+        const resendBtn = document.getElementById('resend-btn');
+        const countdownElement = document.getElementById('countdown');
+        const countdownTimer = document.getElementById('countdown-timer');
+
+        resendBtn.disabled = true;
+        countdownElement.classList.remove('hidden');
+
+        otpTimer = setInterval(() => {
+            otpTimeLeft--;
+            countdownTimer.textContent = otpTimeLeft;
+
+            if (otpTimeLeft <= 0) {
+                clearInterval(otpTimer);
+                resendBtn.disabled = false;
+                countdownElement.classList.add('hidden');
+            }
+        }, 1000);
+    }
+
+    async function verifyOTP() {
+        const otp = getOTP();
+        const verifyBtn = document.getElementById('verify-btn');
+
+        if (otp.length !== 5) {
+            showOTPError('لطفاً کد ۵ رقمی را کامل وارد کنید');
+            return;
+        }
+
+        // Show loading
+        verifyBtn.classList.add('loading');
+        verifyBtn.disabled = true;
+        hideOTPError();
+
+        try {
+            // Call your OTP verification API
+            const response = await makeRequest('POST', 'fa', '{{ route('verifyOtp') }}', {
+                code: otp,
+                nationalCode: currentUserNationalCode
+            });
+
+            // Success - move to next step
+            showToastAlert('کد با موفقیت تأیید شد', 'success');
+
+            // Show profile completion steps
+            document.getElementById('step-otp').classList.remove('active');
+            document.getElementById('step-profile').classList.add('active');
+            nextProfileStep(1, 2);
+
+        } catch (error) {
+            let errorMessage = "کد وارد شده معتبر نیست";
+
+            if (error.response && error.response.data) {
+                if (error.response.data.message) {
+                    errorMessage = error.response.data.message;
+                } else if (error.response.data.errors) {
+                    errorMessage = Object.values(error.response.data.errors)[0][0];
+                }
+            }
+
+            showOTPError(errorMessage);
+        } finally {
+            verifyBtn.classList.remove('loading');
+            verifyBtn.disabled = false;
+        }
+    }
+
+    async function resendOTP() {
+        const resendBtn = document.getElementById('resend-btn');
+
+        // Show loading on resend button
+        const originalHTML = resendBtn.innerHTML;
+        resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-1"></i><span>در حال ارسال...</span>';
+        resendBtn.disabled = true;
+
+        try {
+            // Call your OTP resend API
+            await makeRequest('POST', 'fa', '{{ route('userCheck') }}', {
+                nationalCode: currentUserNationalCode
+            });
+
+            showToastAlert('کد جدید ارسال شد', 'success');
+
+            // Reset countdown
+            clearInterval(otpTimer);
+            otpTimeLeft = 120;
+            startResendCountdown();
+
+        } catch (error) {
+            let errorMessage = "خطا در ارسال کد";
+
+            if (error.response && error.response.data) {
+                if (error.response.data.message) {
+                    errorMessage = error.response.data.message;
+                } else if (error.response.data.errors) {
+                    errorMessage = Object.values(error.response.data.errors)[0][0];
+                }
+            }
+
+            showToastAlert(errorMessage, 'error');
+        } finally {
+            resendBtn.innerHTML = originalHTML;
+        }
+    }
+
+    // Initialize OTP when step is shown
+    document.addEventListener('DOMContentLoaded', function() {
+        // Watch for OTP step activation
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (mutation.target.id === 'step-otp' && mutation.target.classList.contains('active')) {
+                        initializeOTP();
+                        // Set phone number in display
+                        document.getElementById('phone-display').textContent =
+                            currentUserNationalCode ? `کد ملی: ${currentUserNationalCode}` : '۰۹۱۲••••۱۲۳';
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.getElementById('step-otp'), {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    });
+
+
+
     // Global variables
-    let currentUserPhone = '';
+    let currentUserNationalCode = '';
     let isExistingUser = false;
 
     // Show error for a specific field
@@ -737,10 +1137,10 @@
     async function checkPhone() {
         clearErrors();
 
-        const mobile = document.getElementById('phone').value;
+        const nationalCode = document.getElementById('nationalCode').value;
 
-        if (!mobile) {
-            showError('phone', 'لطفاً شماره موبایل را وارد کنید');
+        if (!nationalCode) {
+            showError('nationalCode', 'لطفاً کدملی را وارد کنید');
             return;
         }
         const type = 'students';
@@ -755,21 +1155,19 @@
         `;
         btn.disabled = true;
 
-        const response = await makeRequest('POST','fa', '{{ route('userCheck') }}', {mobile, type})
+        const response = await makeRequest('POST','fa', '{{ route('userCheck') }}', {nationalCode, type})
             .then(data => {
-                console.log("موفق:", data);
-                currentUserPhone = mobile;
-                isExistingUser = data.user.verified; // تغییر از response.verified به data.verified
+                currentUserNationalCode = nationalCode;
+                isExistingUser = data.verified; // تغییر از response.verified به data.verified
 
                 if (isExistingUser) {
                     // Show password step
                     document.getElementById('step-phone').classList.remove('active');
                     document.getElementById('step-password').classList.add('active');
                 } else {
-                    // Show profile completion steps
+                    if (data.remaining_time) otpTimeLeft = data.remaining_time;
                     document.getElementById('step-phone').classList.remove('active');
-                    document.getElementById('step-profile').classList.add('active');
-                    nextProfileStep(1, 2)
+                    document.getElementById('step-otp').classList.add('active');
                 }
             })
             .catch(err => {
@@ -786,7 +1184,7 @@
                     errorMessage = err.message;
                 }
 
-                showError('phone', errorMessage);
+                showError('nationalCode', errorMessage);
             })
             .finally(() => {
                 btn.innerHTML = originalText;
@@ -808,7 +1206,7 @@
         clearErrors();
 
         const password = document.getElementById('password').value;
-        const mobile = currentUserPhone;
+        const nationalCode = currentUserNationalCode;
         const type = 'students';
 
         if (!password) {
@@ -829,7 +1227,7 @@
         btn.disabled = true;
 
 
-        const response = await makeRequest('POST', 'fa', '{{ route('userLogin') }}', {password,mobile,type}, true)
+        const response = await makeRequest('POST', 'fa', '{{ route('userLogin') }}', {password,nationalCode,type}, true)
             .then(data => {
                 localStorage.setItem('access_token', data.access_token);
                 const successMessage = document.createElement('div');
@@ -1031,7 +1429,7 @@
         document.getElementById('confirm-national-code').textContent =
             document.getElementById('nationalCode').value;
         document.getElementById('confirm-phone').textContent =
-            currentUserPhone;
+            currentUserNationalCode;
         document.getElementById('confirm-field').textContent =
             document.getElementById('field').value;
     }
@@ -1064,7 +1462,7 @@
         const formData = new FormData();
 
         // اطلاعات پایه
-        formData.append('mobile', currentUserPhone);
+        formData.append('nationalCode', currentUserNationalCode);
         formData.append('type', 'students');
 
         // اطلاعات شخصی

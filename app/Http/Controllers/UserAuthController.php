@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserAuthRequests\CompleteProfileRequest;
 use App\Http\Requests\UserAuthRequests\LoginRequest;
+use App\Http\Requests\UserAuthRequests\VerifyOTPRequest;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -22,13 +23,24 @@ class UserAuthController extends Controller
         };*/
 
         //$user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
-        $user = User::where('mobile', $request->mobile)->first();
+        $user = User::where('nationalCode', $request->nationalCode)->first();
         if ($user) {
+            if ($user->verified == 1){
+                return response()->json([
+                    'status' => 'success',
+                    'verified' => $user->verified,
+                ]);
+            }
+            sendOTPCode("mobile",$user->id,get_class($user),$user->mobile);
+            User::where('nationalCode',$request->nationalCode)->update(['verify_otp' => 0]);
             return response()->json([
                 'status' => 'success',
-                'user' => $user
+                'message' => trans('messages.OTP_send'),
+                'remaining_time' => 120,
+                'verified' => 0,
             ]);
         }
+
 
         return response()->json([
             'status' => 'error',
@@ -36,6 +48,26 @@ class UserAuthController extends Controller
         ], 401);
     }
 
+
+    public function verifyOtp(VerifyOTPRequest $request)
+    {
+        $request->validated();
+
+        $user = User::where('nationalCode',$request->nationalCode)->first();
+        if (!$user){
+            return response()->json([
+                'status' => 'error',
+                'message' => trans('messages.invalid_credentials')
+            ], 401);
+        }
+        verifyOTPCode('mobile',$user->id,get_class($user),$request->code);
+        User::where('nationalCode',$request->nationalCode)->update(['verify_otp' => 1]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.registration_successful'),
+        ], 201);
+    }
 
     function userLogin(LoginRequest $request)
     {
@@ -46,7 +78,7 @@ class UserAuthController extends Controller
             'teachers' => '1',
         };*/
         //$user = User::where('mobile', $request->mobile)->where('user_type_id',$type)->first();
-        $user = User::where('mobile', $request->mobile)->first();
+        $user = User::where('nationalCode', $request->nationalCode)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             if ($user->verified == 1){
                 return response()->json([
@@ -71,8 +103,8 @@ class UserAuthController extends Controller
     public function completeProfile(CompleteProfileRequest $request)
     {
         $request->validated();
-        $user = User::where('mobile',$request->mobile)->first();
-        if ($user and $user->verified == 0){
+        $user = User::where('nationalCode',$request->nationalCode)->first();
+        if ($user and $user->verified == 0 and $user->verify_otp == 1){
             $userData = [
                 'name' => $request->firstName,
                 'family' => $request->lastName,
@@ -86,7 +118,7 @@ class UserAuthController extends Controller
                 'job' => $request->job,
                 'image' => uploadFile($request->file('profilePhoto')),
             ];
-            User::where('mobile',$request->mobile)->update([
+            User::where('nationalCode',$request->nationalCode)->update([
                 'verified'=> 1,
                 'password' => bcrypt($request->nationalCode),
             ]);

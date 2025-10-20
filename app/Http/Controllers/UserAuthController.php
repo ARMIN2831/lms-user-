@@ -8,11 +8,13 @@ use App\Http\Requests\UserAuthRequests\VerifyOTPRequest;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
 {
+    use FileUploadTrait;
 
 
     function userCheck(Request $request)
@@ -116,7 +118,7 @@ class UserAuthController extends Controller
                 'madrak' => $request->education,
                 'field' => $request->field,
                 'job' => $request->job,
-                'image' => uploadFile($request->file('profilePhoto')),
+                'image' => $this->uploadFile($request->file('profilePhoto')),
             ];
             User::where('nationalCode',$request->nationalCode)->update([
                 'verified'=> 1,
